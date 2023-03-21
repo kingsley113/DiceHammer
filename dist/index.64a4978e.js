@@ -577,7 +577,8 @@ const params = {
     edgeRadius: 0.07,
     pauseSimulation: false,
     diceSurfaceColor: 0xeeeeee,
-    diceDimpleColor: 0x000000
+    diceDimpleColor: 0x000000,
+    trayColor: 0xff0000
 };
 const diceArray = [];
 rollBtn.addEventListener("click", throwDice);
@@ -611,6 +612,7 @@ function initScene() {
     orbit.enableDamping = true;
     orbit.dampingFactor = 0.025;
     createFloor();
+    createDiceTray();
     diceMesh = createDiceMesh();
     for(let i = 0; i < params.diceCount; i++){
         diceArray.push(createDice());
@@ -647,6 +649,72 @@ function createFloor() {
     floorBody.position.copy(floor.position);
     floorBody.quaternion.copy(floor.quaternion);
     physicsWorld.addBody(floorBody);
+}
+// DICE TRAY*******************************************************************
+function createDiceTray() {
+    const trayGeometry = new _three.PlaneGeometry(20, 20, 3, 3);
+    const trayMaterial = new _three.MeshStandardMaterial({
+        color: params.trayColor,
+        // wireframe: true,
+        side: _three.DoubleSide
+    });
+    const tray = new _three.Mesh(trayGeometry, trayMaterial);
+    // tray.position.set(0, -7, 0);
+    tray.rotation.x = 0.5 * Math.PI;
+    tray.receiveShadow = true;
+    const trayShape = [
+        // x, y, z
+        -10,
+        10,
+        4,
+        -9,
+        10,
+        4,
+        9,
+        10,
+        4,
+        10,
+        10,
+        4,
+        -10,
+        9,
+        4,
+        -9,
+        9,
+        7,
+        9,
+        9,
+        7,
+        10,
+        9,
+        4,
+        -10,
+        -9,
+        4,
+        -9,
+        -9,
+        7,
+        9,
+        -9,
+        7,
+        10,
+        -9,
+        4,
+        -10,
+        -10,
+        4,
+        -9,
+        -10,
+        4,
+        9,
+        -10,
+        4,
+        10,
+        -10,
+        4
+    ];
+    for(let i = 0; i < trayShape.length; i++)tray.geometry.attributes.position.array[i] = trayShape[i];
+    scene.add(tray);
 }
 // DICE MODEL******************************************************************
 function createDiceMesh() {
