@@ -557,15 +557,19 @@ function hmrAccept(bundle, id) {
 }
 
 },{}],"goJYj":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _three = require("three");
 var _cannonEs = require("cannon-es");
 var _orbitControlsJs = require("three/examples/jsm/controls/OrbitControls.js");
 var _bufferGeometryUtils = require("three/examples/jsm/utils/BufferGeometryUtils");
+var _cannonEsDebugger = require("cannon-es-debugger");
+var _cannonEsDebuggerDefault = parcelHelpers.interopDefault(_cannonEsDebugger);
 const canvas = document.querySelector("#canvas");
 const rollBtn = document.querySelector(".roll");
 const container = document.querySelector(".content");
 const scoreResult = document.querySelector("#score-result");
 let renderer, camera, scene, orbit, diceMesh, physicsWorld;
+let cannonDebugger;
 const params = {
     diceCount: 5,
     gravityStrength: 50,
@@ -593,8 +597,8 @@ function initScene() {
     });
     renderer.setClearColor("#fff1e6");
     renderer.shadowMap.enabled = true; //enable the shadows for the scene, disabled by default
-    camera = new _three.PerspectiveCamera(45, canvas.clientWidth / canvas.clientHeight, 0.1, 300);
-    camera.position.set(0, 0.5, 4).multiplyScalar(7); //use this to set x, y, z axis
+    camera = new _three.PerspectiveCamera(15, canvas.clientWidth / canvas.clientHeight, 0.1, 300);
+    camera.position.set(0, 12, 5).multiplyScalar(7); //use this to set x, y, z axis
     scene = new _three.Scene();
     // LIGHTING******************************************************************
     const topLight = new _three.DirectionalLight(0xffffff, 1);
@@ -619,6 +623,8 @@ function initScene() {
         addDiceEvents(diceArray[i]);
     }
     throwDice();
+    // Debugging
+    cannonDebugger = new (0, _cannonEsDebuggerDefault.default)(scene, physicsWorld);
     render();
 }
 // PHYSICS SETUP***************************************************************
@@ -715,6 +721,34 @@ function createDiceTray() {
     ];
     for(let i = 0; i < trayShape.length; i++)tray.geometry.attributes.position.array[i] = trayShape[i];
     scene.add(tray);
+    const traySide1 = new _cannonEs.Body({
+        type: _cannonEs.Body.STATIC,
+        shape: new _cannonEs.Plane()
+    });
+    traySide1.position.set(0, 0, -9);
+    traySide1.quaternion.setFromEuler(0, 0, 0);
+    const traySide2 = new _cannonEs.Body({
+        type: _cannonEs.Body.STATIC,
+        shape: new _cannonEs.Plane()
+    });
+    traySide2.position.set(0, 0, 9);
+    traySide2.quaternion.setFromEuler(0, Math.PI, 0);
+    const traySide3 = new _cannonEs.Body({
+        type: _cannonEs.Body.STATIC,
+        shape: new _cannonEs.Plane()
+    });
+    traySide3.position.set(-9, 0, 0);
+    traySide3.quaternion.setFromEuler(0, 0.5 * Math.PI, 0);
+    const traySide4 = new _cannonEs.Body({
+        type: _cannonEs.Body.STATIC,
+        shape: new _cannonEs.Plane()
+    });
+    traySide4.position.set(9, 0, 0);
+    traySide4.quaternion.setFromEuler(0, 1.5 * Math.PI, 0);
+    physicsWorld.addBody(traySide1);
+    physicsWorld.addBody(traySide2);
+    physicsWorld.addBody(traySide3);
+    physicsWorld.addBody(traySide4);
 }
 // DICE MODEL******************************************************************
 function createDiceMesh() {
@@ -940,6 +974,7 @@ function render(time) {
         dice.mesh.quaternion.copy(dice.body.quaternion);
     }
     orbit.update(); //call update after everytime we change position of camera
+    cannonDebugger.update();
     // Redraw scene
     updateSceneSize();
     renderer.render(scene, camera);
@@ -982,7 +1017,7 @@ function throwDice() {
     });
 }
 
-},{"three":"ktPTu","three/examples/jsm/controls/OrbitControls.js":"7mqRv","cannon-es":"HCu3b","three/examples/jsm/utils/BufferGeometryUtils":"5o7x9"}],"ktPTu":[function(require,module,exports) {
+},{"three":"ktPTu","three/examples/jsm/controls/OrbitControls.js":"7mqRv","cannon-es":"HCu3b","three/examples/jsm/utils/BufferGeometryUtils":"5o7x9","cannon-es-debugger":"a5KNJ","@parcel/transformer-js/src/esmodule-helpers.js":"50sMR"}],"ktPTu":[function(require,module,exports) {
 /**
  * @license
  * Copyright 2010-2023 Three.js Authors
@@ -40857,6 +40892,210 @@ function toCreasedNormals(geometry, creaseAngle = Math.PI / 3 /* 60 degrees */ )
     return resultGeometry;
 }
 
-},{"three":"ktPTu","@parcel/transformer-js/src/esmodule-helpers.js":"50sMR"}]},["luDrG","goJYj"], "goJYj", "parcelRequire94c2")
+},{"three":"ktPTu","@parcel/transformer-js/src/esmodule-helpers.js":"50sMR"}],"a5KNJ":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "default", ()=>CannonDebugger);
+var _cannonEs = require("cannon-es");
+var _three = require("three");
+function CannonDebugger(scene, world, _temp) {
+    let { color =0x00ff00 , scale =1 , onInit , onUpdate  } = _temp === void 0 ? {} : _temp;
+    const _meshes = [];
+    const _material = new (0, _three.MeshBasicMaterial)({
+        color: color != null ? color : 0x00ff00,
+        wireframe: true
+    });
+    const _tempVec0 = new (0, _cannonEs.Vec3)();
+    const _tempVec1 = new (0, _cannonEs.Vec3)();
+    const _tempVec2 = new (0, _cannonEs.Vec3)();
+    const _tempQuat0 = new (0, _cannonEs.Quaternion)();
+    const _sphereGeometry = new (0, _three.SphereGeometry)(1);
+    const _boxGeometry = new (0, _three.BoxGeometry)(1, 1, 1);
+    const _planeGeometry = new (0, _three.PlaneGeometry)(10, 10, 10, 10); // Move the planeGeometry forward a little bit to prevent z-fighting
+    _planeGeometry.translate(0, 0, 0.0001);
+    function createConvexPolyhedronGeometry(shape) {
+        const geometry = new (0, _three.BufferGeometry)(); // Add vertices
+        const positions = [];
+        for(let i = 0; i < shape.vertices.length; i++){
+            const vertex = shape.vertices[i];
+            positions.push(vertex.x, vertex.y, vertex.z);
+        }
+        geometry.setAttribute("position", new (0, _three.Float32BufferAttribute)(positions, 3)); // Add faces
+        const indices = [];
+        for(let i = 0; i < shape.faces.length; i++){
+            const face = shape.faces[i];
+            const a = face[0];
+            for(let j = 1; j < face.length - 1; j++){
+                const b = face[j];
+                const c = face[j + 1];
+                indices.push(a, b, c);
+            }
+        }
+        geometry.setIndex(indices);
+        geometry.computeBoundingSphere();
+        geometry.computeVertexNormals();
+        return geometry;
+    }
+    function createTrimeshGeometry(shape) {
+        const geometry = new (0, _three.BufferGeometry)();
+        const positions = [];
+        const v0 = _tempVec0;
+        const v1 = _tempVec1;
+        const v2 = _tempVec2;
+        for(let i = 0; i < shape.indices.length / 3; i++){
+            shape.getTriangleVertices(i, v0, v1, v2);
+            positions.push(v0.x, v0.y, v0.z);
+            positions.push(v1.x, v1.y, v1.z);
+            positions.push(v2.x, v2.y, v2.z);
+        }
+        geometry.setAttribute("position", new (0, _three.Float32BufferAttribute)(positions, 3));
+        geometry.computeBoundingSphere();
+        geometry.computeVertexNormals();
+        return geometry;
+    }
+    function createHeightfieldGeometry(shape) {
+        const geometry = new (0, _three.BufferGeometry)();
+        const s = shape.elementSize || 1; // assumes square heightfield, else i*x, j*y
+        const positions = shape.data.flatMap((row, i)=>row.flatMap((z, j)=>[
+                    i * s,
+                    j * s,
+                    z
+                ]));
+        const indices = [];
+        for(let xi = 0; xi < shape.data.length - 1; xi++)for(let yi = 0; yi < shape.data[xi].length - 1; yi++){
+            const stride = shape.data[xi].length;
+            const index = xi * stride + yi;
+            indices.push(index + 1, index + stride, index + stride + 1);
+            indices.push(index + stride, index + 1, index);
+        }
+        geometry.setIndex(indices);
+        geometry.setAttribute("position", new (0, _three.Float32BufferAttribute)(positions, 3));
+        geometry.computeBoundingSphere();
+        geometry.computeVertexNormals();
+        return geometry;
+    }
+    function createMesh(shape) {
+        let mesh = new (0, _three.Mesh)();
+        const { SPHERE , BOX , PLANE , CYLINDER , CONVEXPOLYHEDRON , TRIMESH , HEIGHTFIELD  } = (0, _cannonEs.Shape).types;
+        switch(shape.type){
+            case SPHERE:
+                mesh = new (0, _three.Mesh)(_sphereGeometry, _material);
+                break;
+            case BOX:
+                mesh = new (0, _three.Mesh)(_boxGeometry, _material);
+                break;
+            case PLANE:
+                mesh = new (0, _three.Mesh)(_planeGeometry, _material);
+                break;
+            case CYLINDER:
+                {
+                    const geometry = new (0, _three.CylinderGeometry)(shape.radiusTop, shape.radiusBottom, shape.height, shape.numSegments);
+                    mesh = new (0, _three.Mesh)(geometry, _material);
+                    shape.geometryId = geometry.id;
+                    break;
+                }
+            case CONVEXPOLYHEDRON:
+                {
+                    const geometry = createConvexPolyhedronGeometry(shape);
+                    mesh = new (0, _three.Mesh)(geometry, _material);
+                    shape.geometryId = geometry.id;
+                    break;
+                }
+            case TRIMESH:
+                {
+                    const geometry = createTrimeshGeometry(shape);
+                    mesh = new (0, _three.Mesh)(geometry, _material);
+                    shape.geometryId = geometry.id;
+                    break;
+                }
+            case HEIGHTFIELD:
+                {
+                    const geometry = createHeightfieldGeometry(shape);
+                    mesh = new (0, _three.Mesh)(geometry, _material);
+                    shape.geometryId = geometry.id;
+                    break;
+                }
+        }
+        scene.add(mesh);
+        return mesh;
+    }
+    function scaleMesh(mesh, shape) {
+        const { SPHERE , BOX , PLANE , CYLINDER , CONVEXPOLYHEDRON , TRIMESH , HEIGHTFIELD  } = (0, _cannonEs.Shape).types;
+        switch(shape.type){
+            case SPHERE:
+                {
+                    const { radius  } = shape;
+                    mesh.scale.set(radius * scale, radius * scale, radius * scale);
+                    break;
+                }
+            case BOX:
+                mesh.scale.copy(shape.halfExtents);
+                mesh.scale.multiplyScalar(2 * scale);
+                break;
+            case PLANE:
+                break;
+            case CYLINDER:
+                mesh.scale.set(1 * scale, 1 * scale, 1 * scale);
+                break;
+            case CONVEXPOLYHEDRON:
+                mesh.scale.set(1 * scale, 1 * scale, 1 * scale);
+                break;
+            case TRIMESH:
+                mesh.scale.copy(shape.scale).multiplyScalar(scale);
+                break;
+            case HEIGHTFIELD:
+                mesh.scale.set(1 * scale, 1 * scale, 1 * scale);
+                break;
+        }
+    }
+    function typeMatch(mesh, shape) {
+        if (!mesh) return false;
+        const { geometry  } = mesh;
+        return geometry instanceof (0, _three.SphereGeometry) && shape.type === (0, _cannonEs.Shape).types.SPHERE || geometry instanceof (0, _three.BoxGeometry) && shape.type === (0, _cannonEs.Shape).types.BOX || geometry instanceof (0, _three.PlaneGeometry) && shape.type === (0, _cannonEs.Shape).types.PLANE || geometry.id === shape.geometryId && shape.type === (0, _cannonEs.Shape).types.CYLINDER || geometry.id === shape.geometryId && shape.type === (0, _cannonEs.Shape).types.CONVEXPOLYHEDRON || geometry.id === shape.geometryId && shape.type === (0, _cannonEs.Shape).types.TRIMESH || geometry.id === shape.geometryId && shape.type === (0, _cannonEs.Shape).types.HEIGHTFIELD;
+    }
+    function updateMesh(index, shape) {
+        let mesh = _meshes[index];
+        let didCreateNewMesh = false;
+        if (!typeMatch(mesh, shape)) {
+            if (mesh) scene.remove(mesh);
+            _meshes[index] = mesh = createMesh(shape);
+            didCreateNewMesh = true;
+        }
+        scaleMesh(mesh, shape);
+        return didCreateNewMesh;
+    }
+    function update() {
+        const meshes = _meshes;
+        const shapeWorldPosition = _tempVec0;
+        const shapeWorldQuaternion = _tempQuat0;
+        let meshIndex = 0;
+        for (const body of world.bodies)for(let i = 0; i !== body.shapes.length; i++){
+            const shape = body.shapes[i];
+            const didCreateNewMesh = updateMesh(meshIndex, shape);
+            const mesh = meshes[meshIndex];
+            if (mesh) {
+                // Get world position
+                body.quaternion.vmult(body.shapeOffsets[i], shapeWorldPosition);
+                body.position.vadd(shapeWorldPosition, shapeWorldPosition); // Get world quaternion
+                body.quaternion.mult(body.shapeOrientations[i], shapeWorldQuaternion); // Copy to meshes
+                mesh.position.copy(shapeWorldPosition);
+                mesh.quaternion.copy(shapeWorldQuaternion);
+                if (didCreateNewMesh && onInit instanceof Function) onInit(body, mesh, shape);
+                if (!didCreateNewMesh && onUpdate instanceof Function) onUpdate(body, mesh, shape);
+            }
+            meshIndex++;
+        }
+        for(let i = meshIndex; i < meshes.length; i++){
+            const mesh = meshes[i];
+            if (mesh) scene.remove(mesh);
+        }
+        meshes.length = meshIndex;
+    }
+    return {
+        update
+    };
+}
+
+},{"cannon-es":"HCu3b","three":"ktPTu","@parcel/transformer-js/src/esmodule-helpers.js":"50sMR"}]},["luDrG","goJYj"], "goJYj", "parcelRequire94c2")
 
 //# sourceMappingURL=index.64a4978e.js.map

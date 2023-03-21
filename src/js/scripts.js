@@ -3,12 +3,15 @@ import * as CANNON from "cannon-es";
 import { MapControls } from "three/examples/jsm/controls/OrbitControls.js";
 import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils";
 
+import CannonDebugger from "cannon-es-debugger";
+
 const canvas = document.querySelector("#canvas");
 const rollBtn = document.querySelector(".roll");
 const container = document.querySelector(".content");
 const scoreResult = document.querySelector("#score-result");
 
 let renderer, camera, scene, orbit, diceMesh, physicsWorld;
+let cannonDebugger;
 
 const params = {
   diceCount: 5,
@@ -44,13 +47,13 @@ function initScene() {
   renderer.shadowMap.enabled = true; //enable the shadows for the scene, disabled by default
 
   camera = new THREE.PerspectiveCamera(
-    45,
+    15,
     canvas.clientWidth / canvas.clientHeight,
     0.1,
     300
   );
 
-  camera.position.set(0, 0.5, 4).multiplyScalar(7); //use this to set x, y, z axis
+  camera.position.set(0, 12, 5).multiplyScalar(7); //use this to set x, y, z axis
 
   scene = new THREE.Scene();
 
@@ -83,6 +86,9 @@ function initScene() {
   }
 
   throwDice();
+
+  // Debugging
+  cannonDebugger = new CannonDebugger(scene, physicsWorld);
 
   render();
 }
@@ -143,6 +149,39 @@ function createDiceTray() {
   }
 
   scene.add(tray);
+
+  const traySide1 = new CANNON.Body({
+    type: CANNON.Body.STATIC,
+    shape: new CANNON.Plane(),
+  });
+  traySide1.position.set(0, 0, -9);
+  traySide1.quaternion.setFromEuler(0, 0, 0);
+
+  const traySide2 = new CANNON.Body({
+    type: CANNON.Body.STATIC,
+    shape: new CANNON.Plane(),
+  });
+  traySide2.position.set(0, 0, 9);
+  traySide2.quaternion.setFromEuler(0, Math.PI, 0);
+
+  const traySide3 = new CANNON.Body({
+    type: CANNON.Body.STATIC,
+    shape: new CANNON.Plane(),
+  });
+  traySide3.position.set(-9, 0, 0);
+  traySide3.quaternion.setFromEuler(0, 0.5 * Math.PI, 0);
+
+  const traySide4 = new CANNON.Body({
+    type: CANNON.Body.STATIC,
+    shape: new CANNON.Plane(),
+  });
+  traySide4.position.set(9, 0, 0);
+  traySide4.quaternion.setFromEuler(0, 1.5 * Math.PI, 0);
+
+  physicsWorld.addBody(traySide1);
+  physicsWorld.addBody(traySide2);
+  physicsWorld.addBody(traySide3);
+  physicsWorld.addBody(traySide4);
 }
 
 // DICE MODEL******************************************************************
@@ -388,6 +427,8 @@ function render(time) {
   }
 
   orbit.update(); //call update after everytime we change position of camera
+
+  cannonDebugger.update();
 
   // Redraw scene
   updateSceneSize();
