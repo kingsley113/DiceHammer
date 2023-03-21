@@ -564,6 +564,7 @@ var _bufferGeometryUtils = require("three/examples/jsm/utils/BufferGeometryUtils
 const canvas = document.querySelector("#canvas");
 const rollBtn = document.querySelector(".roll");
 const container = document.querySelector(".content");
+const scoreResult = document.querySelector("#score-result");
 let renderer, camera, scene, orbit, diceMesh, physicsWorld;
 const params = {
     diceCount: 5,
@@ -579,13 +580,7 @@ const params = {
     diceDimpleColor: 0x000000
 };
 const diceArray = [];
-// testing geometry for debugging
-// const testGeometry = new THREE.BoxGeometry(1, 1, 1);
-// const testMaterial = new THREE.MeshStandardMaterial({
-//   color: 0x44aa88,
-// });
-// const testCube = new THREE.Mesh(testGeometry, testMaterial);
-// testCube.castShadow = true;
+rollBtn.addEventListener("click", throwDice);
 initPhysics();
 initScene();
 // SCENE SETUP*****************************************************************
@@ -600,8 +595,6 @@ function initScene() {
     camera = new _three.PerspectiveCamera(45, canvas.clientWidth / canvas.clientHeight, 0.1, 300);
     camera.position.set(0, 0.5, 4).multiplyScalar(7); //use this to set x, y, z axis
     scene = new _three.Scene();
-    // scene.add(testCube);
-    // *************
     // LIGHTING******************************************************************
     const topLight = new _three.DirectionalLight(0xffffff, 1);
     topLight.position.set(10, 15, 0);
@@ -618,9 +611,12 @@ function initScene() {
     orbit.enableDamping = true;
     orbit.dampingFactor = 0.025;
     createFloor();
-    // TODO: error is in the dice generation somewhere
     diceMesh = createDiceMesh();
-    for(let i = 0; i < params.diceCount; i++)diceArray.push(createDice());
+    for(let i = 0; i < params.diceCount; i++){
+        diceArray.push(createDice());
+        addDiceEvents(diceArray[i]);
+    }
+    throwDice();
     render();
 }
 // PHYSICS SETUP***************************************************************
@@ -685,7 +681,6 @@ function createDice() {
         body
     };
 }
-// TODO: ITS IN HERE SOMEWHERE!!!!!!!!!!!!
 function createDiceGeometry() {
     let diceGeometry = new _three.BoxGeometry(1, 1, 1, params.segments, params.segments, params.segments);
     const positionAttr = diceGeometry.attributes.position;
@@ -865,23 +860,21 @@ function addDiceEvents(dice) {
 function showRollResults(score) {
     if (scoreResult.innerHTML === "") scoreResult.innerHTML += score;
     else scoreResult.innerHTML += ", " + score;
-// console.log(`No. of results counted: ${++resultsCount}`);
 }
 function clearRollResults() {
     scoreResult.innerHTML = "";
 }
 // RENDER**********************************************************************
 function render(time) {
-    time *= 0.001;
-    // testCube.rotation.x = time;
-    // testCube.rotation.y = time;
-    renderer.render(scene, camera);
-    if (resizeRendererToDisplaySize(renderer)) {
-        camera.aspect = canvas.clientWidth / canvas.clientHeight;
-        camera.updateProjectionMatrix();
-        console.log("needs resizing");
+    physicsWorld.fixedStep();
+    for (const dice of diceArray){
+        dice.mesh.position.copy(dice.body.position);
+        dice.mesh.quaternion.copy(dice.body.quaternion);
     }
     orbit.update(); //call update after everytime we change position of camera
+    // Redraw scene
+    updateSceneSize();
+    renderer.render(scene, camera);
     requestAnimationFrame(render);
 }
 requestAnimationFrame(render);
@@ -893,9 +886,11 @@ function resizeRendererToDisplaySize(renderer) {
     return needResize;
 }
 function updateSceneSize() {
-    camera.aspect = canvas.clientWidth / canvas.clientHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+    if (resizeRendererToDisplaySize(renderer)) {
+        camera.aspect = canvas.clientWidth / canvas.clientHeight;
+        camera.updateProjectionMatrix();
+        console.log("needs resizing");
+    }
 }
 // THROW DICE******************************************************************
 function throwDice() {
