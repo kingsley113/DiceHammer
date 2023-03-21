@@ -582,6 +582,7 @@ const testMaterial = new _three.MeshStandardMaterial({
     color: 0x44aa88
 });
 const testCube = new _three.Mesh(testGeometry, testMaterial);
+testCube.castShadow = true;
 initPhysics();
 initScene();
 // SCENE SETUP*****************************************************************
@@ -599,15 +600,24 @@ function initScene() {
     scene.add(testCube);
     // *************
     // LIGHTING******************************************************************
-    const dirLight = new _three.DirectionalLight(0xffffff, 1);
-    dirLight.position.set(-1, 2, 4);
-    scene.add(dirLight);
+    // const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+    // dirLight.position.set(-1, 2, 4);
+    // scene.add(dirLight);
+    const topLight = new _three.DirectionalLight(0xffffff, 1);
+    topLight.position.set(10, 15, 0);
+    topLight.castShadow = true;
+    topLight.shadow.mapSize.width = 2048;
+    topLight.shadow.mapSize.height = 2048;
+    topLight.shadow.camera.near = 5;
+    topLight.shadow.camera.far = 400;
+    scene.add(topLight);
     const ambientLight = new _three.AmbientLight(0xffffff, 0.5);
     scene.add(ambientLight);
     // ORBIT*********************************************************************
     orbit = new (0, _orbitControlsJs.MapControls)(camera, canvas);
     orbit.enableDamping = true;
     orbit.dampingFactor = 0.025;
+    createFloor();
     render();
 }
 // PHYSICS SETUP***************************************************************
@@ -618,6 +628,28 @@ function initPhysics() {
     });
     physicsWorld.defaultContactMaterial.restitution = params.diceRestitution;
 }
+// FLOOR***********************************************************************
+function createFloor() {
+    // Visible Floor
+    const floorGeom = new _three.PlaneGeometry(1000, 1000);
+    const floorMat = new _three.ShadowMaterial({
+        opacity: 0.1
+    });
+    const floor = new _three.Mesh(floorGeom, floorMat);
+    floor.receiveShadow = true;
+    floor.position.y = -7;
+    floor.rotation.x = -0.5 * Math.PI;
+    scene.add(floor);
+    // Physics Floor
+    const floorBody = new _cannonEs.Body({
+        type: _cannonEs.Body.STATIC,
+        shape: new _cannonEs.Plane()
+    });
+    floorBody.position.copy(floor.position);
+    floorBody.quaternion.copy(floor.quaternion);
+    physicsWorld.addBody(floorBody);
+}
+// RENDER**********************************************************************
 function render(time) {
     time *= 0.001;
     testCube.rotation.x = time;

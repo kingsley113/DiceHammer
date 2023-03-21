@@ -24,8 +24,11 @@ const diceArray = [];
 
 // testing geometry for debugging
 const testGeometry = new THREE.BoxGeometry(1, 1, 1);
-const testMaterial = new THREE.MeshStandardMaterial({ color: 0x44aa88 });
+const testMaterial = new THREE.MeshStandardMaterial({
+  color: 0x44aa88,
+});
 const testCube = new THREE.Mesh(testGeometry, testMaterial);
+testCube.castShadow = true;
 
 initPhysics();
 initScene();
@@ -56,9 +59,18 @@ function initScene() {
   // *************
 
   // LIGHTING******************************************************************
-  const dirLight = new THREE.DirectionalLight(0xffffff, 1);
-  dirLight.position.set(-1, 2, 4);
-  scene.add(dirLight);
+  // const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+  // dirLight.position.set(-1, 2, 4);
+  // scene.add(dirLight);
+
+  const topLight = new THREE.DirectionalLight(0xffffff, 1);
+  topLight.position.set(10, 15, 0);
+  topLight.castShadow = true;
+  topLight.shadow.mapSize.width = 2048;
+  topLight.shadow.mapSize.height = 2048;
+  topLight.shadow.camera.near = 5;
+  topLight.shadow.camera.far = 400;
+  scene.add(topLight);
 
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
   scene.add(ambientLight);
@@ -67,6 +79,8 @@ function initScene() {
   orbit = new MapControls(camera, canvas);
   orbit.enableDamping = true;
   orbit.dampingFactor = 0.025;
+
+  createFloor();
 
   render();
 }
@@ -80,6 +94,29 @@ function initPhysics() {
   physicsWorld.defaultContactMaterial.restitution = params.diceRestitution;
 }
 
+// FLOOR***********************************************************************
+function createFloor() {
+  // Visible Floor
+  const floorGeom = new THREE.PlaneGeometry(1000, 1000);
+  const floorMat = new THREE.ShadowMaterial({ opacity: 0.1 });
+
+  const floor = new THREE.Mesh(floorGeom, floorMat);
+  floor.receiveShadow = true;
+  floor.position.y = -7;
+  floor.rotation.x = -0.5 * Math.PI;
+  scene.add(floor);
+
+  // Physics Floor
+  const floorBody = new CANNON.Body({
+    type: CANNON.Body.STATIC,
+    shape: new CANNON.Plane(),
+  });
+  floorBody.position.copy(floor.position);
+  floorBody.quaternion.copy(floor.quaternion);
+  physicsWorld.addBody(floorBody);
+}
+
+// RENDER**********************************************************************
 function render(time) {
   time *= 0.001;
 
