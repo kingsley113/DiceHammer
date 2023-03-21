@@ -1,31 +1,52 @@
 import * as THREE from "three";
+import * as CANNON from "cannon-es";
+import {
+  MapControls,
+  OrbitControls,
+} from "three/examples/jsm/controls/OrbitControls.js";
 
 const canvas = document.querySelector("#canvas");
 const rollBtn = document.querySelector(".roll");
 const container = document.querySelector(".content");
 
-let renderer, camera, scene;
+let renderer, camera, scene, orbit, diceMesh, physicsWorld;
 
-// const params = {
-//   diceCount: 5,
-// };
+const params = {
+  diceCount: 5,
+  gravityStrength: 50,
+  diceRestitution: 0.5, // dice 'bounciness'
+  diceThrowForce: 10,
+  dimpleRadius: 0.12,
+  dimpleDepth: 0.1,
+  segments: 50,
+  edgeRadius: 0.07,
+  pauseSimulation: false,
+};
 
 const diceArray = [];
 
+// testing geometry for debugging
+const testGeometry = new THREE.BoxGeometry(1, 1, 1);
+const testMaterial = new THREE.MeshBasicMaterial({ color: 0x44aa88 });
+const testCube = new THREE.Mesh(testGeometry, testMaterial);
+
+initPhysics();
 initScene();
 
+// SCENE SETUP*****************************************************************
 function initScene() {
   renderer = new THREE.WebGLRenderer({
+    alpha: true,
     antialias: true,
     canvas,
   });
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setClearColor("#fff1e6");
+  renderer.shadowMap.enabled = true; //enable the shadows for the scene, disabled by default
 
   camera = new THREE.PerspectiveCamera(
     45,
-    window.innerWidth / window.innerHeight,
+    canvas.clientWidth / canvas.clientHeight,
     0.1,
     300
   );
@@ -34,14 +55,51 @@ function initScene() {
 
   scene = new THREE.Scene();
 
-  const testGeometry = new THREE.BoxGeometry(1, 1, 1);
-  const testMaterial = new THREE.MeshBasicMaterial({ color: 0x44aa88 });
-  const testCube = new THREE.Mesh(testGeometry, testMaterial);
   scene.add(testCube);
+  // *************
 
   render();
 }
 
-function render() {
+// PHYSICS SETUP***************************************************************
+function initPhysics() {
+  physicsWorld = new CANNON.World({
+    allowSleep: true,
+    gravity: new CANNON.Vec3(0, -params.gravityStrength, 0),
+  });
+  physicsWorld.defaultContactMaterial.restitution = params.diceRestitution;
+}
+
+function render(time) {
+  time *= 0.001;
+
+  testCube.rotation.x = time;
+  testCube.rotation.y = time;
+
   renderer.render(scene, camera);
+
+  if (resizeRendererToDisplaySize(renderer)) {
+    camera.aspect = canvas.clientWidth / canvas.clientHeight;
+    camera.updateProjectionMatrix();
+    console.log("needs resizing");
+  }
+
+  requestAnimationFrame(render);
+}
+requestAnimationFrame(render);
+
+function resizeRendererToDisplaySize(renderer) {
+  const width = canvas.clientWidth;
+  const height = canvas.clientHeight;
+  const needResize = canvas.width !== width || canvas.height !== height;
+  if (needResize) {
+    renderer.setSize(width, height, false);
+  }
+  return needResize;
+}
+
+function updateSceneSize() {
+  camera.aspect = canvas.clientWidth / canvas.clientHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(canvas.clientWidth, canvas.clientHeight);
 }
