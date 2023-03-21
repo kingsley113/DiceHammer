@@ -578,7 +578,7 @@ const params = {
 const diceArray = [];
 // testing geometry for debugging
 const testGeometry = new _three.BoxGeometry(1, 1, 1);
-const testMaterial = new _three.MeshBasicMaterial({
+const testMaterial = new _three.MeshStandardMaterial({
     color: 0x44aa88
 });
 const testCube = new _three.Mesh(testGeometry, testMaterial);
@@ -598,6 +598,21 @@ function initScene() {
     scene = new _three.Scene();
     scene.add(testCube);
     // *************
+    // LIGHTING******************************************************************
+    const dirLight = new _three.DirectionalLight(0xffffff, 1);
+    dirLight.position.set(-1, 2, 4);
+    scene.add(dirLight);
+    const ambientLight = new _three.AmbientLight(0xffffff, 0.5);
+    scene.add(ambientLight);
+    // const topLight = new THREE.PointLight(0xffffff, 0.5);
+    // topLight.position.set(10, 15, 0);
+    // topLight.castShadow = true;
+    // topLight.shadow.mapSize.width = 2048;
+    // topLight.shadow.mapSize.height = 2048;
+    // topLight.shadow.camera.near = 5;
+    // topLight.shadow.camera.far = 400;
+    // scene.add(topLight);
+    // ORBIT*********************************************************************
     render();
 }
 // PHYSICS SETUP***************************************************************
