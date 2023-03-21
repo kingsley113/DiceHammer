@@ -1,9 +1,6 @@
 import * as THREE from "three";
 import * as CANNON from "cannon-es";
-import {
-  MapControls,
-  OrbitControls,
-} from "three/examples/jsm/controls/OrbitControls.js";
+import { MapControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 const canvas = document.querySelector("#canvas");
 const rollBtn = document.querySelector(".roll");
@@ -59,7 +56,6 @@ function initScene() {
   // *************
 
   // LIGHTING******************************************************************
-
   const dirLight = new THREE.DirectionalLight(0xffffff, 1);
   dirLight.position.set(-1, 2, 4);
   scene.add(dirLight);
@@ -67,16 +63,10 @@ function initScene() {
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
   scene.add(ambientLight);
 
-  // const topLight = new THREE.PointLight(0xffffff, 0.5);
-  // topLight.position.set(10, 15, 0);
-  // topLight.castShadow = true;
-  // topLight.shadow.mapSize.width = 2048;
-  // topLight.shadow.mapSize.height = 2048;
-  // topLight.shadow.camera.near = 5;
-  // topLight.shadow.camera.far = 400;
-  // scene.add(topLight);
-
   // ORBIT*********************************************************************
+  orbit = new MapControls(camera, canvas);
+  orbit.enableDamping = true;
+  orbit.dampingFactor = 0.025;
 
   render();
 }
@@ -103,6 +93,8 @@ function render(time) {
     camera.updateProjectionMatrix();
     console.log("needs resizing");
   }
+
+  orbit.update(); //call update after everytime we change position of camera
 
   requestAnimationFrame(render);
 }
