@@ -15,7 +15,7 @@ const container = document.querySelector(".content");
 const scoreResult = document.querySelector("#score-result");
 
 const decreaseDiceBtn = document.querySelector("#dice-decrease");
-const increaseDiceBtn = document.querySelector("#dice-increas");
+const increaseDiceBtn = document.querySelector("#dice-increase");
 const diceCounter = document.querySelector("#dice-count");
 
 let renderer, camera, scene, orbit, diceMesh, physicsWorld;
@@ -46,8 +46,8 @@ const diceArray = [];
 
 // TODO: create these functions
 rollBtn.addEventListener("click", throwDice);
-decreaseDiceBtn.addEventListener("click", removeDice(1));
-increaseDiceBtn.addEventListener("click", addDice(1));
+decreaseDiceBtn.addEventListener("click", removeDice);
+increaseDiceBtn.addEventListener("click", addDice);
 
 initPhysics();
 initScene();
@@ -103,6 +103,7 @@ function initScene() {
   // createFloor();
   createDiceTray();
 
+  // Create the dice
   diceMesh = createDiceMesh();
   for (let i = 0; i < params.diceCount; i++) {
     diceArray.push(createDice());
@@ -115,6 +116,7 @@ function initScene() {
   // cannonDebugger = new CannonDebugger(scene, physicsWorld);
 
   render();
+  updateDiceCountUI();
 }
 
 // PHYSICS SETUP***************************************************************
@@ -515,7 +517,6 @@ function updateSceneSize() {
   if (resizeRendererToDisplaySize(renderer)) {
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
     camera.updateProjectionMatrix();
-    console.log("needs resizing");
   }
 }
 
@@ -554,4 +555,30 @@ function throwDice() {
     // reset sleep state
     d.body.allowSleep = true;
   });
+}
+
+// UI & Gameplay***************************************************************
+
+function removeDice() {
+  if (params.diceCount > 1) {
+    params.diceCount--;
+
+    const removedDie = diceArray.pop();
+    scene.remove(removedDie.mesh);
+
+    physicsWorld.removeBody(removedDie.body);
+
+    updateDiceCountUI();
+  }
+}
+
+function addDice() {
+  params.diceCount++;
+  diceArray.push(createDice());
+  addDiceEvents(diceArray.at(-1));
+  updateDiceCountUI();
+}
+
+function updateDiceCountUI() {
+  diceCounter.innerHTML = `Total Dice: ${params.diceCount}`;
 }
