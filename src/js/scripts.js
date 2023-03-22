@@ -92,6 +92,10 @@ function initScene() {
   topLight.shadow.mapSize.height = 2048;
   topLight.shadow.camera.near = 5;
   topLight.shadow.camera.far = 400;
+  topLight.shadow.camera.top = trayParams.trayHeight / 2 + 1;
+  topLight.shadow.camera.bottom = -trayParams.trayHeight / 2 - 1;
+  topLight.shadow.camera.left = -trayParams.trayWidth / 2 - 1;
+  topLight.shadow.camera.right = trayParams.trayHeight / 2 + 1;
   scene.add(topLight);
 
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
