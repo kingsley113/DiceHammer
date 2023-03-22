@@ -43,6 +43,7 @@ const trayParams = {
 };
 
 const diceArray = [];
+const rollResults = [0, 0, 0, 0, 0, 0];
 
 // TODO: create these functions
 rollBtn.addEventListener("click", throwDice);
@@ -448,20 +449,26 @@ function addDiceEvents(dice) {
 
     if (isZero(euler.z)) {
       if (isZero(euler.x)) {
+        saveRollResults(1);
         showRollResults(1);
       } else if (isHalfPi(euler.x)) {
+        saveRollResults(4);
         showRollResults(4);
       } else if (isMinusHalfPi(euler.x)) {
+        saveRollResults(3);
         showRollResults(3);
       } else if (isPiOrMinusPi(euler.x)) {
+        saveRollResults(6);
         showRollResults(6);
       } else {
         //landed on edge => wait untill falling on side
         dice.body.allowSleep = true;
       }
     } else if (isHalfPi(euler.z)) {
+      saveRollResults(2);
       showRollResults(2);
     } else if (isMinusHalfPi(euler.z)) {
+      saveRollResults(5);
       showRollResults(5);
     } else {
       //landed on edge => wait untill falling on side
@@ -471,6 +478,11 @@ function addDiceEvents(dice) {
 }
 
 // RESULTS REPORTING***************************************
+function saveRollResults(n) {
+  rollResults[n - 1]++;
+  console.log(rollResults);
+}
+
 function showRollResults(score) {
   if (scoreResult.innerHTML === "") {
     scoreResult.innerHTML += score;
