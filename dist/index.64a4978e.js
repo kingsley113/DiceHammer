@@ -564,10 +564,14 @@ var _orbitControlsJs = require("three/examples/jsm/controls/OrbitControls.js");
 var _bufferGeometryUtils = require("three/examples/jsm/utils/BufferGeometryUtils");
 var _cannonEsDebugger = require("cannon-es-debugger");
 var _cannonEsDebuggerDefault = parcelHelpers.interopDefault(_cannonEsDebugger);
+// UI Elements*****************************************************************
 const canvas = document.querySelector("#canvas");
 const rollBtn = document.querySelector(".roll");
 const container = document.querySelector(".content");
 const scoreResult = document.querySelector("#score-result");
+const decreaseDiceBtn = document.querySelector("#dice-decrease");
+const increaseDiceBtn = document.querySelector("#dice-increas");
+const diceCounter = document.querySelector("#dice-count");
 let renderer, camera, scene, orbit, diceMesh, physicsWorld;
 let cannonDebugger;
 const params = {
@@ -590,7 +594,10 @@ const trayParams = {
     trayDepth: 3
 };
 const diceArray = [];
+// TODO: create these functions
 rollBtn.addEventListener("click", throwDice);
+decreaseDiceBtn.addEventListener("click", removeDice(1));
+increaseDiceBtn.addEventListener("click", addDice(1));
 initPhysics();
 initScene();
 // SCENE SETUP*****************************************************************
@@ -992,7 +999,7 @@ function throwDice() {
         d.body.velocity.setZero();
         d.body.angularVelocity.setZero();
         // set initial position
-        d.body.position = new _cannonEs.Vec3(-trayParams.trayWidth / 2 + 1, dIdx * 2, trayParams.trayHeight / 2 - 1);
+        d.body.position = new _cannonEs.Vec3(-trayParams.trayWidth / 2 + 1, dIdx * 2.5, trayParams.trayHeight / 2 - 1);
         d.mesh.position.copy(d.body.position);
         // set initial rotation
         d.mesh.rotation.set(2 * Math.PI * Math.random(), 0, 2 * Math.PI * Math.random());

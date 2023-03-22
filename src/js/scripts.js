@@ -8,10 +8,15 @@ import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUti
 
 import CannonDebugger from "cannon-es-debugger";
 
+// UI Elements*****************************************************************
 const canvas = document.querySelector("#canvas");
 const rollBtn = document.querySelector(".roll");
 const container = document.querySelector(".content");
 const scoreResult = document.querySelector("#score-result");
+
+const decreaseDiceBtn = document.querySelector("#dice-decrease");
+const increaseDiceBtn = document.querySelector("#dice-increas");
+const diceCounter = document.querySelector("#dice-count");
 
 let renderer, camera, scene, orbit, diceMesh, physicsWorld;
 let cannonDebugger;
@@ -39,7 +44,10 @@ const trayParams = {
 
 const diceArray = [];
 
+// TODO: create these functions
 rollBtn.addEventListener("click", throwDice);
+decreaseDiceBtn.addEventListener("click", removeDice(1));
+increaseDiceBtn.addEventListener("click", addDice(1));
 
 initPhysics();
 initScene();
@@ -524,7 +532,7 @@ function throwDice() {
     // set initial position
     d.body.position = new CANNON.Vec3(
       -trayParams.trayWidth / 2 + 1,
-      dIdx * 2,
+      dIdx * 2.5,
       trayParams.trayHeight / 2 - 1
     );
     d.mesh.position.copy(d.body.position);
