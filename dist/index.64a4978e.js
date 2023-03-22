@@ -567,7 +567,6 @@ var _cannonEsDebuggerDefault = parcelHelpers.interopDefault(_cannonEsDebugger);
 // UI Elements*****************************************************************
 const canvas = document.querySelector("#canvas");
 const rollBtn = document.querySelector(".roll");
-const container = document.querySelector(".content");
 const scoreResult = document.querySelector("#score-result");
 const decreaseDiceBtn = document.querySelector("#dice-decrease");
 const increaseDiceBtn = document.querySelector("#dice-increase");
@@ -577,6 +576,13 @@ const diceCounter = document.querySelector("#dice-count");
 const clearDiceBtn = document.querySelector("#remove-all-dice");
 let renderer, camera, scene, orbit, diceMesh, physicsWorld;
 let cannonDebugger;
+rollBtn.addEventListener("click", throwDice);
+decreaseDiceBtn.addEventListener("click", removeDice);
+increaseDiceBtn.addEventListener("click", addDice);
+decreaseDiceBtnx5.addEventListener("click", remove5Dice);
+increaseDiceBtnx5.addEventListener("click", add5Dice);
+clearDiceBtn.addEventListener("click", removeAllDice);
+// PARAMETERS******************************************************************
 const params = {
     diceCount: 10,
     gravityStrength: 50,
@@ -605,13 +611,6 @@ let rollResults = [
     0,
     0
 ];
-// TODO: create these functions
-rollBtn.addEventListener("click", throwDice);
-decreaseDiceBtn.addEventListener("click", removeDice);
-increaseDiceBtn.addEventListener("click", addDice);
-decreaseDiceBtnx5.addEventListener("click", remove5Dice);
-increaseDiceBtnx5.addEventListener("click", add5Dice);
-clearDiceBtn.addEventListener("click", removeAllDice);
 initPhysics();
 initScene();
 // SCENE SETUP*****************************************************************
@@ -1087,7 +1086,6 @@ function removeAllDice() {
 }
 function updateDiceCountUI() {
     diceCounter.innerHTML = `Total Dice: ${params.diceCount}`;
-    console.log(diceArray);
 }
 
 },{"three":"ktPTu","three/examples/jsm/controls/OrbitControls.js":"7mqRv","cannon-es":"HCu3b","three/examples/jsm/utils/BufferGeometryUtils":"5o7x9","cannon-es-debugger":"a5KNJ","@parcel/transformer-js/src/esmodule-helpers.js":"50sMR"}],"ktPTu":[function(require,module,exports) {
