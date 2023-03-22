@@ -17,6 +17,7 @@ const scoreResult = document.querySelector("#score-result");
 const decreaseDiceBtn = document.querySelector("#dice-decrease");
 const increaseDiceBtn = document.querySelector("#dice-increase");
 const diceCounter = document.querySelector("#dice-count");
+const clearDiceBtn = document.querySelector("#remove-all-dice");
 
 let renderer, camera, scene, orbit, diceMesh, physicsWorld;
 let cannonDebugger;
@@ -49,6 +50,7 @@ const rollResults = [0, 0, 0, 0, 0, 0];
 rollBtn.addEventListener("click", throwDice);
 decreaseDiceBtn.addEventListener("click", removeDice);
 increaseDiceBtn.addEventListener("click", addDice);
+clearDiceBtn.addEventListener("click", removeAllDice);
 
 initPhysics();
 initScene();
@@ -591,6 +593,14 @@ function addDice() {
   updateDiceCountUI();
 }
 
+function removeAllDice() {
+  for (const dice of diceArray) {
+    scene.remove(dice.mesh);
+    physicsWorld.removeBody(dice.body);
+  }
+  params.diceCount = 0;
+  updateDiceCountUI();
+}
 function updateDiceCountUI() {
   diceCounter.innerHTML = `Total Dice: ${params.diceCount}`;
 }
