@@ -25,7 +25,7 @@ const params = {
   diceCount: 10,
   gravityStrength: 50,
   diceRestitution: 0.5, // dice 'bounciness'
-  diceThrowForce: 20,
+  diceThrowForce: 10,
   dimpleRadius: 0.12,
   dimpleDepth: 0.1,
   segments: 50,
@@ -533,7 +533,7 @@ function throwDice() {
     // set initial position
     d.body.position = new CANNON.Vec3(
       -trayParams.trayWidth / 2 + 1,
-      dIdx * 2.5,
+      dIdx * 2.5 + 20,
       trayParams.trayHeight / 2 - 1
     );
     d.mesh.position.copy(d.body.position);
@@ -548,7 +548,7 @@ function throwDice() {
 
     const force = 20 + params.diceThrowForce * Math.random();
     d.body.applyImpulse(
-      new CANNON.Vec3(force, force / 2, force * 0.66), //this determines the throw direction and force
+      new CANNON.Vec3(force, -force, force * 0.66), //this determines the throw direction and force
       new CANNON.Vec3(0, 0, 0.2) // shift the point of force application
     );
 

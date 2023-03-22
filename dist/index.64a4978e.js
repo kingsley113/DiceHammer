@@ -578,7 +578,7 @@ const params = {
     diceCount: 10,
     gravityStrength: 50,
     diceRestitution: 0.5,
-    diceThrowForce: 20,
+    diceThrowForce: 10,
     dimpleRadius: 0.12,
     dimpleDepth: 0.1,
     segments: 50,
@@ -1000,13 +1000,13 @@ function throwDice() {
         d.body.velocity.setZero();
         d.body.angularVelocity.setZero();
         // set initial position
-        d.body.position = new _cannonEs.Vec3(-trayParams.trayWidth / 2 + 1, dIdx * 2.5, trayParams.trayHeight / 2 - 1);
+        d.body.position = new _cannonEs.Vec3(-trayParams.trayWidth / 2 + 1, dIdx * 2.5 + 20, trayParams.trayHeight / 2 - 1);
         d.mesh.position.copy(d.body.position);
         // set initial rotation
         d.mesh.rotation.set(2 * Math.PI * Math.random(), 0, 2 * Math.PI * Math.random());
         d.body.quaternion.copy(d.mesh.quaternion);
         const force = 20 + params.diceThrowForce * Math.random();
-        d.body.applyImpulse(new _cannonEs.Vec3(force, force / 2, force * 0.66), new _cannonEs.Vec3(0, 0, 0.2) // shift the point of force application
+        d.body.applyImpulse(new _cannonEs.Vec3(force, -force, force * 0.66), new _cannonEs.Vec3(0, 0, 0.2) // shift the point of force application
         );
         // reset sleep state
         d.body.allowSleep = true;
