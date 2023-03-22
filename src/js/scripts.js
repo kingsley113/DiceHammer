@@ -564,35 +564,39 @@ function throwDice() {
   clearRollResults();
 
   diceArray.forEach((d, dIdx) => {
-    // reset velocity of previous throw
-    d.body.velocity.setZero();
-    d.body.angularVelocity.setZero();
-
-    // set initial position
-    d.body.position = new CANNON.Vec3(
-      -trayParams.trayWidth / 2 + 1,
-      dIdx * 2.5 + 10,
-      trayParams.trayHeight / 2 - 1
-    );
-    d.mesh.position.copy(d.body.position);
-
-    // set initial rotation
-    d.mesh.rotation.set(
-      2 * Math.PI * Math.random(),
-      0,
-      2 * Math.PI * Math.random()
-    );
-    d.body.quaternion.copy(d.mesh.quaternion);
-
-    const force = 20 + params.diceThrowForce * Math.random();
-    d.body.applyImpulse(
-      new CANNON.Vec3(force, -force, force * 0.66), //this determines the throw direction and force
-      new CANNON.Vec3(0, 0, 0.2) // shift the point of force application
-    );
-
-    // reset sleep state
-    d.body.allowSleep = true;
+    rollDie(d, dIdx);
   });
+}
+
+function rollDie(d, dIdx = 0) {
+  // reset velocity of previous throw
+  d.body.velocity.setZero();
+  d.body.angularVelocity.setZero();
+
+  // set initial position
+  d.body.position = new CANNON.Vec3(
+    -trayParams.trayWidth / 2 + 1,
+    dIdx * 2.5 + 10,
+    trayParams.trayHeight / 2 - 1
+  );
+  d.mesh.position.copy(d.body.position);
+
+  // set initial rotation
+  d.mesh.rotation.set(
+    2 * Math.PI * Math.random(),
+    0,
+    2 * Math.PI * Math.random()
+  );
+  d.body.quaternion.copy(d.mesh.quaternion);
+
+  const force = 20 + params.diceThrowForce * Math.random();
+  d.body.applyImpulse(
+    new CANNON.Vec3(force, -force, force * 0.66), //this determines the throw direction and force
+    new CANNON.Vec3(0, 0, 0.2) // shift the point of force application
+  );
+
+  // reset sleep state
+  d.body.allowSleep = true;
 }
 
 // UI & Gameplay***************************************************************
@@ -663,15 +667,19 @@ function selectDice() {
     const object = intersects[0].object;
     if (object.name != "tray" && !object.selected) {
       object.material = object.material.clone();
-      object.material.color.set(0xff0000);
+      object.material.color.set(0xe0115f);
       object.selected = true;
       // console.log(object.parent.id);
 
       selectedDice.add(object.parent);
       console.log(selectedDice);
-      console.log(diceArray);
+      // console.log(diceArray);
     }
   }
 }
 
-function rollSelectedDice() {}
+function rollSelectedDice() {
+  for (const die of selectDice) {
+    console.log(die);
+  }
+}
