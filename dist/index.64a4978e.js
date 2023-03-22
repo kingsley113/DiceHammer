@@ -571,7 +571,7 @@ const scoreResult = document.querySelector("#score-result");
 let renderer, camera, scene, orbit, diceMesh, physicsWorld;
 let cannonDebugger;
 const params = {
-    diceCount: 5,
+    diceCount: 10,
     gravityStrength: 50,
     diceRestitution: 0.5,
     diceThrowForce: 10,
@@ -583,6 +583,11 @@ const params = {
     diceSurfaceColor: 0xeeeeee,
     diceDimpleColor: 0x000000,
     trayColor: 0xff0000
+};
+const trayParams = {
+    trayWidth: 30,
+    trayHeight: 20,
+    trayDepth: 3
 };
 const diceArray = [];
 rollBtn.addEventListener("click", throwDice);
@@ -597,7 +602,7 @@ function initScene() {
     });
     renderer.setClearColor("#fff1e6");
     renderer.shadowMap.enabled = true; //enable the shadows for the scene, disabled by default
-    camera = new _three.PerspectiveCamera(15, canvas.clientWidth / canvas.clientHeight, 0.1, 300);
+    camera = new _three.PerspectiveCamera(18, canvas.clientWidth / canvas.clientHeight, 0.1, 300);
     camera.position.set(0, 12, 5).multiplyScalar(7); //use this to set x, y, z axis
     scene = new _three.Scene();
     // LIGHTING******************************************************************
@@ -612,10 +617,18 @@ function initScene() {
     const ambientLight = new _three.AmbientLight(0xffffff, 0.5);
     scene.add(ambientLight);
     // ORBIT*********************************************************************
-    orbit = new (0, _orbitControlsJs.MapControls)(camera, canvas);
+    // orbit = new MapControls(camera, canvas);
+    orbit = new (0, _orbitControlsJs.OrbitControls)(camera, canvas);
     orbit.enableDamping = true;
     orbit.dampingFactor = 0.025;
-    createFloor();
+    orbit.enableZoom = false;
+    orbit.enablePan = false;
+    orbit.maxAzimuthAngle = 0.02 * Math.PI;
+    orbit.minAzimuthAngle = -0.02 * Math.PI;
+    orbit.maxPolarAngle = 0.12 * Math.PI;
+    orbit.minPolarAngle = 0.1 * Math.PI;
+    // window.addEventListener("mouseup", orbitReset);
+    // createFloor();
     createDiceTray();
     diceMesh = createDiceMesh();
     for(let i = 0; i < params.diceCount; i++){
@@ -624,8 +637,11 @@ function initScene() {
     }
     throwDice();
     // Debugging
-    cannonDebugger = new (0, _cannonEsDebuggerDefault.default)(scene, physicsWorld);
+    // cannonDebugger = new CannonDebugger(scene, physicsWorld);
     render();
+}
+function orbitReset() {
+    orbit.reset();
 }
 // PHYSICS SETUP***************************************************************
 function initPhysics() {
@@ -658,97 +674,73 @@ function createFloor() {
 }
 // DICE TRAY*******************************************************************
 function createDiceTray() {
-    const trayGeometry = new _three.PlaneGeometry(20, 20, 3, 3);
+    // Visible Meshes
     const trayMaterial = new _three.MeshStandardMaterial({
         color: params.trayColor,
         // wireframe: true,
         side: _three.DoubleSide
     });
-    const tray = new _three.Mesh(trayGeometry, trayMaterial);
-    // tray.position.set(0, -7, 0);
-    tray.rotation.x = 0.5 * Math.PI;
-    tray.receiveShadow = true;
-    const trayShape = [
-        // x, y, z
-        -10,
-        10,
-        4,
-        -9,
-        10,
-        4,
-        9,
-        10,
-        4,
-        10,
-        10,
-        4,
-        -10,
-        9,
-        4,
-        -9,
-        9,
-        7,
-        9,
-        9,
-        7,
-        10,
-        9,
-        4,
-        -10,
-        -9,
-        4,
-        -9,
-        -9,
-        7,
-        9,
-        -9,
-        7,
-        10,
-        -9,
-        4,
-        -10,
-        -10,
-        4,
-        -9,
-        -10,
-        4,
-        9,
-        -10,
-        4,
-        10,
-        -10,
-        4
-    ];
-    for(let i = 0; i < trayShape.length; i++)tray.geometry.attributes.position.array[i] = trayShape[i];
-    scene.add(tray);
-    const traySide1 = new _cannonEs.Body({
+    const trayBottomGeometry = new _three.PlaneGeometry(trayParams.trayWidth, trayParams.trayHeight);
+    const trayBottom = new _three.Mesh(trayBottomGeometry, trayMaterial);
+    trayBottom.position.set(0, -trayParams.trayDepth, 0);
+    trayBottom.rotation.x = -0.5 * Math.PI;
+    trayBottom.receiveShadow = true;
+    const trayWallGeometry1 = new _three.PlaneGeometry(trayParams.trayWidth, trayParams.trayDepth);
+    const trayWall1 = new _three.Mesh(trayWallGeometry1, trayMaterial);
+    trayWall1.position.set(0, -trayParams.trayDepth / 2, -trayParams.trayHeight / 2);
+    trayWall1.receiveShadow = true;
+    const trayWall2 = trayWall1.clone();
+    trayWall2.position.z += trayParams.trayHeight;
+    trayWall2.rotation.y = Math.PI;
+    const trayWallGeometry3 = new _three.PlaneGeometry(trayParams.trayHeight, trayParams.trayDepth);
+    const trayWall3 = new _three.Mesh(trayWallGeometry3, trayMaterial);
+    trayWall3.position.set(-trayParams.trayWidth / 2, -trayParams.trayDepth / 2, 0);
+    trayWall3.rotation.y = 0.5 * Math.PI;
+    trayWall3.receiveShadow = true;
+    const trayWall4 = trayWall3.clone();
+    trayWall4.position.x += trayParams.trayWidth;
+    trayWall4.rotation.y += Math.PI;
+    scene.add(trayBottom);
+    scene.add(trayWall1);
+    scene.add(trayWall2);
+    scene.add(trayWall3);
+    scene.add(trayWall4);
+    // Physics Bodies
+    const trayFloorBody = new _cannonEs.Body({
         type: _cannonEs.Body.STATIC,
         shape: new _cannonEs.Plane()
     });
-    traySide1.position.set(0, 0, -9);
-    traySide1.quaternion.setFromEuler(0, 0, 0);
-    const traySide2 = new _cannonEs.Body({
+    trayFloorBody.position.copy(trayBottom.position);
+    trayFloorBody.quaternion.copy(trayBottom.quaternion);
+    const traySide1Body = new _cannonEs.Body({
         type: _cannonEs.Body.STATIC,
         shape: new _cannonEs.Plane()
     });
-    traySide2.position.set(0, 0, 9);
-    traySide2.quaternion.setFromEuler(0, Math.PI, 0);
-    const traySide3 = new _cannonEs.Body({
+    traySide1Body.position.copy(trayWall1.position);
+    traySide1Body.quaternion.copy(trayWall1.quaternion);
+    const traySide2Body = new _cannonEs.Body({
         type: _cannonEs.Body.STATIC,
         shape: new _cannonEs.Plane()
     });
-    traySide3.position.set(-9, 0, 0);
-    traySide3.quaternion.setFromEuler(0, 0.5 * Math.PI, 0);
-    const traySide4 = new _cannonEs.Body({
+    traySide2Body.position.copy(trayWall2.position);
+    traySide2Body.quaternion.copy(trayWall2.quaternion);
+    const traySide3Body = new _cannonEs.Body({
         type: _cannonEs.Body.STATIC,
         shape: new _cannonEs.Plane()
     });
-    traySide4.position.set(9, 0, 0);
-    traySide4.quaternion.setFromEuler(0, 1.5 * Math.PI, 0);
-    physicsWorld.addBody(traySide1);
-    physicsWorld.addBody(traySide2);
-    physicsWorld.addBody(traySide3);
-    physicsWorld.addBody(traySide4);
+    traySide3Body.position.copy(trayWall3.position);
+    traySide3Body.quaternion.copy(trayWall3.quaternion);
+    const traySide4Body = new _cannonEs.Body({
+        type: _cannonEs.Body.STATIC,
+        shape: new _cannonEs.Plane()
+    });
+    traySide4Body.position.copy(trayWall4.position);
+    traySide4Body.quaternion.copy(trayWall4.quaternion);
+    physicsWorld.addBody(traySide1Body);
+    physicsWorld.addBody(traySide2Body);
+    physicsWorld.addBody(traySide3Body);
+    physicsWorld.addBody(traySide4Body);
+    physicsWorld.addBody(trayFloorBody);
 }
 // DICE MODEL******************************************************************
 function createDiceMesh() {
@@ -974,7 +966,7 @@ function render(time) {
         dice.mesh.quaternion.copy(dice.body.quaternion);
     }
     orbit.update(); //call update after everytime we change position of camera
-    cannonDebugger.update();
+    // cannonDebugger.update();
     // Redraw scene
     updateSceneSize();
     renderer.render(scene, camera);
