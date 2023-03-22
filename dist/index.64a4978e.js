@@ -564,7 +564,7 @@ var _orbitControlsJs = require("three/examples/jsm/controls/OrbitControls.js");
 var _bufferGeometryUtils = require("three/examples/jsm/utils/BufferGeometryUtils");
 var _cannonEsDebugger = require("cannon-es-debugger");
 var _cannonEsDebuggerDefault = parcelHelpers.interopDefault(_cannonEsDebugger);
-// UI Elements*****************************************************************
+// UI ELEMENTS*****************************************************************
 const canvas = document.querySelector("#canvas");
 const rollBtn = document.querySelector(".roll");
 const scoreResult = document.querySelector("#score-result");
@@ -574,8 +574,6 @@ const decreaseDiceBtnx5 = document.querySelector("#dice-decrease-5");
 const increaseDiceBtnx5 = document.querySelector("#dice-increase-5");
 const diceCounter = document.querySelector("#dice-count");
 const clearDiceBtn = document.querySelector("#remove-all-dice");
-let renderer, camera, scene, orbit, diceMesh, physicsWorld;
-let cannonDebugger;
 rollBtn.addEventListener("click", throwDice);
 decreaseDiceBtn.addEventListener("click", removeDice);
 increaseDiceBtn.addEventListener("click", addDice);
@@ -583,6 +581,8 @@ decreaseDiceBtnx5.addEventListener("click", remove5Dice);
 increaseDiceBtnx5.addEventListener("click", add5Dice);
 clearDiceBtn.addEventListener("click", removeAllDice);
 // PARAMETERS******************************************************************
+let renderer, camera, scene, orbit, diceMesh, physicsWorld;
+let cannonDebugger;
 const params = {
     diceCount: 10,
     gravityStrength: 50,
@@ -611,6 +611,9 @@ let rollResults = [
     0,
     0
 ];
+const selectedDice = new Set();
+const mousePosition = new _three.Vector2();
+const rayCaster = new _three.Raycaster();
 initPhysics();
 initScene();
 // SCENE SETUP*****************************************************************
@@ -659,6 +662,7 @@ function initScene() {
         diceArray.push(createDice());
         addDiceEvents(diceArray[i]);
     }
+    renderer.domElement.addEventListener("click", selectDice, false);
     throwDice();
     // Debugging
     // cannonDebugger = new CannonDebugger(scene, physicsWorld);
@@ -707,21 +711,26 @@ function createDiceTray() {
     trayBottom.position.set(0, -trayParams.trayDepth, 0);
     trayBottom.rotation.x = -0.5 * Math.PI;
     trayBottom.receiveShadow = true;
+    trayBottom.name = "tray";
     const trayWallGeometry1 = new _three.PlaneGeometry(trayParams.trayWidth, trayParams.trayDepth);
     const trayWall1 = new _three.Mesh(trayWallGeometry1, trayMaterial);
     trayWall1.position.set(0, -trayParams.trayDepth / 2, -trayParams.trayHeight / 2);
     trayWall1.receiveShadow = true;
+    trayWall1.name = "tray";
     const trayWall2 = trayWall1.clone();
     trayWall2.position.z += trayParams.trayHeight;
     trayWall2.rotation.y = Math.PI;
+    trayWall2.name = "tray";
     const trayWallGeometry3 = new _three.PlaneGeometry(trayParams.trayHeight, trayParams.trayDepth);
     const trayWall3 = new _three.Mesh(trayWallGeometry3, trayMaterial);
     trayWall3.position.set(-trayParams.trayWidth / 2, -trayParams.trayDepth / 2, 0);
     trayWall3.rotation.y = 0.5 * Math.PI;
     trayWall3.receiveShadow = true;
+    trayWall3.name = "tray";
     const trayWall4 = trayWall3.clone();
     trayWall4.position.x += trayParams.trayWidth;
     trayWall4.rotation.y += Math.PI;
+    trayWall4.name = "tray";
     scene.add(trayBottom);
     scene.add(trayWall1);
     scene.add(trayWall2);
@@ -777,7 +786,7 @@ function createDiceMesh() {
     });
     const diceMesh = new _three.Group();
     const innerMesh = new _three.Mesh(createInnerGeometry(), boxMaterialInner);
-    const outerMesh = new _three.Mesh(createDiceGeometry(), boxMaterialOuter);
+    const outerMesh = new _three.Mesh(createDiceGeometry(), boxMaterialOuter.clone());
     outerMesh.castShadow = true;
     diceMesh.add(innerMesh, outerMesh);
     // diceMesh.add(innerMesh);
@@ -1087,6 +1096,34 @@ function removeAllDice() {
 function updateDiceCountUI() {
     diceCounter.innerHTML = `Total Dice: ${params.diceCount}`;
 }
+// SELECT DICE*****************************************************************
+// window.addEventListener("mousemove", function (e) {
+//   mousePosition.x = (e.clientX / this.window.innerWidth) * 2 - 1;
+//   mousePosition.y = (e.clientY / this.window.innerHeight) * 2 + 1;
+// });
+function selectDice() {
+    // console.log("inside select dice function");
+    event.preventDefault();
+    mousePosition.x = event.clientX / window.innerWidth * 2 - 1;
+    mousePosition.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    // console.log(mousePosition);
+    rayCaster.setFromCamera(mousePosition, camera);
+    const intersects = rayCaster.intersectObject(scene, true);
+    if (intersects.length > 0) {
+        // console.log("object intersected");
+        const object = intersects[0].object;
+        if (object.name != "tray" && !object.selected) {
+            object.material = object.material.clone();
+            object.material.color.set(0xff0000);
+            object.selected = true;
+            // console.log(object.parent.id);
+            selectedDice.add(object.parent);
+            console.log(selectedDice);
+            console.log(diceArray);
+        }
+    }
+}
+function rollSelectedDice() {}
 
 },{"three":"ktPTu","three/examples/jsm/controls/OrbitControls.js":"7mqRv","cannon-es":"HCu3b","three/examples/jsm/utils/BufferGeometryUtils":"5o7x9","cannon-es-debugger":"a5KNJ","@parcel/transformer-js/src/esmodule-helpers.js":"50sMR"}],"ktPTu":[function(require,module,exports) {
 /**

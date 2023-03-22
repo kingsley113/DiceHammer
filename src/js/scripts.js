@@ -8,7 +8,7 @@ import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUti
 
 import CannonDebugger from "cannon-es-debugger";
 
-// UI Elements*****************************************************************
+// UI ELEMENTS*****************************************************************
 const canvas = document.querySelector("#canvas");
 const rollBtn = document.querySelector(".roll");
 const scoreResult = document.querySelector("#score-result");
@@ -20,9 +20,6 @@ const increaseDiceBtnx5 = document.querySelector("#dice-increase-5");
 const diceCounter = document.querySelector("#dice-count");
 const clearDiceBtn = document.querySelector("#remove-all-dice");
 
-let renderer, camera, scene, orbit, diceMesh, physicsWorld;
-let cannonDebugger;
-
 rollBtn.addEventListener("click", throwDice);
 
 decreaseDiceBtn.addEventListener("click", removeDice);
@@ -33,6 +30,9 @@ increaseDiceBtnx5.addEventListener("click", add5Dice);
 clearDiceBtn.addEventListener("click", removeAllDice);
 
 // PARAMETERS******************************************************************
+let renderer, camera, scene, orbit, diceMesh, physicsWorld;
+let cannonDebugger;
+
 const params = {
   diceCount: 10,
   gravityStrength: 50,
@@ -56,6 +56,10 @@ const trayParams = {
 
 let diceArray = [];
 let rollResults = [0, 0, 0, 0, 0, 0];
+
+const selectedDice = new Set();
+const mousePosition = new THREE.Vector2();
+const rayCaster = new THREE.Raycaster();
 
 initPhysics();
 initScene();
@@ -122,6 +126,8 @@ function initScene() {
     addDiceEvents(diceArray[i]);
   }
 
+  renderer.domElement.addEventListener("click", selectDice, false);
+
   throwDice();
 
   // Debugging
@@ -179,6 +185,7 @@ function createDiceTray() {
   trayBottom.position.set(0, -trayParams.trayDepth, 0);
   trayBottom.rotation.x = -0.5 * Math.PI;
   trayBottom.receiveShadow = true;
+  trayBottom.name = "tray";
 
   const trayWallGeometry1 = new THREE.PlaneGeometry(
     trayParams.trayWidth,
@@ -191,10 +198,12 @@ function createDiceTray() {
     -trayParams.trayHeight / 2
   );
   trayWall1.receiveShadow = true;
+  trayWall1.name = "tray";
 
   const trayWall2 = trayWall1.clone();
   trayWall2.position.z += trayParams.trayHeight;
   trayWall2.rotation.y = Math.PI;
+  trayWall2.name = "tray";
 
   const trayWallGeometry3 = new THREE.PlaneGeometry(
     trayParams.trayHeight,
@@ -208,10 +217,12 @@ function createDiceTray() {
   );
   trayWall3.rotation.y = 0.5 * Math.PI;
   trayWall3.receiveShadow = true;
+  trayWall3.name = "tray";
 
   const trayWall4 = trayWall3.clone();
   trayWall4.position.x += trayParams.trayWidth;
   trayWall4.rotation.y += Math.PI;
+  trayWall4.name = "tray";
 
   scene.add(trayBottom);
   scene.add(trayWall1);
@@ -276,7 +287,10 @@ function createDiceMesh() {
 
   const diceMesh = new THREE.Group();
   const innerMesh = new THREE.Mesh(createInnerGeometry(), boxMaterialInner);
-  const outerMesh = new THREE.Mesh(createDiceGeometry(), boxMaterialOuter);
+  const outerMesh = new THREE.Mesh(
+    createDiceGeometry(),
+    boxMaterialOuter.clone()
+  );
   outerMesh.castShadow = true;
   diceMesh.add(innerMesh, outerMesh);
   // diceMesh.add(innerMesh);
@@ -624,6 +638,40 @@ function removeAllDice() {
   params.diceCount = 0;
   updateDiceCountUI();
 }
+
 function updateDiceCountUI() {
   diceCounter.innerHTML = `Total Dice: ${params.diceCount}`;
 }
+
+// SELECT DICE*****************************************************************
+
+// window.addEventListener("mousemove", function (e) {
+//   mousePosition.x = (e.clientX / this.window.innerWidth) * 2 - 1;
+//   mousePosition.y = (e.clientY / this.window.innerHeight) * 2 + 1;
+// });
+
+function selectDice() {
+  // console.log("inside select dice function");
+  event.preventDefault();
+  mousePosition.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mousePosition.y = -(event.clientY / window.innerHeight) * 2 + 1;
+  // console.log(mousePosition);
+  rayCaster.setFromCamera(mousePosition, camera);
+  const intersects = rayCaster.intersectObject(scene, true);
+  if (intersects.length > 0) {
+    // console.log("object intersected");
+    const object = intersects[0].object;
+    if (object.name != "tray" && !object.selected) {
+      object.material = object.material.clone();
+      object.material.color.set(0xff0000);
+      object.selected = true;
+      // console.log(object.parent.id);
+
+      selectedDice.add(object.parent);
+      console.log(selectedDice);
+      console.log(diceArray);
+    }
+  }
+}
+
+function rollSelectedDice() {}
