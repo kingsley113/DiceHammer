@@ -596,7 +596,7 @@ const trayParams = {
     trayHeight: 20,
     trayDepth: 3
 };
-const diceArray = [];
+let diceArray = [];
 let rollResults = [
     0,
     0,
@@ -1038,7 +1038,7 @@ function throwDice() {
         d.body.velocity.setZero();
         d.body.angularVelocity.setZero();
         // set initial position
-        d.body.position = new _cannonEs.Vec3(-trayParams.trayWidth / 2 + 1, dIdx * 2.5 + 20, trayParams.trayHeight / 2 - 1);
+        d.body.position = new _cannonEs.Vec3(-trayParams.trayWidth / 2 + 1, dIdx * 2.5 + 10, trayParams.trayHeight / 2 - 1);
         d.mesh.position.copy(d.body.position);
         // set initial rotation
         d.mesh.rotation.set(2 * Math.PI * Math.random(), 0, 2 * Math.PI * Math.random());
@@ -1077,11 +1077,13 @@ function removeAllDice() {
         scene.remove(dice.mesh);
         physicsWorld.removeBody(dice.body);
     }
+    diceArray = [];
     params.diceCount = 0;
     updateDiceCountUI();
 }
 function updateDiceCountUI() {
     diceCounter.innerHTML = `Total Dice: ${params.diceCount}`;
+    console.log(diceArray);
 }
 
 },{"three":"ktPTu","three/examples/jsm/controls/OrbitControls.js":"7mqRv","cannon-es":"HCu3b","three/examples/jsm/utils/BufferGeometryUtils":"5o7x9","cannon-es-debugger":"a5KNJ","@parcel/transformer-js/src/esmodule-helpers.js":"50sMR"}],"ktPTu":[function(require,module,exports) {
