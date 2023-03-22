@@ -571,6 +571,8 @@ const container = document.querySelector(".content");
 const scoreResult = document.querySelector("#score-result");
 const decreaseDiceBtn = document.querySelector("#dice-decrease");
 const increaseDiceBtn = document.querySelector("#dice-increase");
+const decreaseDiceBtnx5 = document.querySelector("#dice-decrease-5");
+const increaseDiceBtnx5 = document.querySelector("#dice-increase-5");
 const diceCounter = document.querySelector("#dice-count");
 const clearDiceBtn = document.querySelector("#remove-all-dice");
 let renderer, camera, scene, orbit, diceMesh, physicsWorld;
@@ -595,7 +597,7 @@ const trayParams = {
     trayDepth: 3
 };
 const diceArray = [];
-const rollResults = [
+let rollResults = [
     0,
     0,
     0,
@@ -607,6 +609,8 @@ const rollResults = [
 rollBtn.addEventListener("click", throwDice);
 decreaseDiceBtn.addEventListener("click", removeDice);
 increaseDiceBtn.addEventListener("click", addDice);
+decreaseDiceBtnx5.addEventListener("click", remove5Dice);
+increaseDiceBtnx5.addEventListener("click", add5Dice);
 clearDiceBtn.addEventListener("click", removeAllDice);
 initPhysics();
 initScene();
@@ -988,6 +992,14 @@ function showRollResults(score) {
 }
 function clearRollResults() {
     scoreResult.innerHTML = "";
+    rollResults = [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+    ];
 }
 // RENDER**********************************************************************
 function render(time) {
@@ -1053,6 +1065,12 @@ function addDice() {
     diceArray.push(createDice());
     addDiceEvents(diceArray.at(-1));
     updateDiceCountUI();
+}
+function remove5Dice() {
+    for(let i = 0; i < 5; i++)removeDice();
+}
+function add5Dice() {
+    for(let i = 0; i < 5; i++)addDice();
 }
 function removeAllDice() {
     for (const dice of diceArray){
