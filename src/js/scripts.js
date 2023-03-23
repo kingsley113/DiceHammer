@@ -137,6 +137,7 @@ function initScene() {
 
   render();
   updateDiceCountUI();
+  showRollResults();
 }
 
 // PHYSICS SETUP***************************************************************
@@ -522,15 +523,15 @@ function readRollResults() {
 function saveRollResults(n) {
   rollResults[n - 1]++;
   console.log(rollResults);
+  showRollResults();
 }
 
-function showRollResults(score) {
-  // TODO: update this
-  if (scoreResult.innerHTML === "") {
-    scoreResult.innerHTML += score;
-  } else {
-    scoreResult.innerHTML += ", " + score;
-  }
+function showRollResults() {
+  scoreResult.innerHTML = "";
+
+  rollResults.forEach((result, idx) => {
+    scoreResult.innerHTML += `${idx + 1}'s: ${result}, `;
+  });
 }
 
 function clearRollResults() {
@@ -577,8 +578,8 @@ function updateSceneSize() {
 
 // THROW DICE******************************************************************
 function throwDice() {
-  // pause = false;
   clearRollResults();
+  showRollResults();
 
   diceArray.forEach((d, dIdx) => {
     rollDie(d, dIdx);
