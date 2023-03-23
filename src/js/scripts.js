@@ -295,7 +295,8 @@ function createDiceMesh() {
   );
   outerMesh.castShadow = true;
   diceMesh.add(innerMesh, outerMesh);
-  // diceMesh.add(innerMesh);
+  outerMesh.name = "diceSurface";
+  diceMesh.name = "dice";
 
   return diceMesh;
 }
@@ -433,6 +434,7 @@ function createInnerGeometry() {
     1 - 2 * params.edgeRadius,
     1 - 2 * params.edgeRadius
   );
+
   const offset = 0.48; //depth of dimple
   return BufferGeometryUtils.mergeBufferGeometries(
     [
@@ -658,14 +660,26 @@ function selectDice() {
   rayCaster.setFromCamera(mousePosition, camera);
   const intersects = rayCaster.intersectObject(scene, true);
   if (intersects.length > 0) {
-    const object = intersects[0].object;
-    if (object.name != "tray" && !object.selected) {
-      object.material = object.material.clone();
-      object.material.color.set(0xe0115f);
-      object.selected = true;
+    // using parent group due to multiple meshes on dice
+    const parent = intersects[0].object.parent;
+    const surface = parent.children[1]; //dice outer surface
+
+    if (parent.name === "dice" && !parent.selected) {
+      console.log("dice selected");
+      surface.material = surface.material.clone();
+      surface.material.color.set(0xe0115f);
+      parent.selected = true;
 
       for (const entry of diceArray) {
-        if (entry.mesh.id === object.parent.id) selectedDice.add(entry);
+        if (entry.mesh.id === parent.id) selectedDice.add(entry);
+      }
+    } else if (parent.name === "dice" && parent.selected) {
+      console.log("dice unselected");
+      surface.material.color.set(params.diceSurfaceColor);
+      parent.selected = false;
+
+      for (const entry of diceArray) {
+        if (entry.mesh.id === parent.id) selectedDice.delete(entry);
       }
     }
   }
@@ -680,4 +694,3 @@ function rollSelectedDice() {
 }
 
 // TODO: get accurate score, need to remove rerolled dice
-// TODO: unselect dice if clicked again

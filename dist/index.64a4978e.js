@@ -791,7 +791,8 @@ function createDiceMesh() {
     const outerMesh = new _three.Mesh(createDiceGeometry(), boxMaterialOuter.clone());
     outerMesh.castShadow = true;
     diceMesh.add(innerMesh, outerMesh);
-    // diceMesh.add(innerMesh);
+    outerMesh.name = "diceSurface";
+    diceMesh.name = "dice";
     return diceMesh;
 }
 function createDice() {
@@ -1109,12 +1110,20 @@ function selectDice() {
     rayCaster.setFromCamera(mousePosition, camera);
     const intersects = rayCaster.intersectObject(scene, true);
     if (intersects.length > 0) {
-        const object = intersects[0].object;
-        if (object.name != "tray" && !object.selected) {
-            object.material = object.material.clone();
-            object.material.color.set(0xe0115f);
-            object.selected = true;
-            for (const entry of diceArray)if (entry.mesh.id === object.parent.id) selectedDice.add(entry);
+        // using parent group due to multiple meshes on dice
+        const parent = intersects[0].object.parent;
+        const surface = parent.children[1]; //dice outer surface
+        if (parent.name === "dice" && !parent.selected) {
+            console.log("dice selected");
+            surface.material = surface.material.clone();
+            surface.material.color.set(0xe0115f);
+            parent.selected = true;
+            for (const entry of diceArray)if (entry.mesh.id === parent.id) selectedDice.add(entry);
+        } else if (parent.name === "dice" && parent.selected) {
+            console.log("dice unselected");
+            surface.material.color.set(params.diceSurfaceColor);
+            parent.selected = false;
+            for (const entry of diceArray)if (entry.mesh.id === parent.id) selectedDice.delete(entry);
         }
     }
 }
@@ -1124,7 +1133,6 @@ function rollSelectedDice() {
         rollDie(d, dIdx);
     });
 } // TODO: get accurate score, need to remove rerolled dice
- // TODO: unselect dice if clicked again
 
 },{"three":"ktPTu","three/examples/jsm/controls/OrbitControls.js":"7mqRv","cannon-es":"HCu3b","three/examples/jsm/utils/BufferGeometryUtils":"5o7x9","cannon-es-debugger":"a5KNJ","@parcel/transformer-js/src/esmodule-helpers.js":"50sMR"}],"ktPTu":[function(require,module,exports) {
 /**
