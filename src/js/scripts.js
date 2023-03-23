@@ -66,7 +66,7 @@ let renderer, camera, scene, orbit, diceMesh, physicsWorld;
 let cannonDebugger;
 
 const params = {
-  diceCount: 100,
+  diceCount: 20,
   gravityStrength: 50,
   diceRestitution: 0.5, // dice 'bounciness'
   diceThrowForce: 10,
@@ -698,6 +698,7 @@ function updateDiceCountUI() {
   diceCounter.innerHTML = `Total Dice: ${params.diceCount}`;
 }
 
+// TODO: create a 'selectDie(die)' function to refactor and clean these up
 // SELECT DICE*****************************************************************
 function selectDice() {
   event.preventDefault();
