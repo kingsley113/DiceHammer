@@ -10,9 +10,9 @@ import CannonDebugger from "cannon-es-debugger";
 
 // UI ELEMENTS*****************************************************************
 const canvas = document.querySelector("#canvas");
-const rollBtn = document.querySelector(".roll");
 const scoreResult = document.querySelector("#score-result");
 
+const rollBtn = document.querySelector(".roll");
 const decreaseDiceBtn = document.querySelector("#dice-decrease");
 const increaseDiceBtn = document.querySelector("#dice-increase");
 const decreaseDiceBtnx5 = document.querySelector("#dice-decrease-5");
@@ -20,6 +20,9 @@ const increaseDiceBtnx5 = document.querySelector("#dice-increase-5");
 const diceCounter = document.querySelector("#dice-count");
 const clearDiceBtn = document.querySelector("#remove-all-dice");
 const rollSelectedDiceBtn = document.querySelector("#roll-selected-dice");
+const selectCockedDiceBtn = document.querySelector("#select-cocked-dice");
+// const rollCockedDiceBtn = document.querySelector("#roll-cocked-dice");
+const deselectDiceBtn = document.querySelector("#deselect-dice");
 
 rollBtn.addEventListener("click", throwDice);
 
@@ -28,6 +31,9 @@ increaseDiceBtn.addEventListener("click", addDice);
 decreaseDiceBtnx5.addEventListener("click", remove5Dice);
 increaseDiceBtnx5.addEventListener("click", add5Dice);
 rollSelectedDiceBtn.addEventListener("click", rollSelectedDice);
+selectCockedDiceBtn.addEventListener("click", selectCockedDice);
+// rollCockedDiceBtn.addEventListener("click", rollCockedDice);
+deselectDiceBtn.addEventListener("click", deselectAllDice);
 
 clearDiceBtn.addEventListener("click", removeAllDice);
 
@@ -36,7 +42,7 @@ let renderer, camera, scene, orbit, diceMesh, physicsWorld;
 let cannonDebugger;
 
 const params = {
-  diceCount: 10,
+  diceCount: 100,
   gravityStrength: 50,
   diceRestitution: 0.5, // dice 'bounciness'
   diceThrowForce: 10,
@@ -47,6 +53,7 @@ const params = {
   pauseSimulation: false,
   diceSurfaceColor: 0xeeeeee,
   diceDimpleColor: 0x000000,
+  diceSelectedColor: 0xe0115f,
   trayColor: 0xff0000,
 };
 
@@ -522,7 +529,7 @@ function readRollResults() {
 // RESULTS REPORTING***************************************
 function saveRollResults(n) {
   rollResults[n - 1]++;
-  console.log(rollResults);
+  // console.log(rollResults);
   showRollResults();
 }
 
@@ -587,6 +594,8 @@ function throwDice() {
 }
 
 function rollDie(d, dIdx = 0) {
+  // reset stable status
+  d.stable = false;
   // reset velocity of previous throw
   d.body.velocity.setZero();
   d.body.angularVelocity.setZero();
@@ -679,16 +688,14 @@ function selectDice() {
     const surface = parent.children[1]; //dice outer surface
 
     if (parent.name === "dice" && !parent.selected) {
-      console.log("dice selected");
       surface.material = surface.material.clone();
-      surface.material.color.set(0xe0115f);
+      surface.material.color.set(params.diceSelectedColor);
       parent.selected = true;
 
       for (const entry of diceArray) {
         if (entry.mesh.id === parent.id) selectedDice.add(entry);
       }
     } else if (parent.name === "dice" && parent.selected) {
-      console.log("dice unselected");
       surface.material.color.set(params.diceSurfaceColor);
       parent.selected = false;
 
@@ -697,6 +704,26 @@ function selectDice() {
       }
     }
   }
+}
+
+function selectCockedDice() {
+  deselectAllDice();
+  diceArray.forEach((dice) => {
+    if (!dice.stable) {
+      const surface = dice.mesh.children[1];
+      selectedDice.add(dice);
+      surface.material = surface.material.clone();
+      surface.material.color.set(params.diceSelectedColor);
+    }
+  });
+}
+
+function deselectAllDice() {
+  diceArray.forEach((dice) => {
+    dice.mesh.children[1].material.color.set(params.diceSurfaceColor);
+    dice.selected = false;
+  });
+  selectedDice.clear();
 }
 
 function rollSelectedDice() {
