@@ -973,35 +973,43 @@ function addDiceEvents(dice) {
         const isPiOrMinusPi = (angle)=>Math.abs(Math.PI - angle) < eps || Math.abs(Math.PI + angle) < eps;
         if (isZero(euler.z)) {
             if (isZero(euler.x)) {
-                saveRollResults(1);
-                showRollResults(1);
+                dice.rollResult = 1;
+                dice.stable = true;
             } else if (isHalfPi(euler.x)) {
-                saveRollResults(4);
-                showRollResults(4);
+                dice.rollResult = 4;
+                dice.stable = true;
             } else if (isMinusHalfPi(euler.x)) {
-                saveRollResults(3);
-                showRollResults(3);
+                dice.rollResult = 3;
+                dice.stable = true;
             } else if (isPiOrMinusPi(euler.x)) {
-                saveRollResults(6);
-                showRollResults(6);
+                dice.rollResult = 6;
+                dice.stable = true;
             } else //landed on edge => wait untill falling on side
             dice.body.allowSleep = true;
         } else if (isHalfPi(euler.z)) {
-            saveRollResults(2);
-            showRollResults(2);
+            dice.rollResult = 2;
+            dice.stable = true;
         } else if (isMinusHalfPi(euler.z)) {
-            saveRollResults(5);
-            showRollResults(5);
+            dice.rollResult = 5;
+            dice.stable = true;
         } else //landed on edge => wait untill falling on side
         dice.body.allowSleep = true;
+        readRollResults();
+    });
+}
+function readRollResults() {
+    clearRollResults();
+    diceArray.forEach((dice)=>{
+        if (dice.stable) saveRollResults(dice.rollResult);
     });
 }
 // RESULTS REPORTING***************************************
 function saveRollResults(n) {
     rollResults[n - 1]++;
-// console.log(rollResults);
+    console.log(rollResults);
 }
 function showRollResults(score) {
+    // TODO: update this
     if (scoreResult.innerHTML === "") scoreResult.innerHTML += score;
     else scoreResult.innerHTML += ", " + score;
 }
@@ -1132,7 +1140,7 @@ function rollSelectedDice() {
     selectedDiceArray.forEach((d, dIdx)=>{
         rollDie(d, dIdx);
     });
-} // TODO: get accurate score, need to remove rerolled dice
+}
 
 },{"three":"ktPTu","three/examples/jsm/controls/OrbitControls.js":"7mqRv","cannon-es":"HCu3b","three/examples/jsm/utils/BufferGeometryUtils":"5o7x9","cannon-es-debugger":"a5KNJ","@parcel/transformer-js/src/esmodule-helpers.js":"50sMR"}],"ktPTu":[function(require,module,exports) {
 /**
