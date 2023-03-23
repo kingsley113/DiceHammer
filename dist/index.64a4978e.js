@@ -578,6 +578,12 @@ const rollSelectedDiceBtn = document.querySelector("#roll-selected-dice");
 const selectCockedDiceBtn = document.querySelector("#select-cocked-dice");
 // const rollCockedDiceBtn = document.querySelector("#roll-cocked-dice");
 const deselectDiceBtn = document.querySelector("#deselect-dice");
+const select1sBtn = document.querySelector("#select-1s");
+const select2sBtn = document.querySelector("#select-2s");
+const select3sBtn = document.querySelector("#select-3s");
+const select4sBtn = document.querySelector("#select-4s");
+const select5sBtn = document.querySelector("#select-5s");
+const select6sBtn = document.querySelector("#select-6s");
 rollBtn.addEventListener("click", throwDice);
 decreaseDiceBtn.addEventListener("click", removeDice);
 increaseDiceBtn.addEventListener("click", addDice);
@@ -588,6 +594,24 @@ selectCockedDiceBtn.addEventListener("click", selectCockedDice);
 // rollCockedDiceBtn.addEventListener("click", rollCockedDice);
 deselectDiceBtn.addEventListener("click", deselectAllDice);
 clearDiceBtn.addEventListener("click", removeAllDice);
+select1sBtn.addEventListener("click", (e)=>{
+    selectNDiceNumber(1);
+});
+select2sBtn.addEventListener("click", (e)=>{
+    selectNDiceNumber(2);
+});
+select3sBtn.addEventListener("click", (e)=>{
+    selectNDiceNumber(3);
+});
+select4sBtn.addEventListener("click", (e)=>{
+    selectNDiceNumber(4);
+});
+select5sBtn.addEventListener("click", (e)=>{
+    selectNDiceNumber(5);
+});
+select6sBtn.addEventListener("click", (e)=>{
+    selectNDiceNumber(6);
+});
 // PARAMETERS******************************************************************
 let renderer, camera, scene, orbit, diceMesh, physicsWorld;
 let cannonDebugger;
@@ -1089,6 +1113,7 @@ function rollDie(d, dIdx = 0) {
     d.body.allowSleep = true;
 }
 // UI & Gameplay***************************************************************
+// REMOVE AND ADD DICE*********************************************************
 function removeDice() {
     if (params.diceCount > 1) {
         params.diceCount--;
@@ -1163,10 +1188,27 @@ function deselectAllDice() {
     });
     selectedDice.clear();
 }
+// ROLL DICE*******************************************************************
 function rollSelectedDice() {
     const selectedDiceArray = Array.from(selectedDice);
     selectedDiceArray.forEach((d, dIdx)=>{
         rollDie(d, dIdx);
+    });
+}
+function selectNDiceNumber(n) {
+    diceArray.forEach((dice)=>{
+        if (dice.rollResult == n && !dice.selected) {
+            const surface = dice.mesh.children[1];
+            selectedDice.add(dice);
+            surface.material = surface.material.clone();
+            surface.material.color.set(params.diceSelectedColor);
+            dice.selected = true;
+        } else if (dice.rollResult == n && dice.selected) {
+            const surface = dice.mesh.children[1];
+            selectedDice.delete(dice);
+            surface.material.color.set(params.diceSurfaceColor);
+            dice.selected = false;
+        }
     });
 }
 
