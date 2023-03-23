@@ -13,15 +13,6 @@ canvas {
   left: 0px;
 }
 
-.roll {
-  /* position: absolute; */
-}
-
-score-result {
-  /* position: absolute; */
-  /* left: 100px; */
-}
-
 .ui-controls {
   position: relative;
   width: 100%;
