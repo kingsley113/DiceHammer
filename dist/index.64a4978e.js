@@ -574,11 +574,13 @@ const decreaseDiceBtnx5 = document.querySelector("#dice-decrease-5");
 const increaseDiceBtnx5 = document.querySelector("#dice-increase-5");
 const diceCounter = document.querySelector("#dice-count");
 const clearDiceBtn = document.querySelector("#remove-all-dice");
+const rollSelectedDiceBtn = document.querySelector("#roll-selected-dice");
 rollBtn.addEventListener("click", throwDice);
 decreaseDiceBtn.addEventListener("click", removeDice);
 increaseDiceBtn.addEventListener("click", addDice);
 decreaseDiceBtnx5.addEventListener("click", remove5Dice);
 increaseDiceBtnx5.addEventListener("click", add5Dice);
+rollSelectedDiceBtn.addEventListener("click", rollSelectedDice);
 clearDiceBtn.addEventListener("click", removeAllDice);
 // PARAMETERS******************************************************************
 let renderer, camera, scene, orbit, diceMesh, physicsWorld;
@@ -996,7 +998,7 @@ function addDiceEvents(dice) {
 // RESULTS REPORTING***************************************
 function saveRollResults(n) {
     rollResults[n - 1]++;
-    console.log(rollResults);
+// console.log(rollResults);
 }
 function showRollResults(score) {
     if (scoreResult.innerHTML === "") scoreResult.innerHTML += score;
@@ -1100,35 +1102,29 @@ function updateDiceCountUI() {
     diceCounter.innerHTML = `Total Dice: ${params.diceCount}`;
 }
 // SELECT DICE*****************************************************************
-// window.addEventListener("mousemove", function (e) {
-//   mousePosition.x = (e.clientX / this.window.innerWidth) * 2 - 1;
-//   mousePosition.y = (e.clientY / this.window.innerHeight) * 2 + 1;
-// });
 function selectDice() {
-    // console.log("inside select dice function");
     event.preventDefault();
     mousePosition.x = event.clientX / window.innerWidth * 2 - 1;
     mousePosition.y = -(event.clientY / window.innerHeight) * 2 + 1;
-    // console.log(mousePosition);
     rayCaster.setFromCamera(mousePosition, camera);
     const intersects = rayCaster.intersectObject(scene, true);
     if (intersects.length > 0) {
-        // console.log("object intersected");
         const object = intersects[0].object;
         if (object.name != "tray" && !object.selected) {
             object.material = object.material.clone();
             object.material.color.set(0xe0115f);
             object.selected = true;
-            // console.log(object.parent.id);
-            selectedDice.add(object.parent);
-            console.log(selectedDice);
-        // console.log(diceArray);
+            for (const entry of diceArray)if (entry.mesh.id === object.parent.id) selectedDice.add(entry);
         }
     }
 }
 function rollSelectedDice() {
-    for (const die of selectDice)console.log(die);
-}
+    const selectedDiceArray = Array.from(selectedDice);
+    selectedDiceArray.forEach((d, dIdx)=>{
+        rollDie(d, dIdx);
+    });
+} // TODO: get accurate score, need to remove rerolled dice
+ // TODO: unselect dice if clicked again
 
 },{"three":"ktPTu","three/examples/jsm/controls/OrbitControls.js":"7mqRv","cannon-es":"HCu3b","three/examples/jsm/utils/BufferGeometryUtils":"5o7x9","cannon-es-debugger":"a5KNJ","@parcel/transformer-js/src/esmodule-helpers.js":"50sMR"}],"ktPTu":[function(require,module,exports) {
 /**
