@@ -574,7 +574,7 @@ const decreaseDiceBtnx5 = document.querySelector("#dice-decrease-5");
 const increaseDiceBtnx5 = document.querySelector("#dice-increase-5");
 const diceCounter = document.querySelector("#dice-count");
 const clearDiceBtn = document.querySelector("#remove-all-dice");
-const rollSelectedDiceBtn = document.querySelector("#roll-selected-dice");
+const rerollSelectedDiceBtn = document.querySelector("#reroll-selected-dice");
 const selectCockedDiceBtn = document.querySelector("#select-cocked-dice");
 // const rollCockedDiceBtn = document.querySelector("#roll-cocked-dice");
 const deselectDiceBtn = document.querySelector("#deselect-dice");
@@ -590,6 +590,7 @@ const roll3UpBtn = document.querySelector("#roll-3up");
 const roll4UpBtn = document.querySelector("#roll-4up");
 const roll5UpBtn = document.querySelector("#roll-5up");
 const roll6UpBtn = document.querySelector("#roll-6up");
+const rollSelectedDiceBtn = document.querySelector("#roll-selected-dice");
 rollBtn.addEventListener("click", throwDice);
 decreaseDiceBtn.addEventListener("click", removeDice);
 increaseDiceBtn.addEventListener("click", addDice);
@@ -599,7 +600,7 @@ decreaseDiceBtnx5.addEventListener("click", (e)=>{
 increaseDiceBtnx5.addEventListener("click", (e)=>{
     addNDice(5);
 });
-rollSelectedDiceBtn.addEventListener("click", rollSelectedDice);
+rerollSelectedDiceBtn.addEventListener("click", rerollSelectedDice);
 selectCockedDiceBtn.addEventListener("click", selectCockedDice);
 // rollCockedDiceBtn.addEventListener("click", rollCockedDice);
 deselectDiceBtn.addEventListener("click", deselectAllDice);
@@ -640,6 +641,7 @@ roll5UpBtn.addEventListener("click", (e)=>{
 roll6UpBtn.addEventListener("click", (e)=>{
     rollNPlusDice(6);
 });
+rollSelectedDiceBtn.addEventListener("click", rollSelectedDice);
 // PARAMETERS******************************************************************
 let renderer, camera, scene, orbit, diceMesh, physicsWorld;
 let cannonDebugger;
@@ -1114,32 +1116,6 @@ function updateSceneSize() {
         camera.updateProjectionMatrix();
     }
 }
-// THROW DICE******************************************************************
-function throwDice() {
-    clearRollResults();
-    showRollResults();
-    diceArray.forEach((d, dIdx)=>{
-        rollDie(d, dIdx);
-    });
-}
-function rollDie(d, dIdx = 0) {
-    // reset stable status
-    d.stable = false;
-    // reset velocity of previous throw
-    d.body.velocity.setZero();
-    d.body.angularVelocity.setZero();
-    // set initial position
-    d.body.position = new _cannonEs.Vec3(-trayParams.trayWidth / 2 + 1, dIdx * 2.5 + 10, trayParams.trayHeight / 2 - 1);
-    d.mesh.position.copy(d.body.position);
-    // set initial rotation
-    d.mesh.rotation.set(2 * Math.PI * Math.random(), 0, 2 * Math.PI * Math.random());
-    d.body.quaternion.copy(d.mesh.quaternion);
-    const force = 20 + params.diceThrowForce * Math.random();
-    d.body.applyImpulse(new _cannonEs.Vec3(force, -force, force * 0.66), new _cannonEs.Vec3(0, 0, 0.2) // shift the point of force application
-    );
-    // reset sleep state
-    d.body.allowSleep = true;
-}
 // UI & Gameplay***************************************************************
 // REMOVE AND ADD DICE*********************************************************
 function removeDice() {
@@ -1215,17 +1191,9 @@ function deselectAllDice() {
         deselectDie(dice);
     });
 }
-// ROLL DICE*******************************************************************
-function rollSelectedDice() {
-    const selectedDiceArray = Array.from(selectedDice);
-    selectedDiceArray.forEach((d, dIdx)=>{
-        rollDie(d, dIdx);
-    });
-}
 function selectNDiceNumber(n) {
     let allSelected = true;
     diceArray.forEach((dice)=>{
-        console.log(dice);
         if (dice.rollResult == n && !dice.selected) allSelected = false;
     });
     diceArray.forEach((dice)=>{
@@ -1233,16 +1201,51 @@ function selectNDiceNumber(n) {
         else if (allSelected && dice.rollResult == n && dice.selected) deselectDie(dice);
     });
 }
-// REROLL FUNCTIONS************************************************************
+// REROLL DICE*******************************************************************
+function rerollSelectedDice() {
+    const selectedDiceArray = Array.from(selectedDice);
+    selectedDiceArray.forEach((d, dIdx)=>{
+        rollDie(d, dIdx);
+    });
+}
+// NEW ROLL FUNCTIONS************************************************************
+function throwDice() {
+    clearRollResults();
+    showRollResults();
+    diceArray.forEach((d, dIdx)=>{
+        rollDie(d, dIdx);
+    });
+}
 function rollNPlusDice(n) {
     let diceCount = 0;
     for(let i = n - 1; i < rollResults.length; i++)diceCount += rollResults[i];
-    console.log(diceCount);
     removeAllDice();
     addNDice(diceCount);
     throwDice();
-} // TODO: new roll with selected dice
- // TODO: update 'roll selected' button to 'reroll selected'
+}
+function rollSelectedDice() {
+    removeAllDice();
+    addNDice(selectedDice.size);
+    throwDice();
+}
+function rollDie(d, dIdx = 0) {
+    // reset stable status
+    d.stable = false;
+    // reset velocity of previous throw
+    d.body.velocity.setZero();
+    d.body.angularVelocity.setZero();
+    // set initial position
+    d.body.position = new _cannonEs.Vec3(-trayParams.trayWidth / 2 + 1, dIdx * 2.5 + 10, trayParams.trayHeight / 2 - 1);
+    d.mesh.position.copy(d.body.position);
+    // set initial rotation
+    d.mesh.rotation.set(2 * Math.PI * Math.random(), 0, 2 * Math.PI * Math.random());
+    d.body.quaternion.copy(d.mesh.quaternion);
+    const force = 20 + params.diceThrowForce * Math.random();
+    d.body.applyImpulse(new _cannonEs.Vec3(force, -force, force * 0.66), new _cannonEs.Vec3(0, 0, 0.2) // shift the point of force application
+    );
+    // reset sleep state
+    d.body.allowSleep = true;
+}
 
 },{"three":"ktPTu","three/examples/jsm/controls/OrbitControls.js":"7mqRv","cannon-es":"HCu3b","three/examples/jsm/utils/BufferGeometryUtils":"5o7x9","cannon-es-debugger":"a5KNJ","@parcel/transformer-js/src/esmodule-helpers.js":"50sMR"}],"ktPTu":[function(require,module,exports) {
 /**
