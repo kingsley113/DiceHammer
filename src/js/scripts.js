@@ -702,7 +702,6 @@ function addDice() {
   updateDiceCountUI();
 }
 
-// TODO: refactor this to 'n' dice instead of 5 specifically
 function removeNDice(n) {
   for (let i = 0; i < n; i++) {
     removeDice();
@@ -729,8 +728,22 @@ function updateDiceCountUI() {
   diceCounter.innerHTML = `Total Dice: ${params.diceCount}`;
 }
 
-// TODO: create a 'selectDie(die)' function to refactor and clean these up
 // SELECT DICE*****************************************************************
+function selectDie(dice) {
+  const surface = dice.mesh.children[1];
+  surface.material = surface.material.clone();
+  surface.material.color.set(params.diceSelectedColor);
+  dice.selected = true;
+  selectedDice.add(dice);
+}
+
+function deselectDie(dice) {
+  const surface = dice.mesh.children[1];
+  surface.material.color.set(params.diceSurfaceColor);
+  dice.selected = false;
+  selectedDice.delete(dice);
+}
+
 function selectDice() {
   event.preventDefault();
   mousePosition.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -741,22 +754,14 @@ function selectDice() {
   if (intersects.length > 0) {
     // using parent group due to multiple meshes on dice
     const parent = intersects[0].object.parent;
-    const surface = parent.children[1]; //dice outer surface
 
     if (parent.name === "dice" && !parent.selected) {
-      surface.material = surface.material.clone();
-      surface.material.color.set(params.diceSelectedColor);
-      parent.selected = true;
-
       for (const entry of diceArray) {
-        if (entry.mesh.id === parent.id) selectedDice.add(entry);
-      }
-    } else if (parent.name === "dice" && parent.selected) {
-      surface.material.color.set(params.diceSurfaceColor);
-      parent.selected = false;
-
-      for (const entry of diceArray) {
-        if (entry.mesh.id === parent.id) selectedDice.delete(entry);
+        if (entry.mesh.id === parent.id && !entry.selected) {
+          selectDie(entry);
+        } else if (entry.mesh.id === parent.id && entry.selected) {
+          deselectDie(entry);
+        }
       }
     }
   }
@@ -766,20 +771,15 @@ function selectCockedDice() {
   deselectAllDice();
   diceArray.forEach((dice) => {
     if (!dice.stable) {
-      const surface = dice.mesh.children[1];
-      selectedDice.add(dice);
-      surface.material = surface.material.clone();
-      surface.material.color.set(params.diceSelectedColor);
+      selectDie(dice);
     }
   });
 }
 
 function deselectAllDice() {
   diceArray.forEach((dice) => {
-    dice.mesh.children[1].material.color.set(params.diceSurfaceColor);
-    dice.selected = false;
+    deselectDie(dice);
   });
-  selectedDice.clear();
 }
 
 // ROLL DICE*******************************************************************
@@ -792,18 +792,18 @@ function rollSelectedDice() {
 }
 
 function selectNDiceNumber(n) {
+  let allSelected = true;
+
+  diceArray.forEach((dice) => {
+    console.log(dice);
+    if (dice.rollResult == n && !dice.selected) allSelected = false;
+  });
+
   diceArray.forEach((dice) => {
     if (dice.rollResult == n && !dice.selected) {
-      const surface = dice.mesh.children[1];
-      selectedDice.add(dice);
-      surface.material = surface.material.clone();
-      surface.material.color.set(params.diceSelectedColor);
-      dice.selected = true;
-    } else if (dice.rollResult == n && dice.selected) {
-      const surface = dice.mesh.children[1];
-      selectedDice.delete(dice);
-      surface.material.color.set(params.diceSurfaceColor);
-      dice.selected = false;
+      selectDie(dice);
+    } else if (allSelected && dice.rollResult == n && dice.selected) {
+      deselectDie(dice);
     }
   });
 }
@@ -819,3 +819,6 @@ function rollNPlusDice(n) {
   addNDice(diceCount);
   throwDice();
 }
+
+// TODO: new roll with selected dice
+// TODO: update 'roll selected' button to 'reroll selected'
