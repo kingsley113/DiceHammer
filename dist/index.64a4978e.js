@@ -584,11 +584,21 @@ const select3sBtn = document.querySelector("#select-3s");
 const select4sBtn = document.querySelector("#select-4s");
 const select5sBtn = document.querySelector("#select-5s");
 const select6sBtn = document.querySelector("#select-6s");
+const roll1UpBtn = document.querySelector("#roll-1up");
+const roll2UpBtn = document.querySelector("#roll-2up");
+const roll3UpBtn = document.querySelector("#roll-3up");
+const roll4UpBtn = document.querySelector("#roll-4up");
+const roll5UpBtn = document.querySelector("#roll-5up");
+const roll6UpBtn = document.querySelector("#roll-6up");
 rollBtn.addEventListener("click", throwDice);
 decreaseDiceBtn.addEventListener("click", removeDice);
 increaseDiceBtn.addEventListener("click", addDice);
-decreaseDiceBtnx5.addEventListener("click", remove5Dice);
-increaseDiceBtnx5.addEventListener("click", add5Dice);
+decreaseDiceBtnx5.addEventListener("click", (e)=>{
+    removeNDice(5);
+});
+increaseDiceBtnx5.addEventListener("click", (e)=>{
+    addNDice(5);
+});
 rollSelectedDiceBtn.addEventListener("click", rollSelectedDice);
 selectCockedDiceBtn.addEventListener("click", selectCockedDice);
 // rollCockedDiceBtn.addEventListener("click", rollCockedDice);
@@ -611,6 +621,24 @@ select5sBtn.addEventListener("click", (e)=>{
 });
 select6sBtn.addEventListener("click", (e)=>{
     selectNDiceNumber(6);
+});
+roll1UpBtn.addEventListener("click", (e)=>{
+    rollNPlusDice(1);
+});
+roll2UpBtn.addEventListener("click", (e)=>{
+    rollNPlusDice(2);
+});
+roll3UpBtn.addEventListener("click", (e)=>{
+    rollNPlusDice(3);
+});
+roll4UpBtn.addEventListener("click", (e)=>{
+    rollNPlusDice(4);
+});
+roll5UpBtn.addEventListener("click", (e)=>{
+    rollNPlusDice(5);
+});
+roll6UpBtn.addEventListener("click", (e)=>{
+    rollNPlusDice(6);
 });
 // PARAMETERS******************************************************************
 let renderer, camera, scene, orbit, diceMesh, physicsWorld;
@@ -1129,11 +1157,12 @@ function addDice() {
     addDiceEvents(diceArray.at(-1));
     updateDiceCountUI();
 }
-function remove5Dice() {
-    for(let i = 0; i < 5; i++)removeDice();
+// TODO: refactor this to 'n' dice instead of 5 specifically
+function removeNDice(n) {
+    for(let i = 0; i < n; i++)removeDice();
 }
-function add5Dice() {
-    for(let i = 0; i < 5; i++)addDice();
+function addNDice(n) {
+    for(let i = 0; i < n; i++)addDice();
 }
 function removeAllDice() {
     for (const dice of diceArray){
@@ -1211,6 +1240,15 @@ function selectNDiceNumber(n) {
             dice.selected = false;
         }
     });
+}
+// REROLL FUNCTIONS************************************************************
+function rollNPlusDice(n) {
+    let diceCount = 0;
+    for(let i = n - 1; i < rollResults.length; i++)diceCount += rollResults[i];
+    console.log(diceCount);
+    removeAllDice();
+    addNDice(diceCount);
+    throwDice();
 }
 
 },{"three":"ktPTu","three/examples/jsm/controls/OrbitControls.js":"7mqRv","cannon-es":"HCu3b","three/examples/jsm/utils/BufferGeometryUtils":"5o7x9","cannon-es-debugger":"a5KNJ","@parcel/transformer-js/src/esmodule-helpers.js":"50sMR"}],"ktPTu":[function(require,module,exports) {
