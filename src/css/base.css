@@ -55,8 +55,10 @@ button {
   margin: 0;
 }
 
-h2 {
+h2,
+h3 {
   margin: 0;
+  color: white;
 }
 
 .lr-margin {
@@ -115,6 +117,10 @@ h2 {
   border-radius: 0 15 15 0;
   /* z-index: 2; */
   pointer-events: all;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 10px;
 }
 
 #right-panel {
@@ -169,8 +175,40 @@ h2 {
   user-select: none;
 }
 
+#result-header {
+  text-align: center;
+}
+
 #dice-count-text {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.dice-img {
+  width: 42px;
+  height: 42px;
+}
+
+.rotate90 {
+  transform: rotate(90deg);
+}
+
+td {
+  text-align: center;
+  font-size: 20px;
+  min-width: 30px;
+}
+
+table {
+  color: white;
+}
+
+.narrow {
+  width: 42px;
+}
+
+.vertical {
+  writing-mode: vertical-lr;
+  text-orientation: sideways;
 }
