@@ -1149,7 +1149,7 @@ function removeAllDice() {
     updateDiceCountUI();
 }
 function updateDiceCountUI() {
-    diceCounter.innerHTML = `Total Dice: ${params.diceCount}`;
+    diceCounter.innerHTML = params.diceCount;
 }
 // SELECT DICE*****************************************************************
 function selectDie(dice) {

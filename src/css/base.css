@@ -1,5 +1,6 @@
 :root {
   --ui-button-bkg-color: #908e8e80;
+  --ui-panel-bkg-color: #313131c2;
 }
 
 html,
@@ -14,6 +15,7 @@ canvas {
   position: absolute;
   top: 0px;
   left: 0px;
+  z-index: 2;
 }
 
 main {
@@ -26,9 +28,27 @@ main {
   left: 0;
 }
 
-.ui-controls {
+/* .ui-controls {
   position: relative;
   width: 100%;
+} */
+
+button {
+  background-color: var(--ui-button-bkg-color);
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 24px;
+  border: #ffffffd3;
+  border: 1px;
+  border-style: solid;
+  border-radius: 8px;
+  min-width: 42px;
+  height: 42px;
+  /* padding: 6px; */
+  margin: 7px;
+  filter: drop-shadow(4 4 3 black);
 }
 
 #header {
@@ -46,12 +66,13 @@ main {
   height: 3.5rem;
   background-color: blue;
 }
-
+/* CONTAINERS **********************************************/
 #top-container {
   display: flex;
   justify-content: space-between;
-  flex-basis: 5rem;
-  background-color: blue;
+  flex-basis: 3rem;
+  /* background-color: blue; */
+  z-index: 2;
 }
 #mid-container {
   display: flex;
@@ -59,25 +80,28 @@ main {
   flex-grow: 1;
   /* background-color: aqua; */
   align-items: center;
+  z-index: 2;
+  pointer-events: none;
+  background: transparent;
 }
 #bottom-container {
   /* display: flex; */
   /* justify-content: space-between; */
   flex-basis: 5rem;
-  background-color: chartreuse;
-  padding-left: 3rem;
-  padding-right: 3rem;
-  margin-left: 3rem;
-  margin-right: 3rem;
+  z-index: 2;
 }
 
+/* PANELS ************************************************* */
 #left-panel {
   /* position: absolute; */
   /* left: 0; */
   /* top: calc(50% - height/2); */
   height: 75%;
-  background-color: chartreuse;
+  background-color: var(--ui-panel-bkg-color);
   flex-basis: 5rem;
+  border-radius: 0 15 15 0;
+  /* z-index: 2; */
+  pointer-events: all;
 }
 
 #right-panel {
@@ -87,14 +111,45 @@ main {
   height: 75%;
   background-color: brown;
   flex-basis: 5rem;
+  border-radius: 15 0 0 15;
+  /* z-index: 3; */
+  pointer-events: all;
 }
 
-.text-display {
-  white-space: nowrap;
-  overflow: hidden;
+#bottom-panel {
+  padding-left: 3rem;
+  padding-right: 3rem;
+  margin-left: 3rem;
+  margin-right: 3rem;
+  border-radius: 15 15 0 0;
+  background-color: chartreuse;
+  height: 100%;
 }
 
-.ui-btn {
-  white-space: nowrap;
-  overflow: hidden;
+#dice-count-panel {
+  display: flex;
+  /* align-content: flex-start; */
+  background-color: darkgoldenrod;
+  border-radius: 0 0 15 0;
+}
+
+#roll-dice-panel {
+  display: flex;
+  /* align-content: flex-start; */
+  background-color: rgb(80, 144, 218);
+  border-radius: 0 0 0 15;
+}
+
+.panel-shadow {
+  /* filter: drop-shadow(5 5 6 rgba(0, 0, 0, 0.705)); */
+  box-shadow: 5 5 10 2 rgba(0, 0, 0, 0.719);
+  backdrop-filter: blur(4);
+}
+
+.unselectable {
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }

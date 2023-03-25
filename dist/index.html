@@ -10,52 +10,58 @@
   <body>
     <!-- <main> -->
     <canvas id="canvas"></canvas>
-    <main>
+    <main class="unselectable">
       <div id="top-container">
-        <div id="dice-controls">
+        <div id="dice-count-panel" class="panel-shadow">
           <button class="ui-btn" id="dice-decrease">-1</button>
           <button class="ui-btn" id="dice-decrease-5">-5</button>
-          <p class="text-display" id="dice-count"></p>
+          <div class="text-panel">
+            <h2 id="dice-count"></h2>
+            <h3>Dice</h3>
+          </div>
           <button class="ui-btn" id="dice-increase">+1</button>
           <button class="ui-btn" id="dice-increase-5">+5</button>
         </div>
-        <button class="roll">Roll The Dice</button>
+
+        <div id="roll-dice-panel" class="panel-shadow">
+          <button class="roll">Roll The Dice</button>
+        </div>
       </div>
 
       <div id="mid-container">
-        <div id="left-panel">
-          <button class="ui-btn" id="roll-1up">New Roll 1+</button>
-          <button class="ui-btn" id="roll-2up">New Roll 2+</button>
-          <button class="ui-btn" id="roll-3up">New Roll 3+</button>
-          <button class="ui-btn" id="roll-4up">New Roll 4+</button>
-          <button class="ui-btn" id="roll-5up">New Roll 5+</button>
-          <button class="ui-btn" id="roll-6up">New Roll 6+</button>
+        <div id="left-panel" class="panel-shadow">
+          <button class="ui-btn" id="roll-6up">6+</button>
+          <button class="ui-btn" id="roll-5up">5+</button>
+          <button class="ui-btn" id="roll-4up">4+</button>
+          <button class="ui-btn" id="roll-3up">3+</button>
+          <button class="ui-btn" id="roll-2up">2+</button>
+          <button class="ui-btn" id="roll-1up">1+</button>
+          <div class="text-panel">New Roll:</div>
         </div>
-        <div id="right-panel">
+        <div id="right-panel" class="panel-shadow">
           <h3 id="score-result"></h3>
         </div>
       </div>
 
       <div id="bottom-container">
-        <button class="ui-btn" id="deselect-dice">Deselect Dice</button>
-        <button class="ui-btn" id="select-1s">Select 1s</button>
-        <button class="ui-btn" id="select-2s">Select 2s</button>
-        <button class="ui-btn" id="select-3s">Select 3s</button>
-        <button class="ui-btn" id="select-4s">Select 4s</button>
-        <button class="ui-btn" id="select-5s">Select 5s</button>
-        <button class="ui-btn" id="select-6s">Select 6s</button>
-        <button class="ui-btn" id="select-cocked-dice">
-          Select Cocked Dice
-        </button>
-        <button class="ui-btn" id="reroll-selected-dice">
-          Reroll Selected Dice
-        </button>
-        <button class="ui-btn" id="roll-selected-dice">
-          New Roll - Selected Dice
-        </button>
-        <div>
-          <!-- <button class="ui-btn" id="remove-all-dice">Clear Dice</button> -->
-          <!-- <button class="ui-btn" id="roll-cocked-dice">Reroll Cocked Dice</button> -->
+        <div id="bottom-panel" class="panel-shadow">
+          <div class="text-panel">Select:</div>
+          <button class="ui-btn" id="deselect-dice">None</button>
+          <button class="ui-btn" id="select-1s">1s</button>
+          <button class="ui-btn" id="select-2s">2s</button>
+          <button class="ui-btn" id="select-3s">3s</button>
+          <button class="ui-btn" id="select-4s">4s</button>
+          <button class="ui-btn" id="select-5s">5s</button>
+          <button class="ui-btn" id="select-6s">6s</button>
+          <button class="ui-btn" id="select-cocked-dice">Cocked</button>
+          <button class="ui-btn" id="reroll-selected-dice">
+            Reroll Selected
+          </button>
+          <button class="ui-btn" id="roll-selected-dice">Roll Selected</button>
+          <div>
+            <!-- <button class="ui-btn" id="remove-all-dice">Clear Dice</button> -->
+            <!-- <button class="ui-btn" id="roll-cocked-dice">Reroll Cocked Dice</button> -->
+          </div>
         </div>
       </div>
     </main>
