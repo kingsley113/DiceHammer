@@ -1,5 +1,5 @@
 :root {
-  --ui-button-bkg-color: #908e8e80;
+  --ui-button-bkg-color: #c9c8c8ad;
   --ui-panel-bkg-color: #313131c2;
 }
 
@@ -37,7 +37,7 @@ button {
   border: 1px solid;
   border-radius: 8px;
   margin: 7px;
-  font-size: 24px;
+  font-size: 20px;
   text-decoration: none;
   display: inline-block;
 }
@@ -54,22 +54,6 @@ h2, h3 {
 .lr-margin {
   margin-left: 5px;
   margin-right: 5px;
-}
-
-#header {
-  width: 100%;
-  height: 3.5rem;
-  background-color: #0ff;
-  position: absolute;
-  top: 0;
-}
-
-#footer {
-  width: 100%;
-  height: 3.5rem;
-  background-color: #00f;
-  position: absolute;
-  bottom: 0;
 }
 
 #top-container {
@@ -95,7 +79,7 @@ h2, h3 {
 }
 
 #left-panel {
-  height: 75%;
+  height: 60%;
   background-color: var(--ui-panel-bkg-color);
   pointer-events: all;
   border-radius: 0 15px 15px 0;
@@ -107,32 +91,34 @@ h2, h3 {
 }
 
 #right-panel {
-  height: 75%;
+  height: 60%;
+  background-color: var(--ui-panel-bkg-color);
   pointer-events: all;
-  background-color: brown;
   border-radius: 15px 0 0 15px;
   flex-basis: 5rem;
 }
 
 #bottom-panel {
+  background-color: var(--ui-panel-bkg-color);
   height: 100%;
-  background-color: #7fff00;
   border-radius: 15px 15px 0 0;
+  align-items: center;
   margin-left: 3rem;
   margin-right: 3rem;
   padding-left: 3rem;
   padding-right: 3rem;
+  display: flex;
 }
 
 #dice-count-panel {
-  background-color: #b8860b;
+  background-color: var(--ui-panel-bkg-color);
   border-radius: 0 0 15px;
   padding: 4px;
   display: flex;
 }
 
 #roll-dice-panel {
-  background-color: #5090da;
+  background-color: var(--ui-panel-bkg-color);
   border-radius: 0 0 0 15px;
   padding-left: 6px;
   display: flex;
