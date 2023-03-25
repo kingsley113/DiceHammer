@@ -603,7 +603,6 @@ const d3RunTotal = document.querySelector("#d3-run-total");
 const d4RunTotal = document.querySelector("#d4-run-total");
 const d5RunTotal = document.querySelector("#d5-run-total");
 const d6RunTotal = document.querySelector("#d6-run-total");
-// TODO: add these into results reporting function
 rollBtn.addEventListener("click", throwDice);
 decreaseDiceBtn.addEventListener("click", removeDice);
 increaseDiceBtn.addEventListener("click", addDice);
@@ -1085,13 +1084,30 @@ function saveRollResults(n) {
     showRollResults();
 }
 function showRollResults() {
-    scoreResult.innerHTML = "";
-    rollResults.forEach((result, idx)=>{
-        scoreResult.innerHTML += `${idx + 1}'s: ${result}, `;
-    });
+    const rollCountElArr = [
+        d1RollCount,
+        d2RollCount,
+        d3RollCount,
+        d4RollCount,
+        d5RollCount,
+        d6RollCount
+    ];
+    const rollRunningTotalElArr = [
+        d1RunTotal,
+        d2RunTotal,
+        d3RunTotal,
+        d4RunTotal,
+        d5RunTotal,
+        d6RunTotal
+    ];
+    let runningTotal = 0;
+    for(let i = rollResults.length - 1; i >= 0; i--){
+        rollCountElArr[i].innerHTML = rollResults[i];
+        runningTotal += rollResults[i];
+        rollRunningTotalElArr[i].innerHTML = runningTotal;
+    }
 }
 function clearRollResults() {
-    scoreResult.innerHTML = "";
     rollResults = [
         0,
         0,
