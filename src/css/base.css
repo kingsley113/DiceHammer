@@ -51,6 +51,19 @@ button {
   filter: drop-shadow(4 4 3 black);
 }
 
+.small-label {
+  margin: 0;
+}
+
+h2 {
+  margin: 0;
+}
+
+.lr-margin {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
 #header {
   position: absolute;
   top: 0;
@@ -131,6 +144,7 @@ button {
   /* align-content: flex-start; */
   background-color: darkgoldenrod;
   border-radius: 0 0 15 0;
+  padding: 4px;
 }
 
 #roll-dice-panel {
@@ -138,6 +152,7 @@ button {
   /* align-content: flex-start; */
   background-color: rgb(80, 144, 218);
   border-radius: 0 0 0 15;
+  padding-left: 6px;
 }
 
 .panel-shadow {
@@ -152,4 +167,10 @@ button {
   -webkit-user-select: none;
   -o-user-select: none;
   user-select: none;
+}
+
+#dice-count-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

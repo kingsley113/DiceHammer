@@ -15,9 +15,9 @@
         <div id="dice-count-panel" class="panel-shadow">
           <button class="ui-btn" id="dice-decrease">-1</button>
           <button class="ui-btn" id="dice-decrease-5">-5</button>
-          <div class="text-panel">
+          <div class="text-panel lr-margin" id="dice-count-text">
             <h2 id="dice-count"></h2>
-            <h3>Dice</h3>
+            <h3 class="small-label">Dice</h3>
           </div>
           <button class="ui-btn" id="dice-increase">+1</button>
           <button class="ui-btn" id="dice-increase-5">+5</button>
@@ -40,6 +40,44 @@
         </div>
         <div id="right-panel" class="panel-shadow">
           <h3 id="score-result"></h3>
+          <div id="result-header"></div>
+          <table>
+            <tr>
+              <th>CT</th>
+              <th></th>
+              <th>RT</th>
+            </tr>
+            <tr>
+              <td id="d6-count"></td>
+              <td>d6 img</td>
+              <td id="d6-run-total"></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>d5 img</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>d4 img</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>d3 img</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>d2 img</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>d1 img</td>
+              <td></td>
+            </tr>
+          </table>
         </div>
       </div>
 
