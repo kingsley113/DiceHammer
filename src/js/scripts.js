@@ -18,7 +18,7 @@ const increaseDiceBtn = document.querySelector("#dice-increase");
 const decreaseDiceBtnx5 = document.querySelector("#dice-decrease-5");
 const increaseDiceBtnx5 = document.querySelector("#dice-increase-5");
 const diceCounter = document.querySelector("#dice-count");
-const clearDiceBtn = document.querySelector("#remove-all-dice");
+// const clearDiceBtn = document.querySelector("#remove-all-dice");
 const rerollSelectedDiceBtn = document.querySelector("#reroll-selected-dice");
 const selectCockedDiceBtn = document.querySelector("#select-cocked-dice");
 // const rollCockedDiceBtn = document.querySelector("#roll-cocked-dice");
@@ -54,7 +54,7 @@ selectCockedDiceBtn.addEventListener("click", selectCockedDice);
 // rollCockedDiceBtn.addEventListener("click", rollCockedDice);
 deselectDiceBtn.addEventListener("click", deselectAllDice);
 
-clearDiceBtn.addEventListener("click", removeAllDice);
+// clearDiceBtn.addEventListener("click", removeAllDice);
 
 select1sBtn.addEventListener("click", (e) => {
   selectNDiceNumber(1);
