@@ -5,8 +5,12 @@ import {
   OrbitControls,
 } from "three/examples/jsm/controls/OrbitControls.js";
 import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js"; //needed for 3d model import
 
 import CannonDebugger from "cannon-es-debugger";
+
+// DICE TRAY MODEL*************************************************************
+const trayUrl = new URL("../assets/diceTray.glb", import.meta.url);
 
 // UI ELEMENTS*****************************************************************
 const canvas = document.querySelector("#canvas");
@@ -180,22 +184,23 @@ function initScene() {
   topLight.shadow.camera.bottom = -trayParams.trayHeight / 2 - 1;
   topLight.shadow.camera.left = -trayParams.trayWidth / 2 - 1;
   topLight.shadow.camera.right = trayParams.trayHeight / 2 + 1;
-  scene.add(topLight);
+  // scene.add(topLight);
 
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-  scene.add(ambientLight);
+  // scene.add(ambientLight);
 
   // ORBIT*********************************************************************
   // orbit = new MapControls(camera, canvas);
   orbit = new OrbitControls(camera, canvas);
   orbit.enableDamping = true;
   orbit.dampingFactor = 0.025;
-  orbit.enableZoom = false;
-  orbit.enablePan = false;
-  orbit.maxAzimuthAngle = 0.02 * Math.PI;
-  orbit.minAzimuthAngle = -0.02 * Math.PI;
-  orbit.maxPolarAngle = 0.12 * Math.PI;
-  orbit.minPolarAngle = 0.1 * Math.PI;
+  // orbit.enableZoom = false;
+  // orbit.enablePan = false;
+  // orbit.maxAzimuthAngle = 0.02 * Math.PI;
+  // orbit.minAzimuthAngle = -0.02 * Math.PI;
+  // orbit.maxPolarAngle = 0.12 * Math.PI;
+  // orbit.minPolarAngle = 0.1 * Math.PI;
+  // TODO: re enable this when done with scene
 
   // createFloor();
   createDiceTray();
@@ -213,6 +218,8 @@ function initScene() {
 
   // Debugging
   // cannonDebugger = new CannonDebugger(scene, physicsWorld);
+
+  loadDiceTrayModel();
 
   render();
   updateDiceCountUI();
@@ -353,6 +360,15 @@ function createDiceTray() {
   physicsWorld.addBody(traySide3Body);
   physicsWorld.addBody(traySide4Body);
   physicsWorld.addBody(trayFloorBody);
+}
+
+function loadDiceTrayModel() {
+  const assetLoader = new GLTFLoader();
+  assetLoader.load(trayUrl.href, function (gltf) {
+    const model = gltf.scene;
+    model.position.set(0, -5, 0);
+    scene.add(model);
+  });
 }
 
 // DICE MODEL******************************************************************
