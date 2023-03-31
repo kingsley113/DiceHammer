@@ -134,8 +134,8 @@ const params = {
 };
 
 const trayParams = {
-  trayWidth: 30,
-  trayHeight: 20,
+  trayWidth: 30.5,
+  trayHeight: 20.5,
   trayDepth: 3,
 };
 
@@ -159,6 +159,10 @@ function initScene() {
 
   renderer.setClearColor("#fff1e6");
   renderer.shadowMap.enabled = true; //enable the shadows for the scene, disabled by default
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  // renderer.toneMappingExposure = 0.00015;
+  renderer.toneMappingExposure = 1;
+  renderer.outputEncoding = THREE.sRGBEncoding;
 
   camera = new THREE.PerspectiveCamera(
     18,
@@ -172,22 +176,7 @@ function initScene() {
   scene = new THREE.Scene();
 
   // LIGHTING******************************************************************
-
-  const topLight = new THREE.DirectionalLight(0xffffff, 1);
-  topLight.position.set(10, 15, 0);
-  topLight.castShadow = true;
-  topLight.shadow.mapSize.width = 2048;
-  topLight.shadow.mapSize.height = 2048;
-  topLight.shadow.camera.near = 5;
-  topLight.shadow.camera.far = 400;
-  topLight.shadow.camera.top = trayParams.trayHeight / 2 + 1;
-  topLight.shadow.camera.bottom = -trayParams.trayHeight / 2 - 1;
-  topLight.shadow.camera.left = -trayParams.trayWidth / 2 - 1;
-  topLight.shadow.camera.right = trayParams.trayHeight / 2 + 1;
-  // scene.add(topLight);
-
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-  // scene.add(ambientLight);
+  createLights();
 
   // ORBIT*********************************************************************
   // orbit = new MapControls(camera, canvas);
@@ -257,6 +246,52 @@ function createFloor() {
   physicsWorld.addBody(floorBody);
 }
 
+// LIGHTING********************************************************************
+function createLights() {
+  const topLight = new THREE.DirectionalLight(0xffffff, 1);
+  topLight.position.set(10, 15, 0);
+  topLight.castShadow = true;
+  topLight.shadow.radius = 5; //TODO:
+  topLight.shadow.blurSamples = 25; //TODO: adjust these for soft shadows
+  topLight.shadow.mapSize.width = 2048;
+  topLight.shadow.mapSize.height = 2048;
+  topLight.shadow.camera.near = 5;
+  topLight.shadow.camera.far = 400;
+  topLight.shadow.camera.top = trayParams.trayHeight / 2 + 1;
+  topLight.shadow.camera.bottom = -trayParams.trayHeight / 2 - 1;
+  topLight.shadow.camera.left = -trayParams.trayWidth / 2 - 1;
+  topLight.shadow.camera.right = trayParams.trayWidth / 2 + 1;
+  // scene.add(topLight);
+
+  const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+  scene.add(ambientLight);
+
+  const pointLight = new THREE.PointLight(0xfa1807, 1);
+  pointLight.position.set(-25, 20, -25);
+  pointLight.castShadow = true;
+  pointLight.shadow.radius = 6; //TODO:
+  pointLight.shadow.blurSamples = 30; //TODO: adjust these for soft shadows
+  pointLight.shadow.mapSize.width = 2048;
+  pointLight.shadow.mapSize.height = 2048;
+  pointLight.shadow.camera.near = 5;
+  pointLight.shadow.camera.far = 400;
+  pointLight.shadow.camera.top = trayParams.trayHeight / 2 + 1;
+  pointLight.shadow.camera.bottom = -trayParams.trayHeight / 2 - 1;
+  pointLight.shadow.camera.left = -trayParams.trayWidth / 2 - 1;
+  pointLight.shadow.camera.right = trayParams.trayWidth / 2 + 1;
+  scene.add(pointLight);
+
+  const pointLightBlue1 = pointLight.clone();
+  pointLightBlue1.color = 0x0c10f7;
+  pointLightBlue1.position.set(-25, 20, 25);
+  // scene.add(pointLightBlue1);
+
+  const pLightHelper = new THREE.PointLightHelper(pointLight);
+  scene.add(pLightHelper);
+  const pLightHelper2 = new THREE.PointLightHelper(pointLightBlue1);
+  scene.add(pLightHelper2);
+}
+
 // DICE TRAY*******************************************************************
 function createDiceTray() {
   // Visible Meshes
@@ -273,7 +308,7 @@ function createDiceTray() {
   const trayBottom = new THREE.Mesh(trayBottomGeometry, trayMaterial);
   trayBottom.position.set(0, -trayParams.trayDepth, 0);
   trayBottom.rotation.x = -0.5 * Math.PI;
-  trayBottom.receiveShadow = true;
+  // trayBottom.receiveShadow = true;
   trayBottom.name = "tray";
 
   const trayWallGeometry1 = new THREE.PlaneGeometry(
@@ -313,11 +348,11 @@ function createDiceTray() {
   trayWall4.rotation.y += Math.PI;
   trayWall4.name = "tray";
 
-  scene.add(trayBottom);
-  scene.add(trayWall1);
-  scene.add(trayWall2);
-  scene.add(trayWall3);
-  scene.add(trayWall4);
+  // scene.add(trayBottom);
+  // scene.add(trayWall1);
+  // scene.add(trayWall2);
+  // scene.add(trayWall3);
+  // scene.add(trayWall4);
 
   // Physics Bodies
   const trayFloorBody = new CANNON.Body({
@@ -363,17 +398,25 @@ function createDiceTray() {
 }
 
 function loadDiceTrayModel() {
-  const assetLoader = new GLTFLoader();
-  assetLoader.load(trayUrl.href, function (gltf) {
+  const loader = new GLTFLoader();
+  loader.load(trayUrl.href, function (gltf) {
     const model = gltf.scene;
-    model.position.set(0, -5, 0);
+    model.position.set(0, -4.5, 0);
     scene.add(model);
+    model.traverse(function (object) {
+      if (object.isMesh) {
+        object.material.shading = THREE.SmoothShading;
+        object.castShadow = true;
+        object.receiveShadow = true;
+        object.material.side = THREE.FrontSide;
+      }
+    });
   });
 }
 
 // DICE MODEL******************************************************************
 function createDiceMesh() {
-  const boxMaterialOuter = new THREE.MeshStandardMaterial({
+  const boxMaterialOuter = new THREE.MeshPhongMaterial({
     color: params.diceSurfaceColor,
   });
   const boxMaterialInner = new THREE.MeshStandardMaterial({
@@ -390,9 +433,14 @@ function createDiceMesh() {
     boxMaterialOuter.clone()
   );
   outerMesh.castShadow = true;
-  diceMesh.add(innerMesh, outerMesh);
+  outerMesh.receiveShadow = true;
   outerMesh.name = "diceSurface";
+  // outerMesh.material.side = THREE.FrontSide;
+
   diceMesh.name = "dice";
+  diceMesh.add(innerMesh, outerMesh);
+
+  diceMesh.receiveShadow = true;
 
   return diceMesh;
 }
