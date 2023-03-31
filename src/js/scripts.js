@@ -203,11 +203,12 @@ function initScene() {
 
   renderer.domElement.addEventListener("click", selectDice, false);
 
-  throwDice();
+  // throwDice();
 
   // Debugging
   // cannonDebugger = new CannonDebugger(scene, physicsWorld);
 
+  // TODO: enable loading screen or have it on in the HTML by default
   loadDiceTrayModel();
 
   render();
@@ -248,8 +249,8 @@ function createFloor() {
 
 // LIGHTING********************************************************************
 function createLights() {
-  const topLight = new THREE.DirectionalLight(0xffffff, 1);
-  topLight.position.set(10, 15, 0);
+  const topLight = new THREE.DirectionalLight(0xffffff, 0.3);
+  topLight.position.set(0, 15, 0);
   topLight.castShadow = true;
   topLight.shadow.radius = 5; //TODO:
   topLight.shadow.blurSamples = 25; //TODO: adjust these for soft shadows
@@ -263,10 +264,10 @@ function createLights() {
   topLight.shadow.camera.right = trayParams.trayWidth / 2 + 1;
   // scene.add(topLight);
 
-  const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
   // scene.add(ambientLight);
 
-  const pointLightTemplate = new THREE.PointLight(0xffffff, 0.5);
+  const pointLightTemplate = new THREE.PointLight(0xffffff, 0.4);
   pointLightTemplate.position.set(-25, 20, -25);
   pointLightTemplate.castShadow = true;
   pointLightTemplate.shadow.radius = 8; //TODO:
@@ -322,6 +323,8 @@ function createLights() {
   scene.add(pLightHelper4);
   const pLightHelper6 = new THREE.PointLightHelper(pointLightWarm3);
   scene.add(pLightHelper6);
+  const pLightHelper7 = new THREE.PointLightHelper(topLight);
+  scene.add(pLightHelper7);
 }
 
 // DICE TRAY*******************************************************************
@@ -431,6 +434,7 @@ function createDiceTray() {
 
 function loadDiceTrayModel() {
   const loader = new GLTFLoader();
+
   loader.load(trayUrl.href, function (gltf) {
     const model = gltf.scene;
     model.position.set(0, -4.5, 0);
@@ -443,6 +447,8 @@ function loadDiceTrayModel() {
         object.material.side = THREE.FrontSide;
       }
     });
+    // TODO: trigger hiding of loading screen
+    throwDice();
   });
 }
 
@@ -487,6 +493,10 @@ function createDice() {
     sleepTimeLimit: 0.3,
   });
   physicsWorld.addBody(body);
+
+  // Set starting position off screen
+  body.position = new CANNON.Vec3(0, 80, 0);
+  mesh.position.copy(body.position);
 
   return { mesh, body };
 }
