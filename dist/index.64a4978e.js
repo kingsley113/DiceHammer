@@ -576,10 +576,8 @@ const increaseDiceBtn = document.querySelector("#dice-increase");
 const decreaseDiceBtnx5 = document.querySelector("#dice-decrease-5");
 const increaseDiceBtnx5 = document.querySelector("#dice-increase-5");
 const diceCounter = document.querySelector("#dice-count");
-// const clearDiceBtn = document.querySelector("#remove-all-dice");
 const rerollSelectedDiceBtn = document.querySelector("#reroll-selected-dice");
 const selectCockedDiceBtn = document.querySelector("#select-cocked-dice");
-// const rollCockedDiceBtn = document.querySelector("#roll-cocked-dice");
 const deselectDiceBtn = document.querySelector("#deselect-dice");
 const select1sBtn = document.querySelector("#select-1s");
 const select2sBtn = document.querySelector("#select-2s");
@@ -617,9 +615,7 @@ increaseDiceBtnx5.addEventListener("click", (e)=>{
 });
 rerollSelectedDiceBtn.addEventListener("click", rerollSelectedDice);
 selectCockedDiceBtn.addEventListener("click", selectCockedDice);
-// rollCockedDiceBtn.addEventListener("click", rollCockedDice);
 deselectDiceBtn.addEventListener("click", deselectAllDice);
-// clearDiceBtn.addEventListener("click", removeAllDice);
 select1sBtn.addEventListener("click", (e)=>{
     selectNDiceNumber(1);
 });
@@ -709,10 +705,9 @@ function initScene() {
     // renderer.toneMapping = THREE.ReinhardToneMapping;
     renderer.toneMapping = _three.LinearToneMapping;
     // renderer.toneMapping = THREE.CineonToneMapping;
-    // renderer.toneMappingExposure = 0.0002;
     // renderer.toneMappingExposure = 1.5;
     renderer.outputEncoding = _three.sRGBEncoding;
-    camera = new _three.PerspectiveCamera(18, canvas.clientWidth / canvas.clientHeight, 0.1, 300);
+    camera = new _three.PerspectiveCamera(18, canvas.clientWidth / canvas.clientHeight, 0.1, 3000);
     camera.position.set(0, 12, 5).multiplyScalar(7); //use this to set x, y, z axis
     scene = new _three.Scene();
     // LIGHTING******************************************************************
@@ -722,13 +717,12 @@ function initScene() {
     orbit = new (0, _orbitControlsJs.OrbitControls)(camera, canvas);
     orbit.enableDamping = true;
     orbit.dampingFactor = 0.025;
-    // orbit.enableZoom = false;
-    // orbit.enablePan = false;
-    // orbit.maxAzimuthAngle = 0.02 * Math.PI;
-    // orbit.minAzimuthAngle = -0.02 * Math.PI;
-    // orbit.maxPolarAngle = 0.12 * Math.PI;
-    // orbit.minPolarAngle = 0.1 * Math.PI;
-    // TODO: re enable this when done with scene
+    orbit.enableZoom = false;
+    orbit.enablePan = false;
+    orbit.maxAzimuthAngle = 0.01 * Math.PI;
+    orbit.minAzimuthAngle = -0.01 * Math.PI;
+    orbit.maxPolarAngle = 0.12 * Math.PI;
+    orbit.minPolarAngle = 0.1 * Math.PI;
     // createFloor();
     createDiceTray();
     // Create the dice
@@ -781,8 +775,8 @@ function createLights() {
     const topLight = new _three.DirectionalLight(0xffffff, 0.1);
     topLight.position.set(0, 15, 0);
     topLight.castShadow = true;
-    topLight.shadow.radius = 5; //TODO:
-    topLight.shadow.blurSamples = 25; //TODO: adjust these for soft shadows
+    topLight.shadow.radius = 2;
+    topLight.shadow.blurSamples = 25;
     topLight.shadow.mapSize.width = 2048;
     topLight.shadow.mapSize.height = 2048;
     topLight.shadow.camera.near = 5;
@@ -797,8 +791,8 @@ function createLights() {
     const pointLightTemplate = new _three.SpotLight(0xffffff, 0.25);
     // pointLightTemplate.position.set(-25, 20, -25);
     pointLightTemplate.castShadow = true;
-    pointLightTemplate.shadow.radius = 3; //TODO:
-    pointLightTemplate.shadow.blurSamples = 20; //TODO: adjust these for soft shadows
+    pointLightTemplate.shadow.radius = 3;
+    pointLightTemplate.shadow.blurSamples = 20;
     pointLightTemplate.shadow.mapSize.width = 2048;
     pointLightTemplate.shadow.mapSize.height = 2048;
     pointLightTemplate.shadow.camera.near = 5;
@@ -847,8 +841,6 @@ function createLights() {
     scene.add(pLightHelper4);
     const pLightHelper6 = new _three.PointLightHelper(pointLightWarm3);
     scene.add(pLightHelper6);
-    const pLightHelper7 = new _three.PointLightHelper(topLight);
-// scene.add(pLightHelper7);
 }
 // DICE TRAY*******************************************************************
 function createDiceTray() {
@@ -963,7 +955,6 @@ function createDiceMesh() {
     outerMesh.castShadow = true;
     outerMesh.receiveShadow = true;
     outerMesh.name = "diceSurface";
-    // outerMesh.material.side = THREE.FrontSide;
     diceMesh.name = "dice";
     diceMesh.add(innerMesh, outerMesh);
     diceMesh.receiveShadow = true;
@@ -1184,7 +1175,6 @@ function readRollResults() {
 // RESULTS REPORTING***************************************
 function saveRollResults(n) {
     rollResults[n - 1]++;
-    // console.log(rollResults);
     showRollResults();
 }
 function showRollResults() {
