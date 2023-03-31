@@ -669,11 +669,13 @@ const params = {
     dimpleDepth: 0.1,
     segments: 50,
     edgeRadius: 0.1,
-    pauseSimulation: false,
-    diceSurfaceColor: 0xeeeeee,
+    isPaused: true,
+    // diceSurfaceColor: 0xeeeeee,
+    diceSurfaceColor: 0xf0edc7,
     diceDimpleColor: 0x000000,
     diceSelectedColor: 0xe0115f,
-    trayColor: 0xff0000
+    trayColor: 0xff0000,
+    diceSpawnHeight: 30
 };
 const trayParams = {
     trayWidth: 30.5,
@@ -703,9 +705,12 @@ function initScene() {
     });
     renderer.setClearColor("#fff1e6");
     renderer.shadowMap.enabled = true; //enable the shadows for the scene, disabled by default
-    renderer.toneMapping = _three.ACESFilmicToneMapping;
-    // renderer.toneMappingExposure = 0.00015;
-    renderer.toneMappingExposure = 1;
+    // renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    // renderer.toneMapping = THREE.ReinhardToneMapping;
+    renderer.toneMapping = _three.LinearToneMapping;
+    // renderer.toneMapping = THREE.CineonToneMapping;
+    // renderer.toneMappingExposure = 0.0002;
+    // renderer.toneMappingExposure = 1.5;
     renderer.outputEncoding = _three.sRGBEncoding;
     camera = new _three.PerspectiveCamera(18, canvas.clientWidth / canvas.clientHeight, 0.1, 300);
     camera.position.set(0, 12, 5).multiplyScalar(7); //use this to set x, y, z axis
@@ -773,7 +778,7 @@ function createFloor() {
 }
 // LIGHTING********************************************************************
 function createLights() {
-    const topLight = new _three.DirectionalLight(0xffffff, 0.3);
+    const topLight = new _three.DirectionalLight(0xffffff, 0.1);
     topLight.position.set(0, 15, 0);
     topLight.castShadow = true;
     topLight.shadow.radius = 5; //TODO:
@@ -787,44 +792,48 @@ function createLights() {
     topLight.shadow.camera.left = -trayParams.trayWidth / 2 - 1;
     topLight.shadow.camera.right = trayParams.trayWidth / 2 + 1;
     // scene.add(topLight);
-    const ambientLight = new _three.AmbientLight(0xffffff, 0.2);
+    const ambientLight = new _three.AmbientLight(0xffffff, 0.05);
     // scene.add(ambientLight);
-    const pointLightTemplate = new _three.PointLight(0xffffff, 0.4);
-    pointLightTemplate.position.set(-25, 20, -25);
+    const pointLightTemplate = new _three.SpotLight(0xffffff, 0.25);
+    // pointLightTemplate.position.set(-25, 20, -25);
     pointLightTemplate.castShadow = true;
-    pointLightTemplate.shadow.radius = 8; //TODO:
-    pointLightTemplate.shadow.blurSamples = 30; //TODO: adjust these for soft shadows
+    pointLightTemplate.shadow.radius = 3; //TODO:
+    pointLightTemplate.shadow.blurSamples = 20; //TODO: adjust these for soft shadows
     pointLightTemplate.shadow.mapSize.width = 2048;
     pointLightTemplate.shadow.mapSize.height = 2048;
     pointLightTemplate.shadow.camera.near = 5;
     pointLightTemplate.shadow.camera.far = 400;
-    pointLightTemplate.shadow.camera.top = trayParams.trayHeight / 2 + 1;
-    pointLightTemplate.shadow.camera.bottom = -trayParams.trayHeight / 2 - 1;
-    pointLightTemplate.shadow.camera.left = -trayParams.trayWidth / 2 - 1;
-    pointLightTemplate.shadow.camera.right = trayParams.trayWidth / 2 + 1;
+    // pointLightTemplate.shadow.camera.top = trayParams.trayHeight / 2 + 1;
+    // pointLightTemplate.shadow.camera.bottom = -trayParams.trayHeight / 2 - 1;
+    // pointLightTemplate.shadow.camera.left = -trayParams.trayWidth / 2 - 1;
+    // pointLightTemplate.shadow.camera.right = trayParams.trayWidth / 2 + 1;
+    pointLightTemplate.shadow.camera.top = 30;
+    pointLightTemplate.shadow.camera.bottom = -30;
+    pointLightTemplate.shadow.camera.left = -30;
+    pointLightTemplate.shadow.camera.right = 30;
     const pointLightCool1 = pointLightTemplate.clone(); // Top Left
     pointLightCool1.color = new _three.Color(0x3300ff);
-    pointLightCool1.position.set(-25, 30, -25); // x, z, y
+    pointLightCool1.position.set(-20, 30, -25); // x, z, y
     scene.add(pointLightCool1);
     const pointLightCool2 = pointLightTemplate.clone(); // Center Left
-    pointLightCool2.color = new _three.Color(0xffab00);
-    pointLightCool2.position.set(-30, 30, 0);
+    pointLightCool2.color = new _three.Color(0x29105e);
+    pointLightCool2.position.set(-25, 30, 0);
     scene.add(pointLightCool2);
     const pointLightCool3 = pointLightTemplate.clone(); // Bottom Left
     pointLightCool3.color = new _three.Color(0x1d63ff);
-    pointLightCool3.position.set(-25, 30, 25);
+    pointLightCool3.position.set(-20, 30, 25);
     scene.add(pointLightCool3);
     const pointLightWarm1 = pointLightTemplate.clone(); // Top Right
     pointLightWarm1.color = new _three.Color(0xff721f);
-    pointLightWarm1.position.set(25, 30, -25);
+    pointLightWarm1.position.set(20, 30, -25);
     scene.add(pointLightWarm1);
     const pointLightWarm2 = pointLightTemplate.clone(); // Center Right
     pointLightWarm2.color = new _three.Color(0xffd600);
-    pointLightWarm2.position.set(30, 30, 0);
+    pointLightWarm2.position.set(25, 30, 0);
     scene.add(pointLightWarm2);
     const pointLightWarm3 = pointLightTemplate.clone(); // Bottom Right
     pointLightWarm3.color = new _three.Color(0xff4915);
-    pointLightWarm3.position.set(25, 30, 25);
+    pointLightWarm3.position.set(20, 30, 25);
     scene.add(pointLightWarm3);
     const pLightHelper = new _three.PointLightHelper(pointLightCool1);
     scene.add(pLightHelper);
@@ -839,7 +848,7 @@ function createLights() {
     const pLightHelper6 = new _three.PointLightHelper(pointLightWarm3);
     scene.add(pLightHelper6);
     const pLightHelper7 = new _three.PointLightHelper(topLight);
-    scene.add(pLightHelper7);
+// scene.add(pLightHelper7);
 }
 // DICE TRAY*******************************************************************
 function createDiceTray() {
@@ -931,18 +940,21 @@ function loadDiceTrayModel() {
             }
         });
         // TODO: trigger hiding of loading screen
+        params.isPaused = false;
         throwDice();
     });
 }
 // DICE MODEL******************************************************************
 function createDiceMesh() {
-    const boxMaterialOuter = new _three.MeshPhongMaterial({
-        color: params.diceSurfaceColor
+    const boxMaterialOuter = new _three.MeshStandardMaterial({
+        color: params.diceSurfaceColor,
+        roughness: 0.0,
+        metalness: 0.05
     });
     const boxMaterialInner = new _three.MeshStandardMaterial({
         color: params.diceDimpleColor,
         roughness: 0,
-        metalness: 1,
+        metalness: 0,
         side: _three.DoubleSide
     });
     const diceMesh = new _three.Group();
@@ -967,8 +979,9 @@ function createDice() {
     });
     physicsWorld.addBody(body);
     // Set starting position off screen
-    body.position = new _cannonEs.Vec3(0, 80, 0);
+    body.position = new _cannonEs.Vec3(0, params.diceSpawnHeight, 0);
     mesh.position.copy(body.position);
+    //
     return {
         mesh,
         body
@@ -1210,7 +1223,7 @@ function clearRollResults() {
 }
 // RENDER**********************************************************************
 function render(time) {
-    physicsWorld.fixedStep();
+    if (!params.isPaused) physicsWorld.fixedStep();
     for (const dice of diceArray){
         dice.mesh.position.copy(dice.body.position);
         dice.mesh.quaternion.copy(dice.body.quaternion);
