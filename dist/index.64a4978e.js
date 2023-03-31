@@ -787,29 +787,56 @@ function createLights() {
     topLight.shadow.camera.right = trayParams.trayWidth / 2 + 1;
     // scene.add(topLight);
     const ambientLight = new _three.AmbientLight(0xffffff, 1);
-    scene.add(ambientLight);
-    const pointLight = new _three.PointLight(0xfa1807, 1);
-    pointLight.position.set(-25, 20, -25);
-    pointLight.castShadow = true;
-    pointLight.shadow.radius = 6; //TODO:
-    pointLight.shadow.blurSamples = 30; //TODO: adjust these for soft shadows
-    pointLight.shadow.mapSize.width = 2048;
-    pointLight.shadow.mapSize.height = 2048;
-    pointLight.shadow.camera.near = 5;
-    pointLight.shadow.camera.far = 400;
-    pointLight.shadow.camera.top = trayParams.trayHeight / 2 + 1;
-    pointLight.shadow.camera.bottom = -trayParams.trayHeight / 2 - 1;
-    pointLight.shadow.camera.left = -trayParams.trayWidth / 2 - 1;
-    pointLight.shadow.camera.right = trayParams.trayWidth / 2 + 1;
-    scene.add(pointLight);
-    const pointLightBlue1 = pointLight.clone();
-    pointLightBlue1.color = 0x0c10f7;
-    pointLightBlue1.position.set(-25, 20, 25);
-    // scene.add(pointLightBlue1);
-    const pLightHelper = new _three.PointLightHelper(pointLight);
+    // scene.add(ambientLight);
+    const pointLightTemplate = new _three.PointLight(0xffffff, 0.5);
+    pointLightTemplate.position.set(-25, 20, -25);
+    pointLightTemplate.castShadow = true;
+    pointLightTemplate.shadow.radius = 8; //TODO:
+    pointLightTemplate.shadow.blurSamples = 30; //TODO: adjust these for soft shadows
+    pointLightTemplate.shadow.mapSize.width = 2048;
+    pointLightTemplate.shadow.mapSize.height = 2048;
+    pointLightTemplate.shadow.camera.near = 5;
+    pointLightTemplate.shadow.camera.far = 400;
+    pointLightTemplate.shadow.camera.top = trayParams.trayHeight / 2 + 1;
+    pointLightTemplate.shadow.camera.bottom = -trayParams.trayHeight / 2 - 1;
+    pointLightTemplate.shadow.camera.left = -trayParams.trayWidth / 2 - 1;
+    pointLightTemplate.shadow.camera.right = trayParams.trayWidth / 2 + 1;
+    const pointLightCool1 = pointLightTemplate.clone(); // Top Left
+    pointLightCool1.color = new _three.Color(0x3300ff);
+    pointLightCool1.position.set(-25, 30, -25); // x, z, y
+    scene.add(pointLightCool1);
+    const pointLightCool2 = pointLightTemplate.clone(); // Center Left
+    pointLightCool2.color = new _three.Color(0xffab00);
+    pointLightCool2.position.set(-30, 30, 0);
+    scene.add(pointLightCool2);
+    const pointLightCool3 = pointLightTemplate.clone(); // Bottom Left
+    pointLightCool3.color = new _three.Color(0x1d63ff);
+    pointLightCool3.position.set(-25, 30, 25);
+    scene.add(pointLightCool3);
+    const pointLightWarm1 = pointLightTemplate.clone(); // Top Right
+    pointLightWarm1.color = new _three.Color(0xff721f);
+    pointLightWarm1.position.set(25, 30, -25);
+    scene.add(pointLightWarm1);
+    const pointLightWarm2 = pointLightTemplate.clone(); // Center Right
+    pointLightWarm2.color = new _three.Color(0xffd600);
+    pointLightWarm2.position.set(30, 30, 0);
+    scene.add(pointLightWarm2);
+    const pointLightWarm3 = pointLightTemplate.clone(); // Bottom Right
+    pointLightWarm3.color = new _three.Color(0xff4915);
+    pointLightWarm3.position.set(25, 30, 25);
+    scene.add(pointLightWarm3);
+    const pLightHelper = new _three.PointLightHelper(pointLightCool1);
     scene.add(pLightHelper);
-    const pLightHelper2 = new _three.PointLightHelper(pointLightBlue1);
+    const pLightHelper2 = new _three.PointLightHelper(pointLightCool2);
     scene.add(pLightHelper2);
+    const pLightHelper5 = new _three.PointLightHelper(pointLightCool3);
+    scene.add(pLightHelper5);
+    const pLightHelper3 = new _three.PointLightHelper(pointLightWarm1);
+    scene.add(pLightHelper3);
+    const pLightHelper4 = new _three.PointLightHelper(pointLightWarm2);
+    scene.add(pLightHelper4);
+    const pLightHelper6 = new _three.PointLightHelper(pointLightWarm3);
+    scene.add(pLightHelper6);
 }
 // DICE TRAY*******************************************************************
 function createDiceTray() {
