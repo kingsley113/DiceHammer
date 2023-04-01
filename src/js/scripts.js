@@ -16,6 +16,7 @@ const trayUrl = new URL("../assets/diceTray.glb", import.meta.url);
 // UI ELEMENTS*****************************************************************
 const canvas = document.querySelector("#canvas");
 const scoreResult = document.querySelector("#score-result");
+const loadText = document.querySelector("#load-progress-text");
 
 const rollBtn = document.querySelector(".roll");
 const decreaseDiceBtn = document.querySelector("#dice-decrease");
@@ -155,7 +156,9 @@ function initScene() {
     canvas,
   });
 
-  renderer.setClearColor("#fff1e6");
+  renderer.setClearColor(0x04011c, 0);
+
+  // renderer.setClearColor("#fff1e6");
   renderer.shadowMap.enabled = true; //enable the shadows for the scene, disabled by default
   // renderer.toneMapping = THREE.ACESFilmicToneMapping;
   // renderer.toneMapping = THREE.ReinhardToneMapping;
@@ -207,7 +210,7 @@ function initScene() {
   // Debugging
   // cannonDebugger = new CannonDebugger(scene, physicsWorld);
 
-  // TODO: enable loading screen or have it on in the HTML by default
+  updateLoadingSplashScreen(0);
   loadDiceTrayModel();
 
   render();
@@ -222,6 +225,12 @@ function initPhysics() {
     gravity: new CANNON.Vec3(0, -params.gravityStrength, 0),
   });
   physicsWorld.defaultContactMaterial.restitution = params.diceRestitution;
+}
+
+// START THE SCENE*************************************************************
+function startScene() {
+  params.isPaused = false;
+  throwDice();
 }
 
 // FLOOR***********************************************************************
@@ -436,22 +445,31 @@ function createDiceTray() {
 function loadDiceTrayModel() {
   const loader = new GLTFLoader();
 
-  loader.load(trayUrl.href, function (gltf) {
-    const model = gltf.scene;
-    model.position.set(0, -4.5, 0);
-    scene.add(model);
-    model.traverse(function (object) {
-      if (object.isMesh) {
-        object.material.shading = THREE.SmoothShading;
-        object.castShadow = true;
-        object.receiveShadow = true;
-        object.material.side = THREE.FrontSide;
-      }
-    });
-    // TODO: trigger hiding of loading screen
-    params.isPaused = false;
-    throwDice();
-  });
+  loader.load(
+    trayUrl.href,
+    function (gltf) {
+      const model = gltf.scene;
+      model.position.set(0, -4.5, 0);
+      scene.add(model);
+      model.traverse(function (object) {
+        if (object.isMesh) {
+          object.material.shading = THREE.SmoothShading;
+          object.castShadow = true;
+          object.receiveShadow = true;
+          object.material.side = THREE.FrontSide;
+        }
+      });
+      setTimeout(startScene, 50);
+    },
+    function (xhr) {
+      //loading
+      // console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+      updateLoadingSplashScreen((xhr.loaded / xhr.total) * 100);
+    },
+    function (error) {
+      console.error(error);
+    }
+  );
 }
 
 // DICE MODEL******************************************************************
@@ -968,4 +986,8 @@ function rollDie(d, dIdx = 0) {
 
   // reset sleep state
   d.body.allowSleep = true;
+}
+
+function updateLoadingSplashScreen(perc) {
+  loadText.innerHTML = `Loading: ${Math.round(perc)}%`;
 }

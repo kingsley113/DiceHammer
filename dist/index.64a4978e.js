@@ -570,6 +570,7 @@ const trayUrl = new URL(require("dd4daaebc952987e"));
 // UI ELEMENTS*****************************************************************
 const canvas = document.querySelector("#canvas");
 const scoreResult = document.querySelector("#score-result");
+const loadText = document.querySelector("#load-progress-text");
 const rollBtn = document.querySelector(".roll");
 const decreaseDiceBtn = document.querySelector("#dice-decrease");
 const increaseDiceBtn = document.querySelector("#dice-increase");
@@ -699,7 +700,8 @@ function initScene() {
         antialias: true,
         canvas
     });
-    renderer.setClearColor("#fff1e6");
+    renderer.setClearColor(0x04011c, 0);
+    // renderer.setClearColor("#fff1e6");
     renderer.shadowMap.enabled = true; //enable the shadows for the scene, disabled by default
     // renderer.toneMapping = THREE.ACESFilmicToneMapping;
     // renderer.toneMapping = THREE.ReinhardToneMapping;
@@ -735,7 +737,7 @@ function initScene() {
     // throwDice();
     // Debugging
     // cannonDebugger = new CannonDebugger(scene, physicsWorld);
-    // TODO: enable loading screen or have it on in the HTML by default
+    updateLoadingSplashScreen(0);
     loadDiceTrayModel();
     render();
     updateDiceCountUI();
@@ -748,6 +750,11 @@ function initPhysics() {
         gravity: new _cannonEs.Vec3(0, -params.gravityStrength, 0)
     });
     physicsWorld.defaultContactMaterial.restitution = params.diceRestitution;
+}
+// START THE SCENE*************************************************************
+function startScene() {
+    params.isPaused = false;
+    throwDice();
 }
 // FLOOR***********************************************************************
 function createFloor() {
@@ -931,9 +938,13 @@ function loadDiceTrayModel() {
                 object.material.side = _three.FrontSide;
             }
         });
-        // TODO: trigger hiding of loading screen
-        params.isPaused = false;
-        throwDice();
+        setTimeout(startScene, 50);
+    }, function(xhr) {
+        //loading
+        // console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+        updateLoadingSplashScreen(xhr.loaded / xhr.total * 100);
+    }, function(error) {
+        console.error(error);
     });
 }
 // DICE MODEL******************************************************************
@@ -1368,6 +1379,9 @@ function rollDie(d, dIdx = 0) {
     );
     // reset sleep state
     d.body.allowSleep = true;
+}
+function updateLoadingSplashScreen(perc) {
+    loadText.innerHTML = `Loading: ${Math.round(perc)}%`;
 }
 
 },{"three":"ktPTu","three/examples/jsm/controls/OrbitControls.js":"7mqRv","cannon-es":"HCu3b","three/examples/jsm/utils/BufferGeometryUtils":"5o7x9","cannon-es-debugger":"a5KNJ","@parcel/transformer-js/src/esmodule-helpers.js":"50sMR","three/examples/jsm/loaders/GLTFLoader.js":"dVRsF","dd4daaebc952987e":"2QMuB"}],"ktPTu":[function(require,module,exports) {

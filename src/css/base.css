@@ -179,3 +179,16 @@ table {
   writing-mode: vertical-lr;
   text-orientation: sideways;
 }
+
+#load-splash-screen {
+  width: 100%;
+  height: 100%;
+  background-color: rgb(58, 30, 21);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#load-progress-text {
+  color: antiquewhite;
+}
