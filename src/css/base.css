@@ -1,6 +1,6 @@
 :root {
-  --ui-button-bkg-color: #c9c8c8ad;
-  --ui-panel-bkg-color: #313131c2;
+  --ui-button-bkg-color: #c9c8c856;
+  --ui-panel-bkg-color: #31313154;
 }
 
 html,
@@ -26,6 +26,9 @@ main {
   position: absolute;
   top: 0;
   left: 0;
+  /* font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif; */
+  font-family: "Copperplate Gothic Light";
 }
 
 button {
@@ -34,7 +37,9 @@ button {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 20px;
+  font-size: 18px;
+  font-family: "Copperplate Gothic Light";
+  font-weight: bold;
   border: #ffffffd3;
   border: 1px;
   border-style: solid;
@@ -183,7 +188,7 @@ table {
 #load-splash-screen {
   width: 100%;
   height: 100%;
-  background-color: rgb(58, 30, 21);
+  background-color: rgb(44, 46, 54);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -191,4 +196,8 @@ table {
 
 #load-progress-text {
   color: antiquewhite;
+}
+
+.text-panel {
+  text-align: center;
 }
