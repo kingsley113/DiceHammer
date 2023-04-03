@@ -8,12 +8,12 @@
     <link rel="stylesheet" type="text/css" href="css/base.css" />
   </head>
   <body>
-    <!-- <main> -->
+    <main>
     <canvas id="canvas"></canvas>
     <div id="load-splash-screen">
       <h1 id="load-progress-text">Loading: 0%</h1>
     </div>
-    <main class="unselectable">
+    <div id="ui-main" class="unselectable">
       <div id="top-container">
         <div id="dice-count-panel" class="panel-shadow">
           <button class="ui-btn" id="dice-decrease">-1</button>
@@ -112,10 +112,10 @@
           </div>
         </div>
       </div>
-    </main>
+    </div id="ui-main">
     <!-- <div class="content"> -->
     <!-- </div> -->
-    <!-- </main> -->
+    </main>
     <script src="./js/scripts.js" type="module"></script>
   </body>
 </html>

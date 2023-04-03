@@ -1,6 +1,8 @@
 :root {
   --ui-button-bkg-color: #c9c8c856;
   --ui-panel-bkg-color: #31313154;
+  --min-window-width: 1000px;
+  --min-window-height: 666px;
 }
 
 html, body {
@@ -11,13 +13,19 @@ html, body {
 canvas {
   width: 100%;
   height: 100%;
+  min-width: var(--min-window-width);
+  max-width: 150vh;
+  min-height: var(--min-window-height);
+  max-height: 66.6667vw;
   z-index: 2;
+  box-sizing: border-box;
+  border: 1px solid red;
   position: absolute;
   top: 0;
   left: 0;
 }
 
-main {
+#ui-main {
   height: 100%;
   width: 100%;
   flex-direction: column;
@@ -26,6 +34,15 @@ main {
   position: absolute;
   top: 0;
   left: 0;
+}
+
+main {
+  width: 100%;
+  min-width: var(--min-window-width);
+  max-width: 150vh;
+  height: 100%;
+  min-height: var(--min-window-height);
+  max-height: 66.6667vw;
 }
 
 button {

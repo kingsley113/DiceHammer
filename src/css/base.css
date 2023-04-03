@@ -1,6 +1,8 @@
 :root {
   --ui-button-bkg-color: #c9c8c856;
   --ui-panel-bkg-color: #31313154;
+  --min-window-width: 1000px;
+  --min-window-height: 666px;
 }
 
 html,
@@ -12,13 +14,24 @@ body {
 canvas {
   width: 100%;
   height: 100%;
+  min-width: var(--min-window-width);
+  max-width: calc(100vh * 3 / 2);
+
+  min-height: var(--min-window-height);
+  max-height: calc(100vw * 2 / 3);
+
   position: absolute;
   top: 0px;
   left: 0px;
   z-index: 2;
+  /* debug stuff below */
+  border-style: solid;
+  border-color: red;
+  border-width: 1px;
+  box-sizing: border-box;
 }
 
-main {
+#ui-main {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -29,6 +42,15 @@ main {
   /* font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif; */
   font-family: "Copperplate Gothic Light";
+}
+
+main {
+  width: 100%;
+  min-width: var(--min-window-width);
+  max-width: calc(100vh * 3 / 2);
+  height: 100%;
+  min-height: var(--min-window-height);
+  max-height: calc(100vw * 2 / 3);
 }
 
 button {
