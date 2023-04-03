@@ -605,6 +605,7 @@ const d3RunTotal = document.querySelector("#d3-run-total");
 const d4RunTotal = document.querySelector("#d4-run-total");
 const d5RunTotal = document.querySelector("#d5-run-total");
 const d6RunTotal = document.querySelector("#d6-run-total");
+const totalScore = document.querySelector("#total-score-text");
 rollBtn.addEventListener("click", throwDice);
 decreaseDiceBtn.addEventListener("click", removeDice);
 increaseDiceBtn.addEventListener("click", addDice);
@@ -1183,6 +1184,11 @@ function readRollResults() {
         if (dice.stable) saveRollResults(dice.rollResult);
     });
 }
+function calcTotalRollScore() {
+    let totalScore = 0;
+    for (const [i, roll] of rollResults.entries())totalScore += (i + 1) * roll;
+    return totalScore;
+}
 // RESULTS REPORTING***************************************
 function saveRollResults(n) {
     rollResults[n - 1]++;
@@ -1211,6 +1217,7 @@ function showRollResults() {
         runningTotal += rollResults[i];
         rollRunningTotalElArr[i].innerHTML = runningTotal;
     }
+    totalScore.innerHTML = calcTotalRollScore();
 }
 function clearRollResults() {
     rollResults = [

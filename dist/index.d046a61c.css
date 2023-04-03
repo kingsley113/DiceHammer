@@ -45,11 +45,7 @@ button {
   display: inline-block;
 }
 
-.small-label {
-  margin: 0;
-}
-
-h2, h3 {
+.small-label, h2, h3 {
   color: #fff;
   margin: 0;
 }
