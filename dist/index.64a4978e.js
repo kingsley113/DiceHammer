@@ -571,6 +571,7 @@ const trayUrl = new URL(require("dd4daaebc952987e"));
 const canvas = document.querySelector("#canvas");
 const scoreResult = document.querySelector("#score-result");
 const loadText = document.querySelector("#load-progress-text");
+const helpModal = document.querySelector("#help-modal-container");
 const rollBtn = document.querySelector(".roll");
 const decreaseDiceBtn = document.querySelector("#dice-decrease");
 const increaseDiceBtn = document.querySelector("#dice-increase");
@@ -606,6 +607,7 @@ const d4RunTotal = document.querySelector("#d4-run-total");
 const d5RunTotal = document.querySelector("#d5-run-total");
 const d6RunTotal = document.querySelector("#d6-run-total");
 const totalScore = document.querySelector("#total-score-text");
+const helpBtn = document.querySelector("#help-btn");
 rollBtn.addEventListener("click", throwDice);
 decreaseDiceBtn.addEventListener("click", removeDice);
 increaseDiceBtn.addEventListener("click", addDice);
@@ -655,6 +657,7 @@ roll6UpBtn.addEventListener("click", (e)=>{
     rollNPlusDice(6);
 });
 rollSelectedDiceBtn.addEventListener("click", rollSelectedDice);
+helpBtn.addEventListener("click", toggleHelpModal);
 // PARAMETERS******************************************************************
 let renderer, camera, scene, orbit, diceMesh, physicsWorld;
 let cannonDebugger;
@@ -1389,6 +1392,10 @@ function rollDie(d, dIdx = 0) {
 }
 function updateLoadingSplashScreen(perc) {
     loadText.innerHTML = `Loading: ${Math.round(perc)}%`;
+}
+function toggleHelpModal() {
+    if (helpModal.style.display === "none") helpModal.style.display = "block";
+    else helpModal.style.display = "none";
 }
 
 },{"three":"ktPTu","three/examples/jsm/controls/OrbitControls.js":"7mqRv","cannon-es":"HCu3b","three/examples/jsm/utils/BufferGeometryUtils":"5o7x9","cannon-es-debugger":"a5KNJ","@parcel/transformer-js/src/esmodule-helpers.js":"50sMR","three/examples/jsm/loaders/GLTFLoader.js":"dVRsF","dd4daaebc952987e":"2QMuB"}],"ktPTu":[function(require,module,exports) {

@@ -3,6 +3,7 @@
   --ui-panel-bkg-color: #31313154;
   --min-window-width: 1000px;
   --min-window-height: 666px;
+  --font-color: #faebd7;
 }
 
 html,
@@ -53,7 +54,7 @@ main {
 
 button {
   background-color: var(--ui-button-bkg-color);
-  color: white;
+  color: var(--font-color);
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -72,13 +73,13 @@ button {
 
 .small-label {
   margin: 0;
-  color: white;
+  color: var(--font-color);
 }
 
 h2,
 h3 {
   margin: 0;
-  color: white;
+  color: var(--font-color);
 }
 
 .lr-margin {
@@ -195,7 +196,7 @@ td {
 }
 
 table {
-  color: white;
+  color: var(--font-color);
 }
 
 .narrow {
@@ -225,7 +226,7 @@ table {
 }
 
 #load-progress-text {
-  color: #faebd7;
+  color: var(--font-color);
   text-align: center;
 }
 
@@ -257,4 +258,154 @@ table {
 
 .margin-right {
   margin-right: 20px;
+}
+
+.help-icon {
+  position: absolute;
+  margin-top: 100%;
+  left: 100%;
+  /* z-index: 6; */
+  /* right: 0; */
+  bottom: 0;
+  width: 50px;
+  height: 50px;
+}
+
+/* Help Modal Window */
+
+#help-btn {
+  /* position: fixed; */
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  right: 5px;
+  bottom: 5px;
+  z-index: 6;
+}
+
+#help-modal-container {
+  /* TODO: add this line back when complete */
+  /* display: none; */
+  position: absolute;
+  z-index: 10;
+  left: 50%;
+  top: 50%;
+  width: 600px;
+  height: 600px;
+  transform: translate(-50%, -50%);
+
+  border-radius: 15;
+  background-color: var(--ui-panel-bkg-color);
+  backdrop-filter: blur(4);
+
+  color: var(--font-color);
+
+  /* debug stuff */
+  /* box-sizing: border-box;
+  border-color: red;
+  border-style: solid;
+  border-width: 1px; */
+}
+
+#help-panel-tl {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 60px;
+  width: 250px;
+
+  background-color: var(--ui-button-bkg-color);
+  border-radius: 15 0 15 0;
+  display: flex;
+  /* flex-direction: column; */
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+#help-panel-tr {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 60px;
+  width: 250px;
+
+  background-color: var(--ui-button-bkg-color);
+  border-radius: 0 15 0 15;
+  display: flex;
+  /* flex-direction: column; */
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+#help-panel-r {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  height: 300px;
+  width: 200px;
+  transform: translate(0%, -50%);
+  padding: 0 10px;
+
+  background-color: var(--ui-button-bkg-color);
+  border-radius: 15 0 0 15;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  justify-content: center;
+}
+
+#help-panel-btm {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  height: 120px;
+  width: 450px;
+  transform: translate(-50%, 0%);
+
+  background-color: var(--ui-button-bkg-color);
+  border-radius: 15 15 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#help-panel-l {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  height: 300px;
+  width: 150px;
+  transform: translate(0%, -50%);
+  padding: 0 10px;
+
+  background-color: var(--ui-button-bkg-color);
+  border-radius: 0 15 15 0;
+  display: flex;
+  /* flex-direction: column; */
+  align-items: center;
+  justify-content: center;
+}
+
+#help-panel-ctr {
+  position: absolute;
+  top: 65%;
+  left: 48%;
+  height: 200px;
+  width: 200px;
+  transform: translate(-50%, -50%);
+  padding: 0 10px;
+}
+
+#dh-help-logo {
+  width: 250px;
+  filter: invert(93%) sepia(11%) saturate(500%) hue-rotate(334deg)
+    brightness(102%) contrast(96%);
+
+  position: absolute;
+  left: 50%;
+  top: 105px;
+  transform: translate(-50%, -50%);
 }

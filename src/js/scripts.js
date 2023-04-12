@@ -17,6 +17,7 @@ const trayUrl = new URL("../assets/diceTray.glb", import.meta.url);
 const canvas = document.querySelector("#canvas");
 const scoreResult = document.querySelector("#score-result");
 const loadText = document.querySelector("#load-progress-text");
+const helpModal = document.querySelector("#help-modal-container");
 
 const rollBtn = document.querySelector(".roll");
 const decreaseDiceBtn = document.querySelector("#dice-decrease");
@@ -56,6 +57,8 @@ const d4RunTotal = document.querySelector("#d4-run-total");
 const d5RunTotal = document.querySelector("#d5-run-total");
 const d6RunTotal = document.querySelector("#d6-run-total");
 const totalScore = document.querySelector("#total-score-text");
+
+const helpBtn = document.querySelector("#help-btn");
 
 rollBtn.addEventListener("click", throwDice);
 
@@ -110,6 +113,8 @@ roll6UpBtn.addEventListener("click", (e) => {
 });
 
 rollSelectedDiceBtn.addEventListener("click", rollSelectedDice);
+
+helpBtn.addEventListener("click", toggleHelpModal);
 
 // PARAMETERS******************************************************************
 let renderer, camera, scene, orbit, diceMesh, physicsWorld;
@@ -1000,4 +1005,12 @@ function rollDie(d, dIdx = 0) {
 
 function updateLoadingSplashScreen(perc) {
   loadText.innerHTML = `Loading: ${Math.round(perc)}%`;
+}
+
+function toggleHelpModal() {
+  if (helpModal.style.display === "none") {
+    helpModal.style.display = "block";
+  } else {
+    helpModal.style.display = "none";
+  }
 }
