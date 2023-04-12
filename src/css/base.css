@@ -223,6 +223,9 @@ table {
 
 #splash-screen-content {
   z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 #load-progress-text {
@@ -284,8 +287,7 @@ table {
 }
 
 #help-modal-container {
-  /* TODO: add this line back when complete */
-  /* display: none; */
+  display: none;
   position: absolute;
   z-index: 10;
   left: 50%;
@@ -301,10 +303,10 @@ table {
   color: var(--font-color);
 
   /* debug stuff */
-  /* box-sizing: border-box;
-  border-color: red;
+  box-sizing: border-box;
+  border-color: var(--font-color);
   border-style: solid;
-  border-width: 1px; */
+  border-width: 1px;
 }
 
 #help-panel-tl {
@@ -408,4 +410,16 @@ table {
   left: 50%;
   top: 105px;
   transform: translate(-50%, -50%);
+}
+
+#dh-logo {
+  width: 150px;
+  filter: invert(93%) sepia(11%) saturate(500%) hue-rotate(334deg)
+    brightness(102%) contrast(96%) opacity(50%);
+
+  position: absolute;
+  left: 50%;
+  top: 5px;
+  transform: translate(-50%, 0%);
+  z-index: 10;
 }

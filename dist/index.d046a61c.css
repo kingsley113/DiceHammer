@@ -212,6 +212,9 @@ table {
 
 #splash-screen-content {
   z-index: 2;
+  flex-direction: column;
+  justify-content: center;
+  display: flex;
 }
 
 #load-progress-text {
@@ -269,7 +272,12 @@ table {
   -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   color: var(--font-color);
+  box-sizing: border-box;
+  border-color: var(--font-color);
+  border-style: solid;
+  border-width: 1px;
   border-radius: 15px;
+  display: none;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -366,6 +374,16 @@ table {
   top: 105px;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+#dh-logo {
+  width: 150px;
+  filter: invert(93%) sepia(11%) saturate(500%) hue-rotate(334deg) brightness(102%) contrast(96%) opacity(50%);
+  z-index: 10;
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translate(-50%);
 }
 
 /*# sourceMappingURL=index.d046a61c.css.map */
