@@ -117,8 +117,8 @@ let cannonDebugger;
 
 const params = {
   diceCount: 20,
-  gravityStrength: 50,
-  diceRestitution: 0.5, // dice 'bounciness'
+  gravityStrength: 80,
+  diceRestitution: 0.45, // dice 'bounciness'
   diceThrowForce: 10,
   dimpleRadius: 0.16,
   dimpleDepth: 0.1,
