@@ -9,9 +9,17 @@
   </head>
   <body>
     <main>
-    <canvas id="canvas"></canvas>
+			<div id="canvas-container">
+
+				<canvas id="canvas"></canvas>
+			</div>
     <div id="load-splash-screen">
-      <h1 id="load-progress-text">Loading: 0%</h1>
+			<div id="splash-screen-content">
+
+				<img src="/diceHammerLogo.deecf0c8.svg" alt="DiceHammer" id="load-dh-logo">
+				<h1 id="load-progress-text">Loading: 0%</h1>
+			</div>
+			<div id="load-background"></div>
     </div>
     <div id="ui-main" class="unselectable">
       <div id="top-container">
@@ -105,7 +113,7 @@
           <button class="ui-btn" id="reroll-selected-dice">
             Reroll Selected
           </button>
-          <button class="ui-btn" id="roll-selected-dice">Roll Selected</button>
+          <button class="ui-btn margin-right" id="roll-selected-dice">Roll Selected</button>
           <div>
             <!-- <button class="ui-btn" id="remove-all-dice">Clear Dice</button> -->
             <!-- <button class="ui-btn" id="roll-cocked-dice">Reroll Cocked Dice</button> -->

@@ -11,24 +11,25 @@ body {
   height: 100%;
 }
 
+body {
+  background-color: black;
+  font-family: "Copperplate Gothic Light";
+}
+
 canvas {
   width: 100%;
   height: 100%;
-  min-width: var(--min-window-width);
   max-width: calc(100vh * 3 / 2);
 
-  min-height: var(--min-window-height);
-  max-height: calc(100vw * 2 / 3);
+  z-index: 3;
+}
 
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  z-index: 2;
-  /* debug stuff below */
-  border-style: solid;
-  border-color: red;
-  border-width: 1px;
-  box-sizing: border-box;
+#canvas-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  text-align: center;
 }
 
 #ui-main {
@@ -39,18 +40,15 @@ canvas {
   position: absolute;
   top: 0;
   left: 0;
-  /* font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif; */
-  font-family: "Copperplate Gothic Light";
+  min-width: var(--min-window-width);
+  min-height: var(--min-window-height);
 }
 
 main {
   width: 100%;
   min-width: var(--min-window-width);
-  max-width: calc(100vh * 3 / 2);
   height: 100%;
   min-height: var(--min-window-height);
-  max-height: calc(100vw * 2 / 3);
 }
 
 button {
@@ -68,7 +66,6 @@ button {
   border-radius: 8px;
   min-width: 42px;
   height: 42px;
-  /* padding: 6px; */
   margin: 7px;
   filter: drop-shadow(4 4 3 black);
 }
@@ -94,25 +91,27 @@ h3 {
   display: flex;
   justify-content: space-between;
   flex-basis: 3rem;
-  z-index: 2;
+  z-index: 5;
 }
 #mid-container {
   display: flex;
   justify-content: space-between;
   flex-grow: 1;
   align-items: center;
-  z-index: 2;
+  z-index: 5;
   pointer-events: none;
   background: transparent;
 }
 #bottom-container {
   flex-basis: 5rem;
-  z-index: 2;
+  z-index: 5;
+  display: flex;
+  justify-content: center;
 }
 
 /* PANELS ************************************************* */
 #left-panel {
-  height: 60%;
+  height: 410px;
   background-color: var(--ui-panel-bkg-color);
   flex-basis: 5rem;
   border-radius: 0 15 15 0;
@@ -124,23 +123,23 @@ h3 {
 }
 
 #right-panel {
-  height: 60%;
+  height: 410px;
   background-color: var(--ui-panel-bkg-color);
   flex-basis: 5rem;
   border-radius: 15 0 0 15;
   pointer-events: all;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 #bottom-panel {
-  padding-left: 3rem;
-  padding-right: 3rem;
-  margin-left: 3rem;
-  margin-right: 3rem;
   border-radius: 15 15 0 0;
   background-color: var(--ui-panel-bkg-color);
   height: 100%;
   display: flex;
   align-items: center;
+  width: 1000px;
 }
 
 #dice-count-panel {
@@ -177,7 +176,7 @@ h3 {
 #dice-count-text {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: center;
 }
 
 .dice-img {
@@ -211,16 +210,51 @@ table {
 #load-splash-screen {
   width: 100%;
   height: 100%;
-  background-color: rgb(44, 46, 54);
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#splash-screen-content {
+  z-index: 2;
 }
 
 #load-progress-text {
-  color: antiquewhite;
+  color: #faebd7;
+  text-align: center;
+}
+
+#load-background {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(
+      to right,
+      rgba(25, 3, 124, 0.5),
+      rgba(185, 68, 1, 0.432)
+    ),
+    url("../img/cathedralBackground.png");
+  background-color: rgb(44, 46, 54);
+  background-size: cover;
+  filter: blur(15) grayscale(50%);
+}
+
+#load-dh-logo {
+  width: 300px;
+  filter: invert(93%) sepia(11%) saturate(500%) hue-rotate(334deg)
+    brightness(102%) contrast(96%);
 }
 
 .text-panel {
   text-align: center;
+}
+
+.margin-right {
+  margin-right: 20px;
 }
