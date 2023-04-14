@@ -18,9 +18,6 @@ import {
 import * as BufferGeometryUtils from "https://unpkg.com/three@0.150.1/examples/jsm/utils/BufferGeometryUtils";
 import { GLTFLoader } from "https://unpkg.com/three@0.150.1/examples/jsm/loaders/GLTFLoader.js"; //needed for 3d model import
 
-import CannonDebugger from "cannon-es-debugger";
-import { Vec3 } from "cannon-es";
-
 // DICE TRAY MODEL*************************************************************
 const trayUrl = new URL("../assets/diceTray.glb", import.meta.url);
 
@@ -221,11 +218,6 @@ function initScene() {
   }
 
   renderer.domElement.addEventListener("click", selectDice, false);
-
-  // throwDice();
-
-  // Debugging
-  // cannonDebugger = new CannonDebugger(scene, physicsWorld);
 
   updateLoadingSplashScreen(0);
   loadDiceTrayModel();
@@ -802,8 +794,6 @@ function render(time) {
   }
 
   orbit.update(); //call update after everytime we change position of camera
-
-  // cannonDebugger.update();
 
   // Redraw scene
   updateSceneSize();
