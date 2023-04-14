@@ -1,5 +1,5 @@
-import * as THREE from "three";
-import * as CANNON from "cannon-es";
+import * as THREE from "./node_module_dist/three";
+import * as CANNON from "./node_modules_dist/cannon-es";
 import {
   MapControls,
   OrbitControls,
