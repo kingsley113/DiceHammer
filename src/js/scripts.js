@@ -15,7 +15,8 @@ import { GLTFLoader } from "gltfLoader"; //needed for 3d model import
 // import { GLTFLoader } from "https://unpkg.com/three@0.150.1/examples/jsm/loaders/GLTFLoader.js"; //needed for 3d model import
 
 // DICE TRAY MODEL*************************************************************
-const trayUrl = new URL("../assets/diceTray.glb", import.meta.url);
+// const trayUrl = new URL("../assets/diceTray.glb", import.meta.url);
+const trayUrl = new URL("../assets/diceTrayNoTerrain.glb", import.meta.url);
 
 // UI ELEMENTS*****************************************************************
 const canvas = document.querySelector("#canvas");
@@ -455,7 +456,7 @@ function loadDiceTrayModel() {
     function (gltf) {
       const model = gltf.scene;
       model.position.set(0, -4.5, 0);
-      // scene.add(model);
+      scene.add(model);
       model.traverse(function (object) {
         if (object.isMesh) {
           object.material.shading = THREE.SmoothShading;
