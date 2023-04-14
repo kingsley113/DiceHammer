@@ -125,7 +125,7 @@ let renderer, camera, scene, orbit, diceMesh, physicsWorld;
 let cannonDebugger;
 
 const params = {
-  diceCount: 20,
+  diceCount: 10,
   gravityStrength: 80,
   diceRestitution: 0.45, // dice 'bounciness'
   diceThrowForce: 10,
@@ -262,31 +262,31 @@ function createFloor() {
 
 // LIGHTING********************************************************************
 function createLights() {
-  const topLight = new THREE.DirectionalLight(0xffffff, 0.1);
-  topLight.position.set(0, 15, 0);
-  topLight.castShadow = true;
-  topLight.shadow.radius = 2;
-  topLight.shadow.blurSamples = 25;
-  topLight.shadow.mapSize.width = 2048;
-  topLight.shadow.mapSize.height = 2048;
-  topLight.shadow.camera.near = 5;
-  topLight.shadow.camera.far = 400;
-  topLight.shadow.camera.top = trayParams.trayHeight / 2 + 1;
-  topLight.shadow.camera.bottom = -trayParams.trayHeight / 2 - 1;
-  topLight.shadow.camera.left = -trayParams.trayWidth / 2 - 1;
-  topLight.shadow.camera.right = trayParams.trayWidth / 2 + 1;
+  // const topLight = new THREE.DirectionalLight(0xffffff, 0.1);
+  // topLight.position.set(0, 15, 0);
+  // topLight.castShadow = true;
+  // topLight.shadow.radius = 2;
+  // topLight.shadow.blurSamples = 25;
+  // topLight.shadow.mapSize.width = 2048;
+  // topLight.shadow.mapSize.height = 2048;
+  // topLight.shadow.camera.near = 5;
+  // topLight.shadow.camera.far = 400;
+  // topLight.shadow.camera.top = trayParams.trayHeight / 2 + 1;
+  // topLight.shadow.camera.bottom = -trayParams.trayHeight / 2 - 1;
+  // topLight.shadow.camera.left = -trayParams.trayWidth / 2 - 1;
+  // topLight.shadow.camera.right = trayParams.trayWidth / 2 + 1;
   // scene.add(topLight);
 
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.05);
+  // const ambientLight = new THREE.AmbientLight(0xffffff, 0.05);
   // scene.add(ambientLight);
 
   const pointLightTemplate = new THREE.SpotLight(0xffffff, 0.25);
   // pointLightTemplate.position.set(-25, 20, -25);
   pointLightTemplate.castShadow = true;
   pointLightTemplate.shadow.radius = 3;
-  pointLightTemplate.shadow.blurSamples = 20;
-  pointLightTemplate.shadow.mapSize.width = 2048;
-  pointLightTemplate.shadow.mapSize.height = 2048;
+  pointLightTemplate.shadow.blurSamples = 5;
+  // pointLightTemplate.shadow.mapSize.width = 2048;
+  // pointLightTemplate.shadow.mapSize.height = 2048;
   pointLightTemplate.shadow.camera.near = 5;
   pointLightTemplate.shadow.camera.far = 400;
   // pointLightTemplate.shadow.camera.top = trayParams.trayHeight / 2 + 1;
@@ -328,18 +328,18 @@ function createLights() {
   pointLightWarm3.position.set(20, 30, 25);
   scene.add(pointLightWarm3);
 
-  const pLightHelper = new THREE.PointLightHelper(pointLightCool1);
-  scene.add(pLightHelper);
-  const pLightHelper2 = new THREE.PointLightHelper(pointLightCool2);
-  scene.add(pLightHelper2);
-  const pLightHelper5 = new THREE.PointLightHelper(pointLightCool3);
-  scene.add(pLightHelper5);
-  const pLightHelper3 = new THREE.PointLightHelper(pointLightWarm1);
-  scene.add(pLightHelper3);
-  const pLightHelper4 = new THREE.PointLightHelper(pointLightWarm2);
-  scene.add(pLightHelper4);
-  const pLightHelper6 = new THREE.PointLightHelper(pointLightWarm3);
-  scene.add(pLightHelper6);
+  // const pLightHelper = new THREE.PointLightHelper(pointLightCool1);
+  // scene.add(pLightHelper);
+  // const pLightHelper2 = new THREE.PointLightHelper(pointLightCool2);
+  // scene.add(pLightHelper2);
+  // const pLightHelper5 = new THREE.PointLightHelper(pointLightCool3);
+  // scene.add(pLightHelper5);
+  // const pLightHelper3 = new THREE.PointLightHelper(pointLightWarm1);
+  // scene.add(pLightHelper3);
+  // const pLightHelper4 = new THREE.PointLightHelper(pointLightWarm2);
+  // scene.add(pLightHelper4);
+  // const pLightHelper6 = new THREE.PointLightHelper(pointLightWarm3);
+  // scene.add(pLightHelper6);
 }
 
 // DICE TRAY*******************************************************************
@@ -482,7 +482,7 @@ function createDiceMesh() {
   const boxMaterialOuter = new THREE.MeshStandardMaterial({
     color: params.diceSurfaceColor,
     roughness: 0.0,
-    metalness: 0.05,
+    metalness: 0.0,
   });
   const boxMaterialInner = new THREE.MeshStandardMaterial({
     color: params.diceDimpleColor,
