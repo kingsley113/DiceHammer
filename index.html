@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Dice Hammer</title>
-    <link rel="stylesheet" type="text/css" href="/index.d046a61c.css">
+    <link rel="stylesheet" type="text/css" href="css/base.css" />
   </head>
   <body>
     <main>
@@ -16,7 +16,7 @@
 			<div id="load-splash-screen">
 				<div id="splash-screen-content">
 					
-				<img src="/diceHammerLogo.deecf0c8.svg" alt="DiceHammer" id="load-dh-logo">
+				<img src="./img/diceHammerLogo.svg" alt="DiceHammer" id="load-dh-logo"/>
 				<h2>Dice tray simulator</h2>
 				<h1 id="load-progress-text">Loading: 0%</h1>
 			</div>
@@ -24,7 +24,7 @@
     </div>
     <div id="ui-main" class="unselectable">
 			<div id="top-container">
-				<img src="/diceHammerLogo.deecf0c8.svg" alt="DiceHammer" id="dh-logo">
+				<img src="./img/diceHammerLogo.svg" alt="DiceHammer" id="dh-logo"/>
         <div id="dice-count-panel" class="panel-shadow">
           <button class="ui-btn" id="dice-decrease">-1</button>
           <button class="ui-btn" id="dice-decrease-5">-5</button>
@@ -44,7 +44,7 @@
       <div id="mid-container">
         <div id="left-panel" class="panel-shadow">
           <h3 class="text-panel">
-            New<br>
+            New<br />
             Roll
           </h3>
           <button class="ui-btn narrow" id="roll-6up">6+</button>
@@ -64,37 +64,37 @@
             </tr>
             <tr>
               <td id="d6-count"></td>
-              <td><img src="/dice-6.271740a2.png" class="dice-img rotate90"></td>
+              <td><img src="./img/dice-6.png" class="dice-img rotate90" /></td>
               <td id="d6-run-total"></td>
             </tr>
             <tr>
               <td id="d5-count"></td>
-              <td><img src="/dice-5.6e4b4260.png" class="dice-img"></td>
+              <td><img src="./img/dice-5.png" class="dice-img" /></td>
               <td id="d5-run-total"></td>
             </tr>
             <tr>
               <td id="d4-count"></td>
-              <td><img src="/dice-4.76446bc8.png" class="dice-img"></td>
+              <td><img src="./img/dice-4.png" class="dice-img" /></td>
               <td id="d4-run-total"></td>
             </tr>
             <tr>
               <td id="d3-count"></td>
-              <td><img src="/dice-3.a54c165f.png" class="dice-img"></td>
+              <td><img src="./img/dice-3.png" class="dice-img" /></td>
               <td id="d3-run-total"></td>
             </tr>
             <tr>
               <td id="d2-count"></td>
-              <td><img src="/dice-2.96cb7414.png" class="dice-img"></td>
+              <td><img src="./img/dice-2.png" class="dice-img" /></td>
               <td id="d2-run-total"></td>
             </tr>
             <tr>
               <td id="d1-count"></td>
-              <td><img src="/dice-1.e468b2b2.png" class="dice-img"></td>
+              <td><img src="./img/dice-1.png" class="dice-img" /></td>
               <td id="d1-run-total"></td>
             </tr>
           </table>
           <div class="text-panel">
-					<br>
+					</br>
             <h3>Total Pts</h3>
             <div id="total-score-text" class="small-label"></div>
           </div>
@@ -124,15 +124,15 @@
       </div>
 			<!-- <div id="help-icon"> -->
 			<!-- </div> -->
-    </div>
+    </div id="ui-main">
 		<button class="ui-btn" id="help-btn">?</button>
     <!-- <div class="content"> -->
     <!-- </div> -->
 		<div id="help-modal-container" class="panel-shadow">
-			<img src="/diceHammerLogo.deecf0c8.svg" alt="DiceHammer" id="dh-help-logo">
+			<img src="./img/diceHammerLogo.svg" alt="DiceHammer" id="dh-help-logo"/>
 			<div id="help-panel-ctr">
 				<p>&copy Cameron Kingsley, Studio One Three, 2023. All rights reserved</p>
-				<p style="font-size: small"> DiceHammer logo font: <br>&copy Joffre LeFevre, Aboutype, Inc., 2001, 2007. All rights reserved.</p>
+				<p style="font-size: small;"> DiceHammer logo font: </br>&copy Joffre LeFevre, Aboutype, Inc., 2001, 2007. All rights reserved.</p>
 			</div>
 			
 			<div id="help-panel-tl" class="panel-shadow">
@@ -176,6 +176,6 @@
 			</div>
 		</div>
     </main>
-    <script src="/index.64a4978e.js" defer=""></script>
+    <script src="./js/scripts.js" type="module"></script>
   </body>
 </html>
