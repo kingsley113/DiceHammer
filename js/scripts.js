@@ -1001,7 +1001,7 @@ function rollDie(d, dIdx = 0) {
 }
 
 function updateLoadingSplashScreen(perc) {
-  loadText.innerHTML = `Loading: ${Math.round(perc)}%`;
+  loadText.innerHTML = `Loading: ${Math.min(Math.round(perc), 100)}%`;
 }
 
 function toggleHelpModal() {
