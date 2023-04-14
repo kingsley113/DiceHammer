@@ -1,11 +1,22 @@
-import * as THREE from "./node_module_dist/three";
-import * as CANNON from "./node_modules_dist/cannon-es";
+/*
+import * as THREE from "three";
+import * as CANNON from "cannon-es";
 import {
   MapControls,
   OrbitControls,
-} from "./node_module_dist/three/examples/jsm/controls/OrbitControls.js";
-import * as BufferGeometryUtils from "./node_module_dist/three/examples/jsm/utils/BufferGeometryUtils";
-import { GLTFLoader } from "./node_module_dist/three/examples/jsm/loaders/GLTFLoader.js"; //needed for 3d model import
+} from "three/examples/jsm/controls/OrbitControls.js";
+import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js"; //needed for 3d model import
+*/
+
+import * as THREE from "https://unpkg.com/three@0.150.1/build/three.module.js";
+import * as CANNON from "https://unpkg.com/cannon-es@0.20.0/dist/cannon-es.js";
+import {
+  MapControls,
+  OrbitControls,
+} from "https://unpkg.com/three@0.150.1/examples/jsm/controls/OrbitControls.js";
+import * as BufferGeometryUtils from "https://unpkg.com/three@0.150.1/examples/jsm/utils/BufferGeometryUtils";
+import { GLTFLoader } from "https://unpkg.com/three@0.150.1/examples/jsm/loaders/GLTFLoader.js"; //needed for 3d model import
 
 import CannonDebugger from "cannon-es-debugger";
 import { Vec3 } from "cannon-es";
