@@ -3,9 +3,9 @@ import * as CANNON from "./node_modules_dist/cannon-es";
 import {
   MapControls,
   OrbitControls,
-} from "three/examples/jsm/controls/OrbitControls.js";
-import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js"; //needed for 3d model import
+} from "./node_module_dist/three/examples/jsm/controls/OrbitControls.js";
+import * as BufferGeometryUtils from "./node_module_dist/three/examples/jsm/utils/BufferGeometryUtils";
+import { GLTFLoader } from "./node_module_dist/three/examples/jsm/loaders/GLTFLoader.js"; //needed for 3d model import
 
 import CannonDebugger from "cannon-es-debugger";
 import { Vec3 } from "cannon-es";
