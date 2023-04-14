@@ -455,7 +455,7 @@ function loadDiceTrayModel() {
     function (gltf) {
       const model = gltf.scene;
       model.position.set(0, -4.5, 0);
-      scene.add(model);
+      // scene.add(model);
       model.traverse(function (object) {
         if (object.isMesh) {
           object.material.shading = THREE.SmoothShading;
