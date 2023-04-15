@@ -1006,6 +1006,7 @@ function updateLoadingSplashScreen(perc) {
 }
 
 function toggleHelpModal() {
+  console.log(helpModal.style.display);
   if (helpModal.style.display === "none") {
     helpModal.style.display = "block";
   } else {

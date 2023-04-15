@@ -6,6 +6,13 @@
   --font-color: #faebd7;
 }
 
+/* @import url("https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&display=swap"); */
+
+/* @font-face {
+  font-family: copperplateGL;
+  src: local("./fonts/coprgtl.ttf");
+} */
+
 html,
 body {
   margin: 0;
@@ -14,23 +21,19 @@ body {
 
 body {
   background-color: black;
-  font-family: "Copperplate Gothic Light";
+  /* font-family: "Copperplate Gothic Light"; */
+  /* font-family: copperplateGL; */
+  /* font-family: "IM Fell English SC", serif; */
+  font-family: "Cormorant SC", serif;
+  font-size: large;
 }
 
 canvas {
   width: 100%;
   height: 100%;
-  max-width: calc(100vh * 3 / 2);
+  /* max-width: calc(100vh * 3 / 2); */
 
   z-index: 3;
-
-  /* border-style: double; */
-  /* border-width: 50; */
-  border-color: rgb(44, 18, 0);
-  box-sizing: border-box;
-
-  /* filter: drop-shadow(5px 5px 5px black); */
-  box-shadow: 0 0 20px 5px black;
 }
 
 #canvas-container {
@@ -66,8 +69,10 @@ button {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 18px;
-  font-family: "Copperplate Gothic Light";
+  font-size: 18pt;
+  /* font-family: "Copperplate Gothic Light"; */
+  /* font-family: "IM Fell English SC", serif; */
+  font-family: "Cormorant SC", serif;
   font-weight: bold;
   border: #ffffffd3;
   border: 1px;
@@ -76,7 +81,7 @@ button {
   min-width: 42px;
   height: 42px;
   margin: 7px;
-  filter: drop-shadow(4 4 3 black);
+  filter: drop-shadow(4px 4px 3px black);
 }
 
 .small-label {
@@ -84,10 +89,16 @@ button {
   color: var(--font-color);
 }
 
+.btn-small-font {
+  font-size: 15pt;
+}
+
 h2,
 h3 {
   margin: 0;
   color: var(--font-color);
+  /* font-family: copperplateGL; */
+  /* font-family: "IM Fell English SC", serif; */
 }
 
 .lr-margin {
@@ -120,10 +131,10 @@ h3 {
 
 /* PANELS ************************************************* */
 #left-panel {
-  height: 410px;
+  height: 420px;
   background-color: var(--ui-panel-bkg-color);
   flex-basis: 5rem;
-  border-radius: 0 15 15 0;
+  border-radius: 0px 15px 15px 0px;
   pointer-events: all;
   display: flex;
   flex-direction: column;
@@ -132,10 +143,10 @@ h3 {
 }
 
 #right-panel {
-  height: 410px;
+  height: 420px;
   background-color: var(--ui-panel-bkg-color);
   flex-basis: 5rem;
-  border-radius: 15 0 0 15;
+  border-radius: 15px 0px 0px 15px;
   pointer-events: all;
   display: flex;
   flex-direction: column;
@@ -143,7 +154,7 @@ h3 {
 }
 
 #bottom-panel {
-  border-radius: 15 15 0 0;
+  border-radius: 15px 15px 0px 0px;
   background-color: var(--ui-panel-bkg-color);
   height: 100%;
   display: flex;
@@ -154,19 +165,19 @@ h3 {
 #dice-count-panel {
   display: flex;
   background-color: var(--ui-panel-bkg-color);
-  border-radius: 0 0 15 0;
+  border-radius: 0px 0px 15px 0px;
   padding: 4px;
 }
 
 #roll-dice-panel {
   display: flex;
   background-color: var(--ui-panel-bkg-color);
-  border-radius: 0 0 0 15;
+  border-radius: 0px 0px 0px 15px;
   padding-left: 6px;
 }
 
 .panel-shadow {
-  box-shadow: 5 5 10 2 rgba(0, 0, 0, 0.719);
+  box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.719);
   backdrop-filter: blur(4);
 }
 
@@ -271,6 +282,10 @@ table {
   margin-right: 20px;
 }
 
+.margin-left {
+  margin-left: 20px;
+}
+
 .help-icon {
   position: absolute;
   margin-top: 100%;
@@ -304,9 +319,9 @@ table {
   height: 600px;
   transform: translate(-50%, -50%);
 
-  border-radius: 15;
+  border-radius: 15px;
   background-color: var(--ui-panel-bkg-color);
-  backdrop-filter: blur(4);
+  backdrop-filter: blur(4px);
 
   color: var(--font-color);
 
@@ -325,7 +340,7 @@ table {
   width: 250px;
 
   background-color: var(--ui-button-bkg-color);
-  border-radius: 15 0 15 0;
+  border-radius: 15px 0px 15px 0px;
   display: flex;
   /* flex-direction: column; */
   align-items: center;
@@ -341,7 +356,7 @@ table {
   width: 250px;
 
   background-color: var(--ui-button-bkg-color);
-  border-radius: 0 15 0 15;
+  border-radius: 0px 15px 0px 15px;
   display: flex;
   /* flex-direction: column; */
   align-items: center;
@@ -359,7 +374,7 @@ table {
   padding: 0 10px;
 
   background-color: var(--ui-button-bkg-color);
-  border-radius: 15 0 0 15;
+  border-radius: 15px 0px 0px 15px;
   display: flex;
   flex-direction: column;
   /* align-items: center; */
@@ -375,7 +390,7 @@ table {
   transform: translate(-50%, 0%);
 
   background-color: var(--ui-button-bkg-color);
-  border-radius: 15 15 0 0;
+  border-radius: 15px 15px 0px 0px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -392,7 +407,7 @@ table {
   padding: 0 10px;
 
   background-color: var(--ui-button-bkg-color);
-  border-radius: 0 15 15 0;
+  border-radius: 0px 15px 15px 0px;
   display: flex;
   /* flex-direction: column; */
   align-items: center;
