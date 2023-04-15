@@ -21,18 +21,18 @@
   <body>
     <main>
 			<div id="canvas-container">
-
 				<canvas id="canvas"></canvas>
 			</div>
-			<div id="load-splash-screen">
+
+			<div id="load-splash-screen" class="unselectable">
 				<div id="splash-screen-content">
-					
 				<img src="./img/diceHammerLogo.svg" alt="DiceHammer" id="load-dh-logo"/>
 				<h2>Dice tray simulator</h2>
 				<h1 id="load-progress-text">Loading: 0%</h1>
 			</div>
 			<div id="load-background"></div>
     </div>
+
     <div id="ui-main" class="unselectable">
 			<div id="top-container">
 				<img src="./img/diceHammerLogo.svg" alt="DiceHammer" id="dh-logo"/>
@@ -114,7 +114,7 @@
 
       <div id="bottom-container">
         <div id="bottom-panel" class="panel-shadow">
-          <h3 class="text-panel">Select Dice</h3>
+          <h3 class="text-panel margin-left">Select Dice</h3>
           <button class="ui-btn" id="deselect-dice">None</button>
           <button class="ui-btn" id="select-1s">1s</button>
           <button class="ui-btn" id="select-2s">2s</button>
@@ -135,11 +135,11 @@
       </div>
 			<!-- <div id="help-icon"> -->
 			<!-- </div> -->
+			<button class="ui-btn" id="help-btn">?</button>
     </div id="ui-main">
-		<button class="ui-btn" id="help-btn">?</button>
     <!-- <div class="content"> -->
     <!-- </div> -->
-		<div id="help-modal-container" class="panel-shadow">
+		<div id="help-modal-container" class="panel-shadow unselectable">
 			<img src="./img/diceHammerLogo.svg" alt="DiceHammer" id="dh-help-logo"/>
 			<div id="help-panel-ctr">
 				<p>&copy Cameron Kingsley, Studio One Three, 2023. All rights reserved</p>

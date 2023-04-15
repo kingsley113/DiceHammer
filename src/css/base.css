@@ -6,6 +6,11 @@
   --font-color: #faebd7;
 }
 
+@font-face {
+  font-family: copperplateGL;
+  src: url(coprgtl.ttf);
+}
+
 html,
 body {
   margin: 0;
@@ -14,7 +19,8 @@ body {
 
 body {
   background-color: black;
-  font-family: "Copperplate Gothic Light";
+  /* font-family: "Copperplate Gothic Light"; */
+  font-family: copperplateGL;
 }
 
 canvas {
@@ -68,7 +74,7 @@ button {
   min-width: 42px;
   height: 42px;
   margin: 7px;
-  filter: drop-shadow(4 4 3 black);
+  filter: drop-shadow(4px 4px 3px black);
 }
 
 .small-label {
@@ -115,7 +121,7 @@ h3 {
   height: 410px;
   background-color: var(--ui-panel-bkg-color);
   flex-basis: 5rem;
-  border-radius: 0 15 15 0;
+  border-radius: 0px 15px 15px 0px;
   pointer-events: all;
   display: flex;
   flex-direction: column;
@@ -127,7 +133,7 @@ h3 {
   height: 410px;
   background-color: var(--ui-panel-bkg-color);
   flex-basis: 5rem;
-  border-radius: 15 0 0 15;
+  border-radius: 15px 0px 0px 15px;
   pointer-events: all;
   display: flex;
   flex-direction: column;
@@ -135,7 +141,7 @@ h3 {
 }
 
 #bottom-panel {
-  border-radius: 15 15 0 0;
+  border-radius: 15px 15px 0px 0px;
   background-color: var(--ui-panel-bkg-color);
   height: 100%;
   display: flex;
@@ -146,19 +152,19 @@ h3 {
 #dice-count-panel {
   display: flex;
   background-color: var(--ui-panel-bkg-color);
-  border-radius: 0 0 15 0;
+  border-radius: 0px 0px 15px 0px;
   padding: 4px;
 }
 
 #roll-dice-panel {
   display: flex;
   background-color: var(--ui-panel-bkg-color);
-  border-radius: 0 0 0 15;
+  border-radius: 0px 0px 0px 15px;
   padding-left: 6px;
 }
 
 .panel-shadow {
-  box-shadow: 5 5 10 2 rgba(0, 0, 0, 0.719);
+  box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.719);
   backdrop-filter: blur(4);
 }
 
@@ -263,6 +269,10 @@ table {
   margin-right: 20px;
 }
 
+.margin-left {
+  margin-left: 20px;
+}
+
 .help-icon {
   position: absolute;
   margin-top: 100%;
@@ -296,9 +306,9 @@ table {
   height: 600px;
   transform: translate(-50%, -50%);
 
-  border-radius: 15;
+  border-radius: 15px;
   background-color: var(--ui-panel-bkg-color);
-  backdrop-filter: blur(4);
+  backdrop-filter: blur(4px);
 
   color: var(--font-color);
 
@@ -317,7 +327,7 @@ table {
   width: 250px;
 
   background-color: var(--ui-button-bkg-color);
-  border-radius: 15 0 15 0;
+  border-radius: 15px 0px 15px 0px;
   display: flex;
   /* flex-direction: column; */
   align-items: center;
@@ -333,7 +343,7 @@ table {
   width: 250px;
 
   background-color: var(--ui-button-bkg-color);
-  border-radius: 0 15 0 15;
+  border-radius: 0px 15px 0px 15px;
   display: flex;
   /* flex-direction: column; */
   align-items: center;
@@ -351,7 +361,7 @@ table {
   padding: 0 10px;
 
   background-color: var(--ui-button-bkg-color);
-  border-radius: 15 0 0 15;
+  border-radius: 15px 0px 0px 15px;
   display: flex;
   flex-direction: column;
   /* align-items: center; */
@@ -367,7 +377,7 @@ table {
   transform: translate(-50%, 0%);
 
   background-color: var(--ui-button-bkg-color);
-  border-radius: 15 15 0 0;
+  border-radius: 15px 15px 0px 0px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -384,7 +394,7 @@ table {
   padding: 0 10px;
 
   background-color: var(--ui-button-bkg-color);
-  border-radius: 0 15 15 0;
+  border-radius: 0px 15px 15px 0px;
   display: flex;
   /* flex-direction: column; */
   align-items: center;
