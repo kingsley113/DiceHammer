@@ -36,6 +36,10 @@ canvas {
   z-index: 3;
 }
 
+a {
+  color: chocolate;
+}
+
 #canvas-container {
   width: 100%;
   height: 100%;

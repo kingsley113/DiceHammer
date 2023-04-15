@@ -7,12 +7,7 @@
   },
   "scripts": {
     "start": "parcel ./src/index.html",
-    "predeploy": "rm -rf dist && parcel build index.html --public-url https://dicehammer.app/ && cp CNAME ./dist",
-    "prebuild-dev": "shx rm -rf dist/*",
-    "build-dev": "parcel build ./src/index.html --no-optimize --public-url ./",
-    "prebuild": "shx rm -rf dist/*",
-    "build": "parcel build ./src/index.html --public-url ./",
-    "push-gh-pages": "push-dir --dir=dist --branch=gh-pages --cleanup --verbose",
+    "predeploy": "del dist && parcel build ./src/index.html --public-url https://dicehammer.app/ && copy CNAME ../dist",
     "deploy": "gh-pages -d dist"
   }
 }

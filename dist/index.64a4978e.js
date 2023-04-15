@@ -939,7 +939,7 @@ function loadDiceTrayModel() {
         scene.add(model);
         model.traverse(function(object) {
             if (object.isMesh) {
-                object.material.shading = _three.SmoothShading;
+                // object.material.shading = THREE.SmoothShading;
                 object.castShadow = true;
                 object.receiveShadow = true;
                 object.material.side = _three.FrontSide;
