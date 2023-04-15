@@ -142,7 +142,7 @@
       this[globalName] = mainExports;
     }
   }
-})({"luDrG":[function(require,module,exports) {
+})({"hVW7Y":[function(require,module,exports) {
 var global = arguments[3];
 var HMR_HOST = null;
 var HMR_PORT = null;
@@ -557,16 +557,22 @@ function hmrAccept(bundle, id) {
 }
 
 },{}],"goJYj":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _three = require("three");
 var _cannonEs = require("cannon-es");
 var _orbitControlsJs = require("three/examples/jsm/controls/OrbitControls.js");
 var _bufferGeometryUtils = require("three/examples/jsm/utils/BufferGeometryUtils");
 var _gltfloaderJs = require("three/examples/jsm/loaders/GLTFLoader.js"); //needed for 3d model import
-var _cannonEsDebugger = require("cannon-es-debugger");
-var _cannonEsDebuggerDefault = parcelHelpers.interopDefault(_cannonEsDebugger);
+// import { OrbitControls } from "OrbitControls";
+// import * as BufferGeometryUtils from "bufferGeometryUtils";
+// import { GLTFLoader } from "gltfLoader"; //needed for 3d model import
+// import * as THREE from "https://unpkg.com/three@0.150.1/build/three.module.js";
+// import * as CANNON from "https://unpkg.com/cannon-es@0.20.0/dist/cannon-es.js";
+// import { OrbitControls } from "https://unpkg.com/three@0.150.1/examples/jsm/controls/OrbitControls.js";
+// import * as BufferGeometryUtils from "https://unpkg.com/three@0.150.1/examples/jsm/utils/BufferGeometryUtils";
+// import { GLTFLoader } from "https://unpkg.com/three@0.150.1/examples/jsm/loaders/GLTFLoader.js"; //needed for 3d model import
 // DICE TRAY MODEL*************************************************************
-const trayUrl = new URL(require("dd4daaebc952987e"));
+// const trayUrl = new URL("../assets/diceTray.glb", import.meta.url);
+const trayUrl = new URL(require("ce4f3ffad38d1c0c"));
 // UI ELEMENTS*****************************************************************
 const canvas = document.querySelector("#canvas");
 const scoreResult = document.querySelector("#score-result");
@@ -662,7 +668,7 @@ helpBtn.addEventListener("click", toggleHelpModal);
 let renderer, camera, scene, orbit, diceMesh, physicsWorld;
 let cannonDebugger;
 const params = {
-    diceCount: 20,
+    diceCount: 10,
     gravityStrength: 80,
     diceRestitution: 0.45,
     diceThrowForce: 10,
@@ -738,9 +744,6 @@ function initScene() {
         addDiceEvents(diceArray[i]);
     }
     renderer.domElement.addEventListener("click", selectDice, false);
-    // throwDice();
-    // Debugging
-    // cannonDebugger = new CannonDebugger(scene, physicsWorld);
     updateLoadingSplashScreen(0);
     loadDiceTrayModel();
     render();
@@ -783,29 +786,29 @@ function createFloor() {
 }
 // LIGHTING********************************************************************
 function createLights() {
-    const topLight = new _three.DirectionalLight(0xffffff, 0.1);
-    topLight.position.set(0, 15, 0);
-    topLight.castShadow = true;
-    topLight.shadow.radius = 2;
-    topLight.shadow.blurSamples = 25;
-    topLight.shadow.mapSize.width = 2048;
-    topLight.shadow.mapSize.height = 2048;
-    topLight.shadow.camera.near = 5;
-    topLight.shadow.camera.far = 400;
-    topLight.shadow.camera.top = trayParams.trayHeight / 2 + 1;
-    topLight.shadow.camera.bottom = -trayParams.trayHeight / 2 - 1;
-    topLight.shadow.camera.left = -trayParams.trayWidth / 2 - 1;
-    topLight.shadow.camera.right = trayParams.trayWidth / 2 + 1;
+    // const topLight = new THREE.DirectionalLight(0xffffff, 0.1);
+    // topLight.position.set(0, 15, 0);
+    // topLight.castShadow = true;
+    // topLight.shadow.radius = 2;
+    // topLight.shadow.blurSamples = 25;
+    // topLight.shadow.mapSize.width = 2048;
+    // topLight.shadow.mapSize.height = 2048;
+    // topLight.shadow.camera.near = 5;
+    // topLight.shadow.camera.far = 400;
+    // topLight.shadow.camera.top = trayParams.trayHeight / 2 + 1;
+    // topLight.shadow.camera.bottom = -trayParams.trayHeight / 2 - 1;
+    // topLight.shadow.camera.left = -trayParams.trayWidth / 2 - 1;
+    // topLight.shadow.camera.right = trayParams.trayWidth / 2 + 1;
     // scene.add(topLight);
-    const ambientLight = new _three.AmbientLight(0xffffff, 0.05);
+    // const ambientLight = new THREE.AmbientLight(0xffffff, 0.05);
     // scene.add(ambientLight);
     const pointLightTemplate = new _three.SpotLight(0xffffff, 0.25);
     // pointLightTemplate.position.set(-25, 20, -25);
     pointLightTemplate.castShadow = true;
     pointLightTemplate.shadow.radius = 3;
-    pointLightTemplate.shadow.blurSamples = 20;
-    pointLightTemplate.shadow.mapSize.width = 2048;
-    pointLightTemplate.shadow.mapSize.height = 2048;
+    pointLightTemplate.shadow.blurSamples = 5;
+    // pointLightTemplate.shadow.mapSize.width = 2048;
+    // pointLightTemplate.shadow.mapSize.height = 2048;
     pointLightTemplate.shadow.camera.near = 5;
     pointLightTemplate.shadow.camera.far = 400;
     // pointLightTemplate.shadow.camera.top = trayParams.trayHeight / 2 + 1;
@@ -840,18 +843,18 @@ function createLights() {
     pointLightWarm3.color = new _three.Color(0xff4915);
     pointLightWarm3.position.set(20, 30, 25);
     scene.add(pointLightWarm3);
-    const pLightHelper = new _three.PointLightHelper(pointLightCool1);
-    scene.add(pLightHelper);
-    const pLightHelper2 = new _three.PointLightHelper(pointLightCool2);
-    scene.add(pLightHelper2);
-    const pLightHelper5 = new _three.PointLightHelper(pointLightCool3);
-    scene.add(pLightHelper5);
-    const pLightHelper3 = new _three.PointLightHelper(pointLightWarm1);
-    scene.add(pLightHelper3);
-    const pLightHelper4 = new _three.PointLightHelper(pointLightWarm2);
-    scene.add(pLightHelper4);
-    const pLightHelper6 = new _three.PointLightHelper(pointLightWarm3);
-    scene.add(pLightHelper6);
+// const pLightHelper = new THREE.PointLightHelper(pointLightCool1);
+// scene.add(pLightHelper);
+// const pLightHelper2 = new THREE.PointLightHelper(pointLightCool2);
+// scene.add(pLightHelper2);
+// const pLightHelper5 = new THREE.PointLightHelper(pointLightCool3);
+// scene.add(pLightHelper5);
+// const pLightHelper3 = new THREE.PointLightHelper(pointLightWarm1);
+// scene.add(pLightHelper3);
+// const pLightHelper4 = new THREE.PointLightHelper(pointLightWarm2);
+// scene.add(pLightHelper4);
+// const pLightHelper6 = new THREE.PointLightHelper(pointLightWarm3);
+// scene.add(pLightHelper6);
 }
 // DICE TRAY*******************************************************************
 function createDiceTray() {
@@ -956,7 +959,7 @@ function createDiceMesh() {
     const boxMaterialOuter = new _three.MeshStandardMaterial({
         color: params.diceSurfaceColor,
         roughness: 0.0,
-        metalness: 0.05
+        metalness: 0.0
     });
     const boxMaterialInner = new _three.MeshStandardMaterial({
         color: params.diceDimpleColor,
@@ -1240,7 +1243,6 @@ function render(time) {
         dice.mesh.quaternion.copy(dice.body.quaternion);
     }
     orbit.update(); //call update after everytime we change position of camera
-    // cannonDebugger.update();
     // Redraw scene
     updateSceneSize();
     renderer.render(scene, camera);
@@ -1391,14 +1393,15 @@ function rollDie(d, dIdx = 0) {
     d.body.allowSleep = true;
 }
 function updateLoadingSplashScreen(perc) {
-    loadText.innerHTML = `Loading: ${Math.round(perc)}%`;
+    loadText.innerHTML = `Loading: ${Math.min(Math.round(perc), 100)}%`;
 }
 function toggleHelpModal() {
+    console.log(helpModal.style.display);
     if (helpModal.style.display === "none") helpModal.style.display = "block";
     else helpModal.style.display = "none";
 }
 
-},{"three":"ktPTu","three/examples/jsm/controls/OrbitControls.js":"7mqRv","cannon-es":"HCu3b","three/examples/jsm/utils/BufferGeometryUtils":"5o7x9","cannon-es-debugger":"a5KNJ","@parcel/transformer-js/src/esmodule-helpers.js":"50sMR","three/examples/jsm/loaders/GLTFLoader.js":"dVRsF","dd4daaebc952987e":"2QMuB"}],"ktPTu":[function(require,module,exports) {
+},{"three":"ktPTu","three/examples/jsm/controls/OrbitControls.js":"7mqRv","cannon-es":"HCu3b","three/examples/jsm/utils/BufferGeometryUtils":"5o7x9","three/examples/jsm/loaders/GLTFLoader.js":"dVRsF","ce4f3ffad38d1c0c":"lmSfK"}],"ktPTu":[function(require,module,exports) {
 /**
  * @license
  * Copyright 2010-2023 Three.js Authors
@@ -30801,7 +30804,7 @@ if (typeof window !== "undefined") {
     else window.__THREE__ = REVISION;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"50sMR"}],"50sMR":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -31526,7 +31529,7 @@ class MapControls extends OrbitControls {
     }
 }
 
-},{"three":"ktPTu","@parcel/transformer-js/src/esmodule-helpers.js":"50sMR"}],"HCu3b":[function(require,module,exports) {
+},{"three":"ktPTu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"HCu3b":[function(require,module,exports) {
 /**
  * Records what objects are colliding with each other
  */ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -40565,7 +40568,7 @@ const endShapeContactEvent = {
     shapeB: null
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"50sMR"}],"5o7x9":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"5o7x9":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 /**
@@ -41273,211 +41276,7 @@ function toCreasedNormals(geometry, creaseAngle = Math.PI / 3 /* 60 degrees */ )
     return resultGeometry;
 }
 
-},{"three":"ktPTu","@parcel/transformer-js/src/esmodule-helpers.js":"50sMR"}],"a5KNJ":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "default", ()=>CannonDebugger);
-var _cannonEs = require("cannon-es");
-var _three = require("three");
-function CannonDebugger(scene, world, _temp) {
-    let { color =0x00ff00 , scale =1 , onInit , onUpdate  } = _temp === void 0 ? {} : _temp;
-    const _meshes = [];
-    const _material = new (0, _three.MeshBasicMaterial)({
-        color: color != null ? color : 0x00ff00,
-        wireframe: true
-    });
-    const _tempVec0 = new (0, _cannonEs.Vec3)();
-    const _tempVec1 = new (0, _cannonEs.Vec3)();
-    const _tempVec2 = new (0, _cannonEs.Vec3)();
-    const _tempQuat0 = new (0, _cannonEs.Quaternion)();
-    const _sphereGeometry = new (0, _three.SphereGeometry)(1);
-    const _boxGeometry = new (0, _three.BoxGeometry)(1, 1, 1);
-    const _planeGeometry = new (0, _three.PlaneGeometry)(10, 10, 10, 10); // Move the planeGeometry forward a little bit to prevent z-fighting
-    _planeGeometry.translate(0, 0, 0.0001);
-    function createConvexPolyhedronGeometry(shape) {
-        const geometry = new (0, _three.BufferGeometry)(); // Add vertices
-        const positions = [];
-        for(let i = 0; i < shape.vertices.length; i++){
-            const vertex = shape.vertices[i];
-            positions.push(vertex.x, vertex.y, vertex.z);
-        }
-        geometry.setAttribute("position", new (0, _three.Float32BufferAttribute)(positions, 3)); // Add faces
-        const indices = [];
-        for(let i = 0; i < shape.faces.length; i++){
-            const face = shape.faces[i];
-            const a = face[0];
-            for(let j = 1; j < face.length - 1; j++){
-                const b = face[j];
-                const c = face[j + 1];
-                indices.push(a, b, c);
-            }
-        }
-        geometry.setIndex(indices);
-        geometry.computeBoundingSphere();
-        geometry.computeVertexNormals();
-        return geometry;
-    }
-    function createTrimeshGeometry(shape) {
-        const geometry = new (0, _three.BufferGeometry)();
-        const positions = [];
-        const v0 = _tempVec0;
-        const v1 = _tempVec1;
-        const v2 = _tempVec2;
-        for(let i = 0; i < shape.indices.length / 3; i++){
-            shape.getTriangleVertices(i, v0, v1, v2);
-            positions.push(v0.x, v0.y, v0.z);
-            positions.push(v1.x, v1.y, v1.z);
-            positions.push(v2.x, v2.y, v2.z);
-        }
-        geometry.setAttribute("position", new (0, _three.Float32BufferAttribute)(positions, 3));
-        geometry.computeBoundingSphere();
-        geometry.computeVertexNormals();
-        return geometry;
-    }
-    function createHeightfieldGeometry(shape) {
-        const geometry = new (0, _three.BufferGeometry)();
-        const s = shape.elementSize || 1; // assumes square heightfield, else i*x, j*y
-        const positions = shape.data.flatMap((row, i)=>row.flatMap((z, j)=>[
-                    i * s,
-                    j * s,
-                    z
-                ]));
-        const indices = [];
-        for(let xi = 0; xi < shape.data.length - 1; xi++)for(let yi = 0; yi < shape.data[xi].length - 1; yi++){
-            const stride = shape.data[xi].length;
-            const index = xi * stride + yi;
-            indices.push(index + 1, index + stride, index + stride + 1);
-            indices.push(index + stride, index + 1, index);
-        }
-        geometry.setIndex(indices);
-        geometry.setAttribute("position", new (0, _three.Float32BufferAttribute)(positions, 3));
-        geometry.computeBoundingSphere();
-        geometry.computeVertexNormals();
-        return geometry;
-    }
-    function createMesh(shape) {
-        let mesh = new (0, _three.Mesh)();
-        const { SPHERE , BOX , PLANE , CYLINDER , CONVEXPOLYHEDRON , TRIMESH , HEIGHTFIELD  } = (0, _cannonEs.Shape).types;
-        switch(shape.type){
-            case SPHERE:
-                mesh = new (0, _three.Mesh)(_sphereGeometry, _material);
-                break;
-            case BOX:
-                mesh = new (0, _three.Mesh)(_boxGeometry, _material);
-                break;
-            case PLANE:
-                mesh = new (0, _three.Mesh)(_planeGeometry, _material);
-                break;
-            case CYLINDER:
-                {
-                    const geometry = new (0, _three.CylinderGeometry)(shape.radiusTop, shape.radiusBottom, shape.height, shape.numSegments);
-                    mesh = new (0, _three.Mesh)(geometry, _material);
-                    shape.geometryId = geometry.id;
-                    break;
-                }
-            case CONVEXPOLYHEDRON:
-                {
-                    const geometry = createConvexPolyhedronGeometry(shape);
-                    mesh = new (0, _three.Mesh)(geometry, _material);
-                    shape.geometryId = geometry.id;
-                    break;
-                }
-            case TRIMESH:
-                {
-                    const geometry = createTrimeshGeometry(shape);
-                    mesh = new (0, _three.Mesh)(geometry, _material);
-                    shape.geometryId = geometry.id;
-                    break;
-                }
-            case HEIGHTFIELD:
-                {
-                    const geometry = createHeightfieldGeometry(shape);
-                    mesh = new (0, _three.Mesh)(geometry, _material);
-                    shape.geometryId = geometry.id;
-                    break;
-                }
-        }
-        scene.add(mesh);
-        return mesh;
-    }
-    function scaleMesh(mesh, shape) {
-        const { SPHERE , BOX , PLANE , CYLINDER , CONVEXPOLYHEDRON , TRIMESH , HEIGHTFIELD  } = (0, _cannonEs.Shape).types;
-        switch(shape.type){
-            case SPHERE:
-                {
-                    const { radius  } = shape;
-                    mesh.scale.set(radius * scale, radius * scale, radius * scale);
-                    break;
-                }
-            case BOX:
-                mesh.scale.copy(shape.halfExtents);
-                mesh.scale.multiplyScalar(2 * scale);
-                break;
-            case PLANE:
-                break;
-            case CYLINDER:
-                mesh.scale.set(1 * scale, 1 * scale, 1 * scale);
-                break;
-            case CONVEXPOLYHEDRON:
-                mesh.scale.set(1 * scale, 1 * scale, 1 * scale);
-                break;
-            case TRIMESH:
-                mesh.scale.copy(shape.scale).multiplyScalar(scale);
-                break;
-            case HEIGHTFIELD:
-                mesh.scale.set(1 * scale, 1 * scale, 1 * scale);
-                break;
-        }
-    }
-    function typeMatch(mesh, shape) {
-        if (!mesh) return false;
-        const { geometry  } = mesh;
-        return geometry instanceof (0, _three.SphereGeometry) && shape.type === (0, _cannonEs.Shape).types.SPHERE || geometry instanceof (0, _three.BoxGeometry) && shape.type === (0, _cannonEs.Shape).types.BOX || geometry instanceof (0, _three.PlaneGeometry) && shape.type === (0, _cannonEs.Shape).types.PLANE || geometry.id === shape.geometryId && shape.type === (0, _cannonEs.Shape).types.CYLINDER || geometry.id === shape.geometryId && shape.type === (0, _cannonEs.Shape).types.CONVEXPOLYHEDRON || geometry.id === shape.geometryId && shape.type === (0, _cannonEs.Shape).types.TRIMESH || geometry.id === shape.geometryId && shape.type === (0, _cannonEs.Shape).types.HEIGHTFIELD;
-    }
-    function updateMesh(index, shape) {
-        let mesh = _meshes[index];
-        let didCreateNewMesh = false;
-        if (!typeMatch(mesh, shape)) {
-            if (mesh) scene.remove(mesh);
-            _meshes[index] = mesh = createMesh(shape);
-            didCreateNewMesh = true;
-        }
-        scaleMesh(mesh, shape);
-        return didCreateNewMesh;
-    }
-    function update() {
-        const meshes = _meshes;
-        const shapeWorldPosition = _tempVec0;
-        const shapeWorldQuaternion = _tempQuat0;
-        let meshIndex = 0;
-        for (const body of world.bodies)for(let i = 0; i !== body.shapes.length; i++){
-            const shape = body.shapes[i];
-            const didCreateNewMesh = updateMesh(meshIndex, shape);
-            const mesh = meshes[meshIndex];
-            if (mesh) {
-                // Get world position
-                body.quaternion.vmult(body.shapeOffsets[i], shapeWorldPosition);
-                body.position.vadd(shapeWorldPosition, shapeWorldPosition); // Get world quaternion
-                body.quaternion.mult(body.shapeOrientations[i], shapeWorldQuaternion); // Copy to meshes
-                mesh.position.copy(shapeWorldPosition);
-                mesh.quaternion.copy(shapeWorldQuaternion);
-                if (didCreateNewMesh && onInit instanceof Function) onInit(body, mesh, shape);
-                if (!didCreateNewMesh && onUpdate instanceof Function) onUpdate(body, mesh, shape);
-            }
-            meshIndex++;
-        }
-        for(let i = meshIndex; i < meshes.length; i++){
-            const mesh = meshes[i];
-            if (mesh) scene.remove(mesh);
-        }
-        meshes.length = meshIndex;
-    }
-    return {
-        update
-    };
-}
-
-},{"cannon-es":"HCu3b","three":"ktPTu","@parcel/transformer-js/src/esmodule-helpers.js":"50sMR"}],"dVRsF":[function(require,module,exports) {
+},{"three":"ktPTu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"dVRsF":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "GLTFLoader", ()=>GLTFLoader);
@@ -43719,10 +43518,10 @@ const _identityMatrix = new (0, _three.Matrix4)();
     });
 }
 
-},{"three":"ktPTu","../utils/BufferGeometryUtils.js":"5o7x9","@parcel/transformer-js/src/esmodule-helpers.js":"50sMR"}],"2QMuB":[function(require,module,exports) {
-module.exports = require("fcdfe178cdc4aea6").getBundleURL("e6MYJ") + "diceTray.903b358f.glb" + "?" + Date.now();
+},{"three":"ktPTu","../utils/BufferGeometryUtils.js":"5o7x9","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"lmSfK":[function(require,module,exports) {
+module.exports = require("c82fb4831b09bad8").getBundleURL("e6MYJ") + "diceTrayNoTerrain.33ec8ae0.glb" + "?" + Date.now();
 
-},{"fcdfe178cdc4aea6":"6XJCQ"}],"6XJCQ":[function(require,module,exports) {
+},{"c82fb4831b09bad8":"lgJ39"}],"lgJ39":[function(require,module,exports) {
 "use strict";
 var bundleURL = {};
 function getBundleURLCached(id) {
@@ -43756,6 +43555,6 @@ exports.getBundleURL = getBundleURLCached;
 exports.getBaseURL = getBaseURL;
 exports.getOrigin = getOrigin;
 
-},{}]},["luDrG","goJYj"], "goJYj", "parcelRequire94c2")
+},{}]},["hVW7Y","goJYj"], "goJYj", "parcelRequire94c2")
 
 //# sourceMappingURL=index.64a4978e.js.map

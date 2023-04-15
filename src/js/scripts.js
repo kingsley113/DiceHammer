@@ -1,12 +1,12 @@
 import * as THREE from "three";
 import * as CANNON from "cannon-es";
-// import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-// import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils";
-// import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js"; //needed for 3d model import
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js"; //needed for 3d model import
 
-import { OrbitControls } from "OrbitControls";
-import * as BufferGeometryUtils from "bufferGeometryUtils";
-import { GLTFLoader } from "gltfLoader"; //needed for 3d model import
+// import { OrbitControls } from "OrbitControls";
+// import * as BufferGeometryUtils from "bufferGeometryUtils";
+// import { GLTFLoader } from "gltfLoader"; //needed for 3d model import
 
 // import * as THREE from "https://unpkg.com/three@0.150.1/build/three.module.js";
 // import * as CANNON from "https://unpkg.com/cannon-es@0.20.0/dist/cannon-es.js";

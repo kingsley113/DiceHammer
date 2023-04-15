@@ -6,34 +6,48 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Dice Hammer</title>
     <link rel="stylesheet" type="text/css" href="/index.d046a61c.css">
+		<!-- <script type="importmap">
+			{
+					"imports": {
+							"three": "https://unpkg.com/three@0.150.1/build/three.module.js",
+							"OrbitControls": "https://unpkg.com/three@0.150.1/examples/jsm/controls/OrbitControls.js",
+							"cannon-es": "https://unpkg.com/cannon-es@0.20.0/dist/cannon-es.js",
+							"bufferGeometryUtils": "https://unpkg.com/three@0.150.1/examples/jsm/utils/BufferGeometryUtils",
+							"gltfLoader": "https://unpkg.com/three@0.150.1/examples/jsm/loaders/GLTFLoader.js"
+					}
+			}
+	</script> -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+	<link href="https://fonts.googleapis.com/css2?family=Cormorant+SC&family=IM+Fell+English+SC&display=swap" rel="stylesheet">
   </head>
   <body>
     <main>
 			<div id="canvas-container">
-
 				<canvas id="canvas"></canvas>
 			</div>
-			<div id="load-splash-screen">
+
+			<div id="load-splash-screen" class="unselectable">
 				<div id="splash-screen-content">
-					
 				<img src="/diceHammerLogo.deecf0c8.svg" alt="DiceHammer" id="load-dh-logo">
 				<h2>Dice tray simulator</h2>
 				<h1 id="load-progress-text">Loading: 0%</h1>
 			</div>
 			<div id="load-background"></div>
     </div>
+
     <div id="ui-main" class="unselectable">
 			<div id="top-container">
 				<img src="/diceHammerLogo.deecf0c8.svg" alt="DiceHammer" id="dh-logo">
         <div id="dice-count-panel" class="panel-shadow">
-          <button class="ui-btn" id="dice-decrease">-1</button>
-          <button class="ui-btn" id="dice-decrease-5">-5</button>
+          <button id="dice-decrease">-1</button>
+          <button id="dice-decrease-5">-5</button>
           <div class="text-panel lr-margin" id="dice-count-text">
             <h2 id="dice-count"></h2>
             <div class="small-label">Dice</div>
           </div>
-          <button class="ui-btn" id="dice-increase">+1</button>
-          <button class="ui-btn" id="dice-increase-5">+5</button>
+          <button id="dice-increase">+1</button>
+          <button id="dice-increase-5">+5</button>
         </div>
 
         <div id="roll-dice-panel" class="panel-shadow">
@@ -47,12 +61,12 @@
             New<br>
             Roll
           </h3>
-          <button class="ui-btn narrow" id="roll-6up">6+</button>
-          <button class="ui-btn narrow" id="roll-5up">5+</button>
-          <button class="ui-btn narrow" id="roll-4up">4+</button>
-          <button class="ui-btn narrow" id="roll-3up">3+</button>
-          <button class="ui-btn narrow" id="roll-2up">2+</button>
-          <button class="ui-btn narrow" id="roll-1up">1+</button>
+          <button class="narrow" id="roll-6up">6+</button>
+          <button class="narrow" id="roll-5up">5+</button>
+          <button class="narrow" id="roll-4up">4+</button>
+          <button class="narrow" id="roll-3up">3+</button>
+          <button class="narrow" id="roll-2up">2+</button>
+          <button class="narrow" id="roll-1up">1+</button>
         </div>
         <div id="right-panel" class="panel-shadow">
           <h3 id="result-header">Results</h3>
@@ -94,7 +108,7 @@
             </tr>
           </table>
           <div class="text-panel">
-					<br>
+					<!-- </br> -->
             <h3>Total Pts</h3>
             <div id="total-score-text" class="small-label"></div>
           </div>
@@ -103,32 +117,32 @@
 
       <div id="bottom-container">
         <div id="bottom-panel" class="panel-shadow">
-          <h3 class="text-panel">Select Dice</h3>
-          <button class="ui-btn" id="deselect-dice">None</button>
-          <button class="ui-btn" id="select-1s">1s</button>
-          <button class="ui-btn" id="select-2s">2s</button>
-          <button class="ui-btn" id="select-3s">3s</button>
-          <button class="ui-btn" id="select-4s">4s</button>
-          <button class="ui-btn" id="select-5s">5s</button>
-          <button class="ui-btn" id="select-6s">6s</button>
-          <button class="ui-btn" id="select-cocked-dice">Cocked</button>
-          <button class="ui-btn" id="reroll-selected-dice">
+          <h3 class="text-panel margin-left">Select Dice</h3>
+          <button id="deselect-dice">None</button>
+          <button id="select-1s">1s</button>
+          <button id="select-2s">2s</button>
+          <button id="select-3s">3s</button>
+          <button id="select-4s">4s</button>
+          <button id="select-5s">5s</button>
+          <button id="select-6s">6s</button>
+          <button id="select-cocked-dice">Cocked</button>
+          <button class="btn-small-font" id="reroll-selected-dice">
             Reroll Selected
           </button>
-          <button class="ui-btn margin-right" id="roll-selected-dice">Roll Selected</button>
+          <button class="margin-right btn-small-font" id="roll-selected-dice">Roll Selected</button>
           <div>
-            <!-- <button class="ui-btn" id="remove-all-dice">Clear Dice</button> -->
-            <!-- <button class="ui-btn" id="roll-cocked-dice">Reroll Cocked Dice</button> -->
+            <!-- <button id="remove-all-dice">Clear Dice</button> -->
+            <!-- <button id="roll-cocked-dice">Reroll Cocked Dice</button> -->
           </div>
         </div>
       </div>
 			<!-- <div id="help-icon"> -->
 			<!-- </div> -->
+			<button id="help-btn">?</button>
     </div>
-		<button class="ui-btn" id="help-btn">?</button>
     <!-- <div class="content"> -->
     <!-- </div> -->
-		<div id="help-modal-container" class="panel-shadow">
+		<div id="help-modal-container" class="panel-shadow unselectable" style="display: none">
 			<img src="/diceHammerLogo.deecf0c8.svg" alt="DiceHammer" id="dh-help-logo">
 			<div id="help-panel-ctr">
 				<p>&copy Cameron Kingsley, Studio One Three, 2023. All rights reserved</p>
