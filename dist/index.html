@@ -1,1 +1,204 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="ie=edge"><title>Dice Hammer</title><link rel="stylesheet" type="text/css" href="https://dicehammer.app/index.66bd3212.css"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cormorant+SC&family=IM+Fell+English+SC&display=swap" rel="stylesheet"></head><body> <main> <div id="canvas-container"> <canvas id="canvas"></canvas> </div> <div id="load-splash-screen" class="unselectable"> <div id="splash-screen-content"> <img src="https://dicehammer.app/diceHammerLogo.e83f05ff.svg" alt="DiceHammer" id="load-dh-logo"> <h2>Dice tray simulator</h2> <h1 id="load-progress-text">Loading: 0%</h1> </div> <div id="load-background"></div> </div> <div id="ui-main" class="unselectable"> <div id="top-container"> <img src="https://dicehammer.app/diceHammerLogo.e83f05ff.svg" alt="DiceHammer" id="dh-logo"> <div id="dice-count-panel" class="panel-shadow"> <button id="dice-decrease">-1</button> <button id="dice-decrease-5">-5</button> <div class="lr-margin text-panel" id="dice-count-text"> <h2 id="dice-count"></h2> <div class="small-label">Dice</div> </div> <button id="dice-increase">+1</button> <button id="dice-increase-5">+5</button> </div> <div id="roll-dice-panel" class="panel-shadow"> <button class="roll">Roll The Dice</button> </div> </div> <div id="mid-container"> <div id="left-panel" class="panel-shadow"> <h3 class="text-panel"> New<br> Roll </h3> <button class="narrow" id="roll-6up">6+</button> <button class="narrow" id="roll-5up">5+</button> <button class="narrow" id="roll-4up">4+</button> <button class="narrow" id="roll-3up">3+</button> <button class="narrow" id="roll-2up">2+</button> <button class="narrow" id="roll-1up">1+</button> </div> <div id="right-panel" class="panel-shadow"> <h3 id="result-header">Results</h3> <table> <tr> <th>CT</th> <th></th> <th>RT</th> </tr> <tr> <td id="d6-count"></td> <td><img src="https://dicehammer.app/dice-6.ec4d8358.png" class="dice-img rotate90"></td> <td id="d6-run-total"></td> </tr> <tr> <td id="d5-count"></td> <td><img src="https://dicehammer.app/dice-5.68dc9cf5.png" class="dice-img"></td> <td id="d5-run-total"></td> </tr> <tr> <td id="d4-count"></td> <td><img src="https://dicehammer.app/dice-4.b01cd8d3.png" class="dice-img"></td> <td id="d4-run-total"></td> </tr> <tr> <td id="d3-count"></td> <td><img src="https://dicehammer.app/dice-3.128fe6ce.png" class="dice-img"></td> <td id="d3-run-total"></td> </tr> <tr> <td id="d2-count"></td> <td><img src="https://dicehammer.app/dice-2.9d4844f8.png" class="dice-img"></td> <td id="d2-run-total"></td> </tr> <tr> <td id="d1-count"></td> <td><img src="https://dicehammer.app/dice-1.ac21fc87.png" class="dice-img"></td> <td id="d1-run-total"></td> </tr> </table> <div class="text-panel">  <h3>Total Pts</h3> <div id="total-score-text" class="small-label"></div> </div> </div> </div> <div id="bottom-container"> <div id="bottom-panel" class="panel-shadow"> <h3 class="margin-left text-panel">Select Dice</h3> <button id="deselect-dice">None</button> <button id="select-1s">1s</button> <button id="select-2s">2s</button> <button id="select-3s">3s</button> <button id="select-4s">4s</button> <button id="select-5s">5s</button> <button id="select-6s">6s</button> <button id="select-cocked-dice">Cocked</button> <button class="btn-small-font" id="reroll-selected-dice"> Reroll Selected </button> <button class="btn-small-font margin-right" id="roll-selected-dice">Roll Selected</button> <div>   </div> </div> </div>   <button id="help-btn">?</button> </div>   <div id="help-modal-container" class="panel-shadow unselectable" style="display:none"> <img src="https://dicehammer.app/diceHammerLogo.e83f05ff.svg" alt="DiceHammer" id="dh-help-logo"> <div id="help-panel-ctr"> <p>&copy Cameron Kingsley, Studio One Three, 2023. All rights reserved</p> <p style="font-size:small"> Background image: <br> &copyOlingova, 2020, <a href="https://polycount.com/discussion/220124/ue4-environment-warhammer-gothic-cathedral-feedback-and-crits-needed">polycount</a> DiceHammer logo font: <br>&copy Joffre LeFevre, Aboutype, Inc., 2001, 2007. All rights reserved. <br> </p> </div> <div id="help-panel-tl" class="panel-shadow"> <h3> Add or remove dice from the tray </h3> </div> <div id="help-panel-tr" class="panel-shadow"> <h3> Start a new roll </h3> </div> <div id="help-panel-r" class="panel-shadow"> <h3> Results: </h3> <h3> CT: Count </h3> count of each number rolled <h3> RT: Running Total </h3> cumulative total of n and higher dice rolled, decending from 6 </div> <div id="help-panel-btm" class="panel-shadow"> Click buttons or on individual dice to select. <h3> Reroll Selected: </h3> reroll selected dice while keeping others <h3> Roll Selected: </h3> start a new roll with only selected dice </div> <div id="help-panel-l" class="panel-shadow"> Start a new roll using only dice with 'n' and higher result </div> </div> </main> <script src="https://dicehammer.app/index.e5043588.js" type="module"></script> </body></html>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Dice Hammer</title>
+    <link rel="stylesheet" type="text/css" href="/index.d046a61c.css">
+		<!-- <script type="importmap">
+			{
+					"imports": {
+							"three": "https://unpkg.com/three@0.150.1/build/three.module.js",
+							"OrbitControls": "https://unpkg.com/three@0.150.1/examples/jsm/controls/OrbitControls.js",
+							"cannon-es": "https://unpkg.com/cannon-es@0.20.0/dist/cannon-es.js",
+							"bufferGeometryUtils": "https://unpkg.com/three@0.150.1/examples/jsm/utils/BufferGeometryUtils",
+							"gltfLoader": "https://unpkg.com/three@0.150.1/examples/jsm/loaders/GLTFLoader.js"
+					}
+			}
+	</script> -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+	<link href="https://fonts.googleapis.com/css2?family=Cormorant+SC&family=IM+Fell+English+SC&display=swap" rel="stylesheet">
+	<link rel="shortcut icon" href="/favicon.c5ec8b79.ico" type="image/x-icon">
+<link rel="icon" href="/favicon.c5ec8b79.ico" type="image/x-icon">
+  </head>
+  <body>
+    <main>
+			<div id="canvas-container">
+				<canvas id="canvas"></canvas>
+			</div>
+
+			<div id="load-splash-screen" class="unselectable">
+				<div id="splash-screen-content">
+				<img src="/diceHammerLogo.deecf0c8.svg" alt="DiceHammer" id="load-dh-logo">
+				<h2>Dice tray simulator</h2>
+				<h1 id="load-progress-text">Loading: 0%</h1>
+			</div>
+			<div id="load-background"></div>
+    </div>
+
+    <div id="ui-main" class="unselectable">
+			<div id="top-container">
+				<img src="/diceHammerLogo.deecf0c8.svg" alt="DiceHammer" id="dh-logo">
+        <div id="dice-count-panel" class="panel-shadow">
+          <button id="dice-decrease">-1</button>
+          <button id="dice-decrease-5">-5</button>
+          <div class="text-panel lr-margin" id="dice-count-text">
+            <h2 id="dice-count"></h2>
+            <div class="small-label">Dice</div>
+          </div>
+          <button id="dice-increase">+1</button>
+          <button id="dice-increase-5">+5</button>
+        </div>
+
+        <div id="roll-dice-panel" class="panel-shadow">
+          <button class="roll">Roll The Dice</button>
+        </div>
+      </div>
+
+      <div id="mid-container">
+        <div id="left-panel" class="panel-shadow">
+          <h3 class="text-panel">
+            New<br>
+            Roll
+          </h3>
+          <button class="narrow" id="roll-6up">6+</button>
+          <button class="narrow" id="roll-5up">5+</button>
+          <button class="narrow" id="roll-4up">4+</button>
+          <button class="narrow" id="roll-3up">3+</button>
+          <button class="narrow" id="roll-2up">2+</button>
+          <button class="narrow" id="roll-1up">1+</button>
+        </div>
+        <div id="right-panel" class="panel-shadow">
+          <h3 id="result-header">Results</h3>
+          <table>
+            <tr>
+              <th>CT</th>
+              <th></th>
+              <th>RT</th>
+            </tr>
+            <tr>
+              <td id="d6-count"></td>
+              <td><img src="/dice-6.271740a2.png" class="dice-img rotate90"></td>
+              <td id="d6-run-total"></td>
+            </tr>
+            <tr>
+              <td id="d5-count"></td>
+              <td><img src="/dice-5.6e4b4260.png" class="dice-img"></td>
+              <td id="d5-run-total"></td>
+            </tr>
+            <tr>
+              <td id="d4-count"></td>
+              <td><img src="/dice-4.76446bc8.png" class="dice-img"></td>
+              <td id="d4-run-total"></td>
+            </tr>
+            <tr>
+              <td id="d3-count"></td>
+              <td><img src="/dice-3.a54c165f.png" class="dice-img"></td>
+              <td id="d3-run-total"></td>
+            </tr>
+            <tr>
+              <td id="d2-count"></td>
+              <td><img src="/dice-2.96cb7414.png" class="dice-img"></td>
+              <td id="d2-run-total"></td>
+            </tr>
+            <tr>
+              <td id="d1-count"></td>
+              <td><img src="/dice-1.e468b2b2.png" class="dice-img"></td>
+              <td id="d1-run-total"></td>
+            </tr>
+          </table>
+          <div class="text-panel">
+					<!-- </br> -->
+            <h3>Total Pts</h3>
+            <div id="total-score-text" class="small-label"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="bottom-container">
+        <div id="bottom-panel" class="panel-shadow">
+          <h3 class="text-panel margin-left">Select Dice</h3>
+          <button id="deselect-dice">None</button>
+          <button id="select-1s">1s</button>
+          <button id="select-2s">2s</button>
+          <button id="select-3s">3s</button>
+          <button id="select-4s">4s</button>
+          <button id="select-5s">5s</button>
+          <button id="select-6s">6s</button>
+          <button id="select-cocked-dice">Cocked</button>
+          <button class="btn-small-font" id="reroll-selected-dice">
+            Reroll Selected
+          </button>
+          <button class="margin-right btn-small-font" id="roll-selected-dice">Roll Selected</button>
+          <div>
+            <!-- <button id="remove-all-dice">Clear Dice</button> -->
+            <!-- <button id="roll-cocked-dice">Reroll Cocked Dice</button> -->
+          </div>
+        </div>
+      </div>
+			<!-- <div id="help-icon"> -->
+			<!-- </div> -->
+			<button id="help-btn">?</button>
+    </div>
+    <!-- <div class="content"> -->
+    <!-- </div> -->
+		<div id="help-modal-container" class="panel-shadow unselectable" style="display: none">
+			<img src="/diceHammerLogo.deecf0c8.svg" alt="DiceHammer" id="dh-help-logo">
+			<div id="help-panel-ctr">
+				<p>&copy Cameron Kingsley, Studio One Three, 2023. All rights reserved</p>
+				<p style="font-size: small"> 
+					Background image:
+					<br>
+					&copyOlingova, 2020, <a href="https://polycount.com/discussion/220124/ue4-environment-warhammer-gothic-cathedral-feedback-and-crits-needed">polycount</a>
+					
+					DiceHammer logo font: <br>&copy Joffre LeFevre, Aboutype, Inc., 2001, 2007. All rights reserved. 
+				<br>
+				</p>
+			</div>
+			
+			<div id="help-panel-tl" class="panel-shadow">
+				<h3>
+					Add or remove dice from the tray
+				</h3>
+			</div>
+			<div id="help-panel-tr" class="panel-shadow">
+				<h3>
+					Start a new roll
+				</h3>
+			</div>
+			<div id="help-panel-r" class="panel-shadow">
+				<h3>
+					Results:
+				</h3>
+				
+				<h3>
+					CT: Count
+				</h3>
+				count of each number rolled
+				<h3>
+
+					RT: Running Total
+				</h3>
+				cumulative total of n and higher dice rolled, decending from 6
+			</div>
+			<div id="help-panel-btm" class="panel-shadow">
+				Click buttons or on individual dice to select. 
+				<h3>
+					Reroll Selected: 
+				</h3>
+				reroll selected dice while keeping others
+				<h3>
+					Roll Selected: 
+				</h3>
+				start a new roll with only selected dice
+			</div>
+			<div id="help-panel-l" class="panel-shadow">
+				Start a new roll using only dice with 'n' and higher result
+			</div>
+		</div>
+    </main>
+    <script src="/index.64a4978e.js" defer=""></script>
+  </body>
+</html>
